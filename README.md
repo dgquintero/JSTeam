@@ -1,4 +1,4 @@
 # JSTeam
-integrantes:
+Integrantes:
 - Diego Alejandro Gantiva Santamaría.
 - Martha Liliana Domínguez
