@@ -1,5 +1,5 @@
 # JSTeam
 Integrantes:
 - Diego Alejandro Gantiva Santamaría.
-- Martha Liliana Domínguez
-- Deimer Ivan Castillo Caceres
+- Martha Liliana Domínguez González.
+- Deimer Ivan Castillo Caceres.
