@@ -1,6 +1,7 @@
 # JSTeam
-Integrantes:
+## Integrantes:
 - Diego Alejandro Gantiva Santamaría.
 - Martha Liliana Domínguez González.
 - Deimer Ivan Castillo Caceres.
-- Javier Leonardo Mora Hernandez
+- Javier Leonardo Mora Hernandez.
+- Daniel Gustavo Quintero Ocampo.
