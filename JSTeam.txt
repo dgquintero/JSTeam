@@ -1,6 +1,9 @@
-¿Qué debo alcanzar para desarrollar la aplicación web? 
+- Descripción del Proyecto:
 
-Para que puedas desarrollar el proyecto que se te planteó, la aplicación web debe contar con los siguientes módulos:  
+- Para este proyecto se propone analizar, diseñar y construir una aplicación software que permita controlar las ventas físicas y virtuales de una empresa de manufactura y hacerles el correspondiente seguimiento.
+El desarrollo de este proyecto se realizara mediante metodologias agiles usando el framework Scrum, dividiendo el trabajo en ciclos cortos de tiempo llamados Sprints.
+
+- Para poder desarrollar el proyecto que se planteó, la aplicación web debe contar con los siguientes módulos:  
 
 
 ● Módulo administrador de ventas. Permite ingresar o registrar los pedidos realizados por cada uno de los clientes. Deberá tener un identificador único de venta, almacenar el valor total de la venta y la descripción detallada de la misma y tener una fecha inicial y una fecha futura de pago. Además, deberá contar con un encargado de gestionar dicha venta (responsable).
@@ -16,14 +19,16 @@ Este módulo hará la integración de los demás módulos del sistema para garan
 ● Gestión de usuarios y roles. Deberá contener un identificador único del usuario, el nombre y el rol en el sistema de información (vendedor, administrador, ejecutivo, operario, director, gerente comercial) con el fin de restringir/otorgar accesos al sistema de información.
 
 
-Integrantes:
+Integrantes del equipo:
 
 
 -Soy Daniel Quintero tengo 29 años soy ingeniero industrial y desarrollador, me apasiona el mundo de la tecnología.
 
 -Soy Javier Leonardo Mora Hernandez, tengo 27 años, contador publico y financiero pero no me gusta mucho mis profesion, 
-me llama la atencion la tegnologia, la innovacion y el trabajo en casa, por ello, me lance al mundo de la programacion.
+me llama la atencion la tecnologia, la innovacion y el trabajo en casa, por ello, me lancé al mundo de la programacion.
 
+- Mi nombre es Martha Liliana Domínguez, soy de Cali, tengo 25 años, y esta es mi primera aproximación a estar en un proyecto de trabajo colaborativo.
+Mi interés por el desarrollo web/programación surgió de querer crearle una página web a un emprendimiento de chocolates que tenía antes y darme cuenta que mi gusto por "crear marca" se complementaba perfecto con la satisfacción de hacer productos digitales.  
 
 
 
