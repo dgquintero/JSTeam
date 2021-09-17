@@ -19,5 +19,8 @@ Este módulo hará la integración de los demás módulos del sistema para garan
 Integrantes:
 
 
-Soy Daniel Quintero tengo 29 años soy ingeniero industrial y desarrollador, me apasiona el mundo de la tecnología.
+-Soy Daniel Quintero tengo 29 años soy ingeniero industrial y desarrollador, me apasiona el mundo de la tecnología.
+
+-Soy Javier Leonardo Mora Hernandez, tengo 27 años, contador publico y financiero, me llama la atencion la tegnologia, la innovacion,
+pero no me gusta mi profesion, por ello, me lance al mundo de la programacion.
 
