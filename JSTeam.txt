@@ -1,9 +1,7 @@
-Descripcion de Proyecto.
+¿Qué debo alcanzar para desarrollar la aplicación web? 
 
-Para este proyecto se propone analizar, diseñar y construir una aplicación software que permita controlar las ventas físicas y virtuales de una empresa de manufactura y hacerles el correspondiente seguimiento.
-El desarrollo de este proyecto se realizara mediante metodologias agiles usando el framework Scrum, dividiendo el trabajo en ciclos cortos de tiempo llamados Sprints.
+Para que puedas desarrollar el proyecto que se te planteó, la aplicación web debe contar con los siguientes módulos:  
 
-Para que poder desarrollar el proyecto que se planteó, la aplicación web debe contar con los siguientes módulos:  
 
 ● Módulo administrador de ventas. Permite ingresar o registrar los pedidos realizados por cada uno de los clientes. Deberá tener un identificador único de venta, almacenar el valor total de la venta y la descripción detallada de la misma y tener una fecha inicial y una fecha futura de pago. Además, deberá contar con un encargado de gestionar dicha venta (responsable).
 
@@ -21,5 +19,11 @@ Este módulo hará la integración de los demás módulos del sistema para garan
 Integrantes:
 
 
-Soy Daniel Quintero tengo 29 años soy ingeniero industrial y desarrollador, me apasiona el mundo de la tecnología.
+-Soy Daniel Quintero tengo 29 años soy ingeniero industrial y desarrollador, me apasiona el mundo de la tecnología.
+
+-Soy Javier Leonardo Mora Hernandez, tengo 27 años, contador publico y financiero pero no me gusta mucho mis profesion, 
+me llama la atencion la tegnologia, la innovacion y el trabajo en casa, por ello, me lance al mundo de la programacion.
+
+
+
 
