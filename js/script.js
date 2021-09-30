@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -46,7 +46,7 @@ function googleSignIn() {
 //Event listener for form submit
 document.getElementById('mainLogin').addEventListener('submit', submitForm);
 
-// Database reference
+// Database reference stuff
 const database = getDatabase(app);
 
 function submitForm(e) {
@@ -56,7 +56,10 @@ function submitForm(e) {
     let name = getInputValues('name');
     let email = getInputValues('email');
 
-    set(ref(database, 'users/'), {
+    const userRef = ref(database, 'usuarios-pendientes');
+    const newUserRef = push(userRef);
+
+    set(newUserRef, {
         name: name,
         email: email,
         estado: 'pendiente'
