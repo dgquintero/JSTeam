@@ -16,75 +16,28 @@
 
 <body class="text-center">
     <main class="form-signin">
-        <form>
+        <form id="mainLogin">
             <img class="mb-4" src="img/shoes.svg" alt="" width="72" height="57">
             <h1 class="h3 mb-3 fw-normal">Ingreso al Sistema de Informacion</h1>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="floatingName" placeholder="">
-                <label for="floatingName">Nombre</label>
+                <input type="text" class="form-control" id="name" placeholder="">
+                <label for="name">Nombre</label>
             </div>
 
             <div class="form-floating mb-4">
-                <input type="email" class="form-control" id="floatingInput" placeholder="">
-                <label for="floatingInput">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="">
+                <label for="name">Email</label>
             </div>
 
-            <button class="w-100 btn btn-primary mb-3" type="submit">Registrarse</button>
-
-            <button class="w-100 btn btn-danger" type="submit">Ingresar con Google</button>
+            <button class="w-100 btn btn-primary mb-3" type="submit" id="signUp">Registrarse</button>
+            <button class="w-100 btn btn-danger" type="button" id="googleBtn">Ingresar con Google</button>
 
             <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
         </form>
-
-        <input class="w-100 btn btn-danger" type="button" onclick="signInWithPopup()">Ingresar con Googleeee</input>
-
-
     </main>
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
-
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBVV-BwhxtlWw2f6hyFf-DwZwGgwGhjyNY",
-            authDomain: "test-project-20ea7.firebaseapp.com",
-            databaseURL: "https://test-project-20ea7-default-rtdb.firebaseio.com",
-            projectId: "test-project-20ea7",
-            storageBucket: "test-project-20ea7.appspot.com",
-            messagingSenderId: "820230993295",
-            appId: "1:820230993295:web:c1635d4bc2f2f22a8bc7fa"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        // Google Sign-in
-        const provider = new GoogleAuthProvider();
-        const auth = getAuth();
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                // The signed-in user info.
-                const user = result.user;
-                // ...
-            }).catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.email;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                // ...
-            });
-    </script>
-    <script src="js/script.js"></script>
+    
+    <script type="module" src="js/script.js"></script>
 </body>
 
 </html>
