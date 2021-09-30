@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signInWithRedirect } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
 import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -22,14 +22,16 @@ const app = initializeApp(firebaseConfig);
 // Google Sign-in
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
+
 function googleSignIn() {
-    signInWithPopup(auth, provider)
+    signInWithRedirect(auth, provider)
         .then((result) => {
             // This gives you a Google Access Token. You can use it to access the Google API.
             const credential = GoogleAuthProvider.credentialFromResult(result);
             const token = credential.accessToken;
             // The signed-in user info.
             const user = result.user;
+            console.log(hello)
             // ...
         }).catch((error) => {
             // Handle Errors here.
@@ -41,7 +43,25 @@ function googleSignIn() {
             const credential = GoogleAuthProvider.credentialFromError(error);
             // ...
         });
+    
 }
+
+//Sign up listener
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid;
+        window.location.replace('http://127.0.0.1:5500/main.html');
+        // ...
+    } else {
+        // User is signed out
+        // ...
+    }
+});
+
+//Event listener for google sign in
+document.getElementById('googleBtn').addEventListener('click', googleSignIn);
 
 //Event listener for form submit
 document.getElementById('mainLogin').addEventListener('submit', submitForm);
