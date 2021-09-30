@@ -48,6 +48,8 @@ document.getElementById('mainLogin').addEventListener('submit', submitForm);
 
 // Database reference stuff
 const database = getDatabase(app);
+const userRef = ref(database, 'usuarios-pendientes');
+const newUserRef = push(userRef);
 
 function submitForm(e) {
     e.preventDefault();
@@ -56,15 +58,17 @@ function submitForm(e) {
     let name = getInputValues('name');
     let email = getInputValues('email');
 
-    const userRef = ref(database, 'usuarios-pendientes');
-    const newUserRef = push(userRef);
-
     set(newUserRef, {
         name: name,
         email: email,
         estado: 'pendiente'
     });
-    console.log(name);
+
+    //Alert Message
+    document.getElementById('sucAlert').classList.toggle('d-none');
+    setTimeout(() => {
+        document.getElementById('sucAlert').classList.toggle('d-none');
+    }, 2000);
 }
 
 // Get form values
