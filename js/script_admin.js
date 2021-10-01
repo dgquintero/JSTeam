@@ -43,7 +43,7 @@ const app = initializeApp(firebaseConfig);
 //             const credential = GoogleAuthProvider.credentialFromError(error);
 //             // ...
 //         });
-    
+
 // }
 
 //Sign up listener TODO!!
@@ -104,3 +104,9 @@ function submitForm(e) {
 function getInputValues(id) {
     return document.getElementById(id).value;
 }
+
+// Listing all elements from the db -- Listener method
+onValue(prodRef, (snapshot) => {
+    const data = snapshot.val();
+    console.log(data);
+});
