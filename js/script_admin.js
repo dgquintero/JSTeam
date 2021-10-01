@@ -1,7 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signInWithRedirect } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
+// import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signInWithRedirect } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
 import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+
+// Removed Module { query, orderByChild, child, get }
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -105,8 +107,31 @@ function getInputValues(id) {
     return document.getElementById(id).value;
 }
 
-// Listing all elements from the db -- Listener method
+// Table element
+let table = document.getElementById('searchResult');
+
+// Listing all elements from the db -- Listener method 
 onValue(prodRef, (snapshot) => {
     const data = snapshot.val();
-    console.log(data);
+    // Clear table
+    table.innerHTML = '';
+    // Fill table
+    for (let key in data) {
+        table.insertAdjacentHTML("beforeend", `<tr><th scope="row">${data[key].id}</th><td>${data[key].name}</td><td>${data[key].descripcion}</td><td>${data[key].valorUnitario}</td><td>${data[key].estado}</td></tr>`);
+    }
 });
+
+// Using get() method
+// get(prodRef).then((snapshot) => {
+//     if (snapshot.exists()) {
+//       console.log(snapshot.val());
+//     } else {
+//       console.log("No data available");
+//     }
+//   }).catch((error) => {
+//     console.error(error);
+//   });
+
+// Test using queries
+// const testQ = query(prodRef, orderByChild('descripcion'));
+// console.log(testQ);

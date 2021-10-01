@@ -83,65 +83,17 @@
 
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#tab1">Buscar Venta</a>
+                    <a class="nav-link active" data-bs-toggle="tab" href="#tab1">Registrar Ventas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#tab2">Registrar Ventas</a>
+                    <a class="nav-link" data-bs-toggle="tab" href="#tab2">Buscar/Modificar Ventas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#tab3">Modificar Ventas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#tab4">Mostrar Ventas Registrados</a>
+                    <a class="nav-link" data-bs-toggle="tab" href="#tab3">Mostrar Ventas Registrados</a>
                 </li>
             </ul>
             <div id="myTabContent" class="tab-content">
                 <div class="tab-pane fade active show" id="tab1">
-                    <form class="d-flex mt-2">
-                        <input class="form-control me-sm-2" type="text" placeholder="Search">
-                        <div class="form-group">
-                            <select class="form-select" id="exampleSelect1">
-                                <option>- Criterio -</option>
-                                <option>ID Venta</option>
-                                <option>ID Cliente</option>
-                                <option>Nombre Cliente</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-
-                    <hr>
-                    <div class="mt-5 h4">
-                        Search Result
-                    </div>
-                    <hr>
-
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Encargado</th>
-                                <th scope="col">Valor Total</th>
-                                <th scope="col">Fecha</th>
-                                <th scope="col">Estado</th>
-                                <th scope="col">etc</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="tab-pane fade" id="tab2">
-
 
                     <form class="p-3">
                         <fieldset>
@@ -209,10 +161,9 @@
                         </fieldset>
                     </form>
 
-
                 </div>
 
-                <div class="tab-pane fade" id="tab3">
+                <div class="tab-pane fade" id="tab2">
                     <form class="d-flex mt-2">
                         <input class="form-control me-sm-2" type="text" placeholder="Search">
                         <div class="form-group">
@@ -259,9 +210,10 @@
                             </tr>
                         </tbody>
                     </table>
+
                 </div>
 
-                <div class="tab-pane fade" id="tab4">
+                <div class="tab-pane fade" id="tab3">
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -332,7 +284,9 @@
                             </tr>
                         </tbody>
                     </table>
+
                 </div>
+
             </div>
         </div>
     </main>
