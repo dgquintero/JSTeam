@@ -46,19 +46,19 @@ function googleSignIn() {
     
 }
 
-//Sign up listener
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
-        window.location.replace('http://127.0.0.1:5500/main.html');
-        // ...
-    } else {
-        // User is signed out
-        // ...
-    }
-});
+//Sign up listener TODO!!
+// onAuthStateChanged(auth, (user) => {
+//     if (user) {
+//         // User is signed in, see docs for a list of available properties
+//         // https://firebase.google.com/docs/reference/js/firebase.User
+//         const uid = user.uid;
+//         window.location.replace('http://127.0.0.1:5500/main.html');
+//         // ...
+//     } else {
+//         // User is signed out
+//         // ...
+//     }
+// });
 
 //Event listener for google sign in
 document.getElementById('googleBtn').addEventListener('click', googleSignIn);
@@ -89,6 +89,10 @@ function submitForm(e) {
     setTimeout(() => {
         document.getElementById('sucAlert').classList.toggle('d-none');
     }, 2000);
+
+    //Clear form
+    document.getElementById('mainLogin').reset();
+    
 }
 
 // Get form values
