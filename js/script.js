@@ -31,7 +31,7 @@ function googleSignIn() {
             const token = credential.accessToken;
             // The signed-in user info.
             const user = result.user;
-            console.log(hello)
+            console.log(user)
             // ...
         }).catch((error) => {
             // Handle Errors here.
@@ -47,18 +47,18 @@ function googleSignIn() {
 }
 
 //Sign up listener TODO!!
-// onAuthStateChanged(auth, (user) => {
-//     if (user) {
-//         // User is signed in, see docs for a list of available properties
-//         // https://firebase.google.com/docs/reference/js/firebase.User
-//         const uid = user.uid;
-//         window.location.replace('http://127.0.0.1:5500/main.html');
-//         // ...
-//     } else {
-//         // User is signed out
-//         // ...
-//     }
-// });
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid;
+        console.log(user);
+        // ...
+    } else {
+        // User is signed out
+        // ...
+    }
+});
 
 //Event listener for google sign in
 document.getElementById('googleBtn').addEventListener('click', googleSignIn);
@@ -69,7 +69,6 @@ document.getElementById('mainLogin').addEventListener('submit', submitForm);
 // Database reference stuff
 const database = getDatabase(app);
 const userRef = ref(database, 'usuarios-pendientes');
-const newUserRef = push(userRef);
 
 function submitForm(e) {
     e.preventDefault();
@@ -77,6 +76,9 @@ function submitForm(e) {
     //Get values
     let name = getInputValues('name');
     let email = getInputValues('email');
+
+    //Set new ref on call
+    const newUserRef = push(userRef);
 
     set(newUserRef, {
         name: name,

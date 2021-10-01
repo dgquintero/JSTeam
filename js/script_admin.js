@@ -3,7 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase
 // import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signInWithRedirect } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
 import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
 
-// Removed Module { query, orderByChild, child, get }
+// Removed Modules { query, orderByChild, child, get }
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -71,7 +71,6 @@ document.getElementById('agregarProducto').addEventListener('submit', submitForm
 // Database reference stuff
 const database = getDatabase(app);
 const prodRef = ref(database, 'productos');
-const newProdRef = push(prodRef);
 
 // Writing operations
 function submitForm(e) {
@@ -84,6 +83,9 @@ function submitForm(e) {
     let valor = getInputValues('valorUnitario');
     let estado = getInputValues('estado');
 
+    // set new ref on call
+    const newProdRef = push(prodRef);
+    
     set(newProdRef, {
         id: id,
         name: name,
