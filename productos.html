@@ -144,13 +144,12 @@
                 </div>
 
                 <div class="tab-pane fade" id="tab2">
-                    <form class="d-flex mt-2">
-                        <input class="form-control me-sm-2" type="text" placeholder="Search">
+                    <form class="d-flex mt-2" id="searchForm">
+                        <input class="form-control me-sm-2" type="text" placeholder="Search" id="searchValue">
                         <div class="form-group">
-                            <select class="form-select" id="exampleSelect1">
-                                <option>- Criterio -</option>
-                                <option>ID Producto</option>
-                                <option>Descripcion Producto</option>
+                            <select class="form-select" id="searchOption">
+                                <option value='id'>ID Producto</option>
+                                <option value='descripcion'>Descripcion Producto</option>
                             </select>
                         </div>
                         <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
@@ -165,27 +164,17 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Action</th>
                                 <th scope="col">ID</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Descripcion</th>
                                 <th scope="col">Valor Unitario</th>
                                 <th scope="col">Estado</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="searchByResult">
 
-                            <tr>
-                                <td>
-                                    <p><a href="#"><i class="bi bi-journal-plus"></i>Modificar</a></p>
-                                    <p><a href="#"><i class="bi bi-journal-x"></i>Eliminar</a></p>
-                                </td>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content lorem</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
+                            
 
                         </tbody>
                     </table>

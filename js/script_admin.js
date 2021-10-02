@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
 // import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signInWithRedirect } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
-import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+import { getDatabase, ref, set, push, onValue, equalTo, query, orderByChild, onChildAdded, off } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
 
 // Removed Modules { query, orderByChild, child, get }
 
@@ -85,7 +85,7 @@ function submitForm(e) {
 
     // set new ref on call
     const newProdRef = push(prodRef);
-    
+
     set(newProdRef, {
         id: id,
         name: name,
@@ -135,5 +135,53 @@ onValue(prodRef, (snapshot) => {
 //   });
 
 // Test using queries
-// const testQ = query(prodRef, orderByChild('descripcion'));
-// console.log(testQ);
+// const testQ = query(prodRef, orderByChild('id'), equalTo('99'));
+
+// onChildAdded(testQ, (data) => {
+// console.log(data.val());
+// });
+
+// Search function!
+document.getElementById('searchForm').addEventListener('submit', searchProduct);
+let searchTable = document.getElementById('searchByResult');
+
+function searchProduct(e) {
+    e.preventDefault();
+
+    // Get search bar values
+    let searchValue = getInputValues('searchValue');
+    let searchOption = getInputValues('searchOption');
+    let searchQuery = query(prodRef, orderByChild(searchOption), equalTo(searchValue));
+
+    // return onChildAdded(searchQuery, (data) => {
+    //     let searchResult = data.val();
+    //     if (searchResult) {
+    //         for(let key in searchResult)
+    //         console.log(key);
+    //         // 
+
+    //     }
+    //     else {
+
+    //     }
+    // });
+
+    return onValue(searchQuery, (snapshot) => {
+        const data = snapshot.val();
+        searchTable.innerHTML = '';
+        if (data) {
+            console.log('There is data');
+            for (let key in data) {
+                searchTable.insertAdjacentHTML('beforeend', `<tr><th scope="row">${data[key].id}</th><td>${data[key].name}</td><td>${data[key].descripcion}</td><td>${data[key].valorUnitario}</td><td>${data[key].estado}</td><td><p><a href="#"><i class="bi bi-pencil"></i>Modificar</a></p><p><a href="#"><i class="bi bi-x-circle"></i>Eliminar</a></p></td></tr>`);
+
+            }
+        }
+        else {
+            console.log('There is no data');
+            searchTable.insertAdjacentHTML('beforebegin', `<div>No Results</div>`)
+        }
+    }, {
+        onlyOnce: true
+    });
+
+}
