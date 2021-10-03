@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
 // import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signInWithRedirect } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
-import { getDatabase, ref, set, push, onValue, equalTo, query, orderByChild, onChildAdded, off } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+import { getDatabase, ref, set, push, onValue, equalTo, query, orderByChild } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
 
 // Removed Modules { query, orderByChild, child, get }
 
@@ -68,9 +68,14 @@ const app = initializeApp(firebaseConfig);
 //Event listener for form submit - Agregar Producto
 document.getElementById('agregarProducto').addEventListener('submit', submitForm);
 
+//Event listener for form submit - Registrar Venta
+document.getElementById('agregarVenta').addEventListener('submit', submitFormVenta);
+
 // Database reference stuff
 const database = getDatabase(app);
 const prodRef = ref(database, 'productos');
+const ventRef = ref(database, 'ventas');
+const userRef = ref(database, 'usuarios');
 
 // Writing operations
 function submitForm(e) {
@@ -104,19 +109,59 @@ function submitForm(e) {
     document.getElementById('agregarProducto').reset();
 }
 
+function submitFormVenta(e) {
+    e.preventDefault();
+
+    //Get values
+    let id = getInputValues('idVenta');
+    let valorTotal = getInputValues('valorTotal');
+    let idProd = getInputValues('idProd');
+    let cantidad = getInputValues('cantidad');
+    let valorUnitario = getInputValues('valorUnitario');
+    let fecha = getInputValues('fecha');
+    let cliente = getInputValues('nombreCliente');
+    let idCliente = getInputValues('idCliente');
+    let vendedor = getInputValues('vendedor');
+
+    // set new ref on call
+    const newVentRef = push(ventRef);
+
+    set(newVentRef, {
+        id: id,
+        valorTotal: valorTotal,
+        idProd: idProd,
+        cantidad: cantidad,
+        valorUnitario: valorUnitario,
+        fecha: fecha,
+        cliente: cliente,
+        idCliente: idCliente,
+        vendedor: vendedor,
+    });
+
+    // TODO ADD ALERT
+    // document.getElementById('sucAlert').classList.toggle('d-none');
+    // setTimeout(() => {
+    //     document.getElementById('sucAlert').classList.toggle('d-none');
+    // }, 2000);
+
+    //Clear form
+    document.getElementById('agregarVenta').reset();
+
+}
+
 // Get form values
 function getInputValues(id) {
     return document.getElementById(id).value;
 }
 
-// Table element
+// Table element - list all elements
 let table = document.getElementById('searchResult');
 
-// Listing all elements from the db -- Listener method 
+// Listing all elements from the db -- Listener method - It will refresh itself
 onValue(prodRef, (snapshot) => {
     const data = snapshot.val();
     // Clear table
-    table.innerHTML = '';
+    deleteChildren(table);
     // Fill table
     for (let key in data) {
         table.insertAdjacentHTML("beforeend", `<tr><th scope="row">${data[key].id}</th><td>${data[key].name}</td><td>${data[key].descripcion}</td><td>${data[key].valorUnitario}</td><td>${data[key].estado}</td></tr>`);
@@ -143,7 +188,7 @@ onValue(prodRef, (snapshot) => {
 
 // Search function!
 document.getElementById('searchForm').addEventListener('submit', searchProduct);
-let searchTable = document.getElementById('searchByResult');
+let searchTable = document?.getElementById('searchByResult');
 
 function searchProduct(e) {
     e.preventDefault();
@@ -153,35 +198,42 @@ function searchProduct(e) {
     let searchOption = getInputValues('searchOption');
     let searchQuery = query(prodRef, orderByChild(searchOption), equalTo(searchValue));
 
-    // return onChildAdded(searchQuery, (data) => {
-    //     let searchResult = data.val();
-    //     if (searchResult) {
-    //         for(let key in searchResult)
-    //         console.log(key);
-    //         // 
-
-    //     }
-    //     else {
-
-    //     }
-    // });
-
     return onValue(searchQuery, (snapshot) => {
         const data = snapshot.val();
-        searchTable.innerHTML = '';
         if (data) {
             console.log('There is data');
+            deleteChildren(searchTable);
             for (let key in data) {
-                searchTable.insertAdjacentHTML('beforeend', `<tr><th scope="row">${data[key].id}</th><td>${data[key].name}</td><td>${data[key].descripcion}</td><td>${data[key].valorUnitario}</td><td>${data[key].estado}</td><td><p><a href="#"><i class="bi bi-pencil"></i>Modificar</a></p><p><a href="#"><i class="bi bi-x-circle"></i>Eliminar</a></p></td></tr>`);
-
+                // the key value is on a invisible div!!!
+                searchTable.insertAdjacentHTML('beforeend', `<div class="d-none">${key}</div><tr><th scope="row">${data[key].id}</th><td>${data[key].name}</td><td>${data[key].descripcion}</td><td>${data[key].valorUnitario}</td><td>${data[key].estado}</td><td><p><a href="#"><i class="bi bi-pencil"></i>Modificar</a></p><p><a href="#"><i class="bi bi-x-circle"></i>Eliminar</a></p></td></tr>`);
             }
         }
         else {
             console.log('There is no data');
-            searchTable.insertAdjacentHTML('beforebegin', `<div>No Results</div>`)
+            deleteChildren(searchTable);
+            searchTable.insertAdjacentHTML('beforeend', `<div>No Results</div>`)
         }
     }, {
         onlyOnce: true
     });
 
 }
+
+function deleteChildren(ele) {
+    while (ele.firstChild) {
+        ele.removeChild(ele.firstChild);
+    }
+    // Just in case
+    ele.innerHTML = '';
+}
+
+// Modify / Delete Function
+// Doesnt work
+// document.getElementById('searchByResult').addEventListener('click', modifyProduct);
+
+// function modifyProduct(e){
+//     e.preventDefault();
+//     let startPoint = e.currentTarget;
+//     let dbkey = e.currentTarget.childNodes[0].innerHTML;
+
+// }
