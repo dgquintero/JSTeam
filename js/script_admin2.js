@@ -71,6 +71,7 @@ function submitFormVenta(e) {
         cliente: cliente,
         idCliente: idCliente,
         vendedor: vendedor,
+        estado: 'En Proceso'
     });
 
     //Clear form
@@ -86,54 +87,84 @@ function getInputValues(id) {
 // // Table element - list all elements
 let table = document.getElementById('searchResult');
 
-// // Listing all elements from the db -- Listener method - It will refresh itself
-// onValue(ventRef, (snapshot) => {
-//     const data = snapshot.val();
-//     // Clear table
-//     deleteChildren(table);
-//     // Fill table
-//     for (let key in data) {
-//         table.insertAdjacentHTML("beforeend", `<tr><th scope="row">${data[key].id}</th><td>${data[key].name}</td><td>${data[key].descripcion}</td><td>${data[key].valorUnitario}</td><td>${data[key].estado}</td></tr>`);
-//     }
-// });
+// Listing all elements from the db -- Listener method - It will refresh itself
+onValue(ventRef, (snapshot) => {
+    const data = snapshot.val();
+    // Clear table
+    deleteChildren(table);
+    // Fill table
+    for (let key in data) {
+        table.insertAdjacentHTML("beforeend", `<tr>
+        <th scope="row">${data[key].id}</th>
+        <td>${data[key].vendedor}</td>
+        <td>${data[key].valorTotal}</td>
+        <td>${data[key].fecha}</td>
+        <td>${data[key].idProd}</td>
+        <td>${data[key].cantidad}</td>
+        <td>${data[key].valorUnitario}</td>
+        <td>${data[key].idCliente}</td>
+        <td>${data[key].cliente}</td>
+        <td>${data[key].estado}</td>
+    </tr>`);
+    }
+});
 
-// // Search function!
-// document.getElementById('searchForm').addEventListener('submit', searchProduct);
-// let searchTable = document?.getElementById('searchByResult');
+``
 
-// function searchProduct(e) {
-//     e.preventDefault();
+// Search function!
+document.getElementById('searchForm').addEventListener('submit', searchProduct);
+let searchTable = document.getElementById('searchByResult');
 
-//     // Get search bar values
-//     let searchValue = getInputValues('searchValue');
-//     let searchOption = getInputValues('searchOption');
-//     let searchQuery = query(prodRef, orderByChild(searchOption), equalTo(searchValue));
+function searchProduct(e) {
+    e.preventDefault();
 
-//     return onValue(searchQuery, (snapshot) => {
-//         const data = snapshot.val();
-//         if (data) {
-//             console.log('There is data');
-//             deleteChildren(searchTable);
-//             for (let key in data) {
-//                 // the key value is on a invisible div!!!
-//                 searchTable.insertAdjacentHTML('beforeend', `<div class="d-none">${key}</div><tr><th scope="row">${data[key].id}</th><td>${data[key].name}</td><td>${data[key].descripcion}</td><td>${data[key].valorUnitario}</td><td>${data[key].estado}</td><td><p><a href="#"><i class="bi bi-pencil"></i>Modificar</a></p><p><a href="#"><i class="bi bi-x-circle"></i>Eliminar</a></p></td></tr>`);
-//             }
-//         }
-//         else {
-//             console.log('There is no data');
-//             deleteChildren(searchTable);
-//             searchTable.insertAdjacentHTML('beforeend', `<div>No Results</div>`)
-//         }
-//     }, {
-//         onlyOnce: true
-//     });
+    // Get search bar values
+    let searchValue = getInputValues('searchValue');
+    let searchOption = getInputValues('searchOption');
+    let searchQuery = query(ventRef, orderByChild(searchOption), equalTo(searchValue));
 
-// }
+    return onValue(searchQuery, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            console.log('There is data');
+            deleteChildren(searchTable);
+            for (let key in data) {
+                // the key value is on a invisible div!!!
+                searchTable.insertAdjacentHTML('beforeend', `<div class="d-none">${key}</div>
+                <tr>
 
-// function deleteChildren(ele) {
-//     while (ele.firstChild) {
-//         ele.removeChild(ele.firstChild);
-//     }
-//     // Just in case
-//     ele.innerHTML = '';
-// }
+                    <th scope="row">${data[key].id}</th>
+                    <td>${data[key].vendedor}</td>
+                    <td>${data[key].valorTotal}</td>
+                    <td>${data[key].fecha}</td>
+                    <td>${data[key].idProd}</td>
+                    <td>${data[key].cantidad}</td>
+                    <td>${data[key].valorUnitario}</td>
+                    <td>${data[key].idCliente}</td>
+                    <td>${data[key].cliente}</td>
+                    <td>${data[key].estado}</td>
+                    <td>
+                        <p><a href="#"><i class="bi bi-pencil"></i>Modificar</a></p>
+                        <p><a href="#"><i class="bi bi-x-circle"></i>Eliminar</a></p>
+                    </td>
+                </tr>`);
+            }
+        }
+        else {
+            console.log('There is no data');
+            deleteChildren(searchTable);
+            searchTable.insertAdjacentHTML('beforeend', `<div>No Results</div>`)
+        }
+    }, {
+        onlyOnce: true
+    });
+
+}
+
+function deleteChildren(ele) {
+    while (ele.firstChild) {
+        ele.removeChild(ele.firstChild);
+    }
+    // Just in case
+    ele.innerHTML = '';
+}

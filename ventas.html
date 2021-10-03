@@ -92,7 +92,7 @@
                     <a class="nav-link" data-bs-toggle="tab" href="#tab3">Mostrar Ventas Registrados</a>
                 </li>
             </ul>
-            
+
             <div id="myTabContent" class="tab-content">
                 <div class="tab-pane fade active show" id="tab1">
                     <form class="p-3" id="agregarVenta">
@@ -164,14 +164,13 @@
                 </div>
 
                 <div class="tab-pane fade" id="tab2">
-                    <form class="d-flex mt-2">
-                        <input class="form-control me-sm-2" type="text" placeholder="Search">
+                    <form class="d-flex mt-2" id="searchForm">
+                        <input class="form-control me-sm-2" type="text" placeholder="Search" id="searchValue">
                         <div class="form-group">
-                            <select class="form-select" id="exampleSelect1">
-                                <option>- Criterio -</option>
-                                <option>ID Venta</option>
-                                <option>ID Cliente</option>
-                                <option>Nombre Cliente</option>
+                            <select class="form-select" id="searchOption">
+                                <option value="id">ID Venta</option>
+                                <option value="idCliente">ID Cliente</option>
+                                <option value="cliente">Nombre Cliente</option>
                             </select>
                         </div>
                         <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
@@ -186,28 +185,22 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Action</th>
                                 <th scope="col">ID</th>
                                 <th scope="col">Encargado</th>
                                 <th scope="col">Valor Total</th>
                                 <th scope="col">Fecha</th>
+                                <th scope="col">Id Producto</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Valor Unitario</th>
+                                <th scope="col">Id Cliente</th>
+                                <th scope="col">Nombre Cliente</th>
                                 <th scope="col">Estado</th>
-                                <th scope="col">etc</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <p><a href="#"><i class="bi bi-journal-plus"></i>Modificar</a></p>
-                                    <p><a href="#"><i class="bi bi-journal-x"></i>Eliminar</a></p>
-                                </td>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content </td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
+                        <tbody id="searchByResult">
+
+                            
                         </tbody>
                     </table>
 
@@ -221,20 +214,18 @@
                                 <th scope="col">Encargado</th>
                                 <th scope="col">Valor Total</th>
                                 <th scope="col">Fecha</th>
+                                <th scope="col">Id Producto</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Valor Unitario</th>
+                                <th scope="col">Id Cliente</th>
+                                <th scope="col">Nombre Cliente</th>
                                 <th scope="col">Estado</th>
-                                <th scope="col">etc</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
-                            
+
+                        <tbody id="searchResult">
+
+
                         </tbody>
                     </table>
 
