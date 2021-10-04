@@ -83,64 +83,19 @@
 
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#tab1">Buscar Productos</a>
+                    <a class="nav-link active" data-bs-toggle="tab" href="#tab1">Agregar Productos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#tab2">Agregar Productos</a>
+                    <a class="nav-link" data-bs-toggle="tab" href="#tab2">Buscar/Modificar Productos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#tab3">Modificar Productos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#tab4">Mostrar Productos Registrados</a>
+                    <a class="nav-link" data-bs-toggle="tab" href="#tab3">Mostrar Productos Registrados</a>
                 </li>
             </ul>
+
             <div id="myTabContent" class="tab-content">
+
                 <div class="tab-pane fade active show" id="tab1">
-                    <form class="d-flex mt-2">
-                        <input class="form-control me-sm-2" type="text" placeholder="Search">
-                        <div class="form-group">
-                            <select class="form-select" id="exampleSelect1">
-                                <option>- Criterio -</option>
-                                <option>ID Producto</option>
-                                <option>Descripcion Producto</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-
-                    <hr>
-                    <div class="mt-5 h4">
-                        Search Result
-                    </div>
-                    <hr>
-
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Descripcion</th>
-                                <th scope="col">Valor Unitario</th>
-                                <th scope="col">Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content lorem</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="tab-pane fade" id="tab2">
-
                     <form class="p-3" id="agregarProducto">
                         <fieldset>
                             <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores iure ab dignissimos,
@@ -175,24 +130,26 @@
                                     <option value="0">No Disponible</option>
                                 </select>
                             </div>
-                            <div class="container-fluid">
+                            <div class="container-flex">
                                 <button type="submit" class="btn btn-primary">Agregar</button>
                                 <button type="reset" class="btn btn-warning">Reset</button>
+
+                                <!--TODO ADD NOTIFICATION -->
+
                             </div>
+
 
                         </fieldset>
                     </form>
-
                 </div>
 
-                <div class="tab-pane fade" id="tab3">
-                    <form class="d-flex mt-2">
-                        <input class="form-control me-sm-2" type="text" placeholder="Search">
+                <div class="tab-pane fade" id="tab2">
+                    <form class="d-flex mt-2" id="searchForm">
+                        <input class="form-control me-sm-2" type="text" placeholder="Search" id="searchValue">
                         <div class="form-group">
-                            <select class="form-select" id="exampleSelect1">
-                                <option>- Criterio -</option>
-                                <option>ID Producto</option>
-                                <option>Descripcion Producto</option>
+                            <select class="form-select" id="searchOption">
+                                <option value='id'>ID Producto</option>
+                                <option value='descripcion'>Descripcion Producto</option>
                             </select>
                         </div>
                         <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
@@ -207,34 +164,23 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Action</th>
                                 <th scope="col">ID</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Descripcion</th>
                                 <th scope="col">Valor Unitario</th>
                                 <th scope="col">Estado</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="searchByResult">
 
-                            <tr>
-                                <td>
-                                    <p><a href="#"><i class="bi bi-journal-plus"></i>Modificar</a></p>
-                                    <p><a href="#"><i class="bi bi-journal-x"></i>Eliminar</a></p>
-                                </td>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content lorem</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
+                            
 
                         </tbody>
                     </table>
-
                 </div>
 
-                <div class="tab-pane fade" id="tab4">
+                <div class="tab-pane fade" id="tab3">
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -245,44 +191,7 @@
                                 <th scope="col">Estado</th>
                             </tr>
                         </thead>
-                        <tbody>
-
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
-
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
+                        <tbody id = 'searchResult'>
 
                             <tr>
                                 <th scope="row">Default</th>
@@ -294,12 +203,8 @@
 
                         </tbody>
                     </table>
-
                 </div>
-
             </div>
-
-
         </div>
 
     </main>
@@ -310,28 +215,8 @@
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
         </script>
 
-    <script src="js/script.js"></script>
-    <!-- <script src="js/sidebars.js"></script> -->
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-      
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-          apiKey: "AIzaSyBVV-BwhxtlWw2f6hyFf-DwZwGgwGhjyNY",
-          authDomain: "test-project-20ea7.firebaseapp.com",
-          databaseURL: "https://test-project-20ea7-default-rtdb.firebaseio.com",
-          projectId: "test-project-20ea7",
-          storageBucket: "test-project-20ea7.appspot.com",
-          messagingSenderId: "820230993295",
-          appId: "1:820230993295:web:c1635d4bc2f2f22a8bc7fa"
-        };
-      
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-      </script>
+    <script type="module" src="js/script_admin.js"></script>
+
 </body>
 
 </html>

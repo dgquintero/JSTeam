@@ -83,67 +83,19 @@
 
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#tab1">Buscar Venta</a>
+                    <a class="nav-link active" data-bs-toggle="tab" href="#tab1">Registrar Ventas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#tab2">Registrar Ventas</a>
+                    <a class="nav-link" data-bs-toggle="tab" href="#tab2">Buscar/Modificar Ventas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#tab3">Modificar Ventas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#tab4">Mostrar Ventas Registrados</a>
+                    <a class="nav-link" data-bs-toggle="tab" href="#tab3">Mostrar Ventas Registrados</a>
                 </li>
             </ul>
+
             <div id="myTabContent" class="tab-content">
                 <div class="tab-pane fade active show" id="tab1">
-                    <form class="d-flex mt-2">
-                        <input class="form-control me-sm-2" type="text" placeholder="Search">
-                        <div class="form-group">
-                            <select class="form-select" id="exampleSelect1">
-                                <option>- Criterio -</option>
-                                <option>ID Venta</option>
-                                <option>ID Cliente</option>
-                                <option>Nombre Cliente</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-
-                    <hr>
-                    <div class="mt-5 h4">
-                        Search Result
-                    </div>
-                    <hr>
-
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Encargado</th>
-                                <th scope="col">Valor Total</th>
-                                <th scope="col">Fecha</th>
-                                <th scope="col">Estado</th>
-                                <th scope="col">etc</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="tab-pane fade" id="tab2">
-
-
-                    <form class="p-3">
+                    <form class="p-3" id="agregarVenta">
                         <fieldset>
                             <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores iure ab dignissimos,
                                 nisi fugiat ad est recusandae ducimus optio. Vel facere labore sunt voluptatem beatae
@@ -174,7 +126,7 @@
                             <div class="form-group">
                                 <label class="col-form-label mt-4" for="inputDefault">Valor Unitario</label>
                                 <input inputmode="numeric" pattern="[0-9]*" class="form-control"
-                                    placeholder="Valor unitario" id="valor">
+                                    placeholder="Valor unitario" id="valorUnitario">
                             </div>
 
                             <div class="form-group">
@@ -184,7 +136,7 @@
 
                             <div class="form-group">
                                 <label class="col-form-label mt-4" for="inputDefault">Nombre Cliente</label>
-                                <input type="text" class="form-control" placeholder="Nombre" id="name">
+                                <input type="text" class="form-control" placeholder="Nombre" id="nombreCliente">
                             </div>
 
                             <div class="form-group">
@@ -194,7 +146,7 @@
 
                             <div class="form-group mb-5">
                                 <label for="exampleSelect1" class="form-label mt-4">Encargado</label>
-                                <select class="form-select" id="exampleSelect1">
+                                <select class="form-select" id="vendedor">
                                     <option value="vendedor1">Vendedor 1</option>
                                     <option value="vendedor2">Vendedor 2</option>
                                     <option value="vendedor3">Vendedor 3</option>
@@ -209,18 +161,16 @@
                         </fieldset>
                     </form>
 
-
                 </div>
 
-                <div class="tab-pane fade" id="tab3">
-                    <form class="d-flex mt-2">
-                        <input class="form-control me-sm-2" type="text" placeholder="Search">
+                <div class="tab-pane fade" id="tab2">
+                    <form class="d-flex mt-2" id="searchForm">
+                        <input class="form-control me-sm-2" type="text" placeholder="Search" id="searchValue">
                         <div class="form-group">
-                            <select class="form-select" id="exampleSelect1">
-                                <option>- Criterio -</option>
-                                <option>ID Venta</option>
-                                <option>ID Cliente</option>
-                                <option>Nombre Cliente</option>
+                            <select class="form-select" id="searchOption">
+                                <option value="id">ID Venta</option>
+                                <option value="idCliente">ID Cliente</option>
+                                <option value="cliente">Nombre Cliente</option>
                             </select>
                         </div>
                         <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
@@ -235,33 +185,28 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Action</th>
                                 <th scope="col">ID</th>
                                 <th scope="col">Encargado</th>
                                 <th scope="col">Valor Total</th>
                                 <th scope="col">Fecha</th>
+                                <th scope="col">Id Producto</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Valor Unitario</th>
+                                <th scope="col">Id Cliente</th>
+                                <th scope="col">Nombre Cliente</th>
                                 <th scope="col">Estado</th>
-                                <th scope="col">etc</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <p><a href="#"><i class="bi bi-journal-plus"></i>Modificar</a></p>
-                                    <p><a href="#"><i class="bi bi-journal-x"></i>Eliminar</a></p>
-                                </td>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content </td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
+                        <tbody id="searchByResult">
+
+                            
                         </tbody>
                     </table>
+
                 </div>
 
-                <div class="tab-pane fade" id="tab4">
+                <div class="tab-pane fade" id="tab3">
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -269,70 +214,23 @@
                                 <th scope="col">Encargado</th>
                                 <th scope="col">Valor Total</th>
                                 <th scope="col">Fecha</th>
+                                <th scope="col">Id Producto</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Valor Unitario</th>
+                                <th scope="col">Id Cliente</th>
+                                <th scope="col">Nombre Cliente</th>
                                 <th scope="col">Estado</th>
-                                <th scope="col">etc</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Default</th>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                            </tr>
+
+                        <tbody id="searchResult">
+
+
                         </tbody>
                     </table>
+
                 </div>
+
             </div>
         </div>
     </main>
@@ -343,6 +241,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
         crossorigin="anonymous"></script>
+
+    <script type="module" src="js/script_admin2.js"></script>
     <!-- <script src="js/sidebars.js"></script> -->
 </body>
 
