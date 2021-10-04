@@ -68,14 +68,9 @@ const app = initializeApp(firebaseConfig);
 //Event listener for form submit - Agregar Producto
 document.getElementById('agregarProducto').addEventListener('submit', submitForm);
 
-//Event listener for form submit - Registrar Venta
-document.getElementById('agregarVenta').addEventListener('submit', submitFormVenta);
-
 // Database reference stuff
 const database = getDatabase(app);
 const prodRef = ref(database, 'productos');
-const ventRef = ref(database, 'ventas');
-const userRef = ref(database, 'usuarios');
 
 // Writing operations
 function submitForm(e) {
@@ -107,46 +102,6 @@ function submitForm(e) {
 
     //Clear form
     document.getElementById('agregarProducto').reset();
-}
-
-function submitFormVenta(e) {
-    e.preventDefault();
-
-    //Get values
-    let id = getInputValues('idVenta');
-    let valorTotal = getInputValues('valorTotal');
-    let idProd = getInputValues('idProd');
-    let cantidad = getInputValues('cantidad');
-    let valorUnitario = getInputValues('valorUnitario');
-    let fecha = getInputValues('fecha');
-    let cliente = getInputValues('nombreCliente');
-    let idCliente = getInputValues('idCliente');
-    let vendedor = getInputValues('vendedor');
-
-    // set new ref on call
-    const newVentRef = push(ventRef);
-
-    set(newVentRef, {
-        id: id,
-        valorTotal: valorTotal,
-        idProd: idProd,
-        cantidad: cantidad,
-        valorUnitario: valorUnitario,
-        fecha: fecha,
-        cliente: cliente,
-        idCliente: idCliente,
-        vendedor: vendedor,
-    });
-
-    // TODO ADD ALERT
-    // document.getElementById('sucAlert').classList.toggle('d-none');
-    // setTimeout(() => {
-    //     document.getElementById('sucAlert').classList.toggle('d-none');
-    // }, 2000);
-
-    //Clear form
-    document.getElementById('agregarVenta').reset();
-
 }
 
 // Get form values

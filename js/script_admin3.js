@@ -37,47 +37,9 @@ const app = initializeApp(firebaseConfig);
 //     }
 // });
 
-//Event listener for form submit - Registrar Venta
-document.getElementById('agregarVenta').addEventListener('submit', submitFormVenta);
-
 // Database reference stuff
 const database = getDatabase(app);
-const ventRef = ref(database, 'ventas');
-
-function submitFormVenta(e) {
-    e.preventDefault();
-
-    //Get values
-    let id = getInputValues('idVenta');
-    let valorTotal = getInputValues('valorTotal');
-    let idProd = getInputValues('idProducto');
-    let cantidad = getInputValues('cantidad');
-    let valorUnitario = getInputValues('valorUnitario');
-    let fecha = getInputValues('fecha');
-    let cliente = getInputValues('nombreCliente');
-    let idCliente = getInputValues('idCliente');
-    let vendedor = getInputValues('vendedor');
-
-    // set new ref on call
-    const newVentRef = push(ventRef);
-
-    set(newVentRef, {
-        id: id,
-        valorTotal: valorTotal,
-        idProd: idProd,
-        cantidad: cantidad,
-        valorUnitario: valorUnitario,
-        fecha: fecha,
-        cliente: cliente,
-        idCliente: idCliente,
-        vendedor: vendedor,
-        estado: 'En Proceso'
-    });
-
-    //Clear form
-    document.getElementById('agregarVenta').reset();
-
-}
+const userRef = ref(database, 'usuarios');
 
 // Get form values
 function getInputValues(id) {
@@ -88,27 +50,27 @@ function getInputValues(id) {
 let table = document.getElementById('searchResult');
 
 // Listing all elements from the db -- Listener method - It will refresh itself
-onValue(ventRef, (snapshot) => {
+onValue(userRef, (snapshot) => {
     const data = snapshot.val();
     // Clear table
     deleteChildren(table);
     // Fill table
     for (let key in data) {
-        table.insertAdjacentHTML("beforeend", `<tr><th scope="row">${data[key].id}</th><td>${data[key].vendedor}</td><td>${data[key].valorTotal}</td><td>${data[key].fecha}</td><td>${data[key].idProd}</td><td>${data[key].cantidad}</td><td>${data[key].valorUnitario}</td><td>${data[key].idCliente}</td><td>${data[key].cliente}</td><td>${data[key].estado}</td></tr>`);
+        table.insertAdjacentHTML("beforeend", `<tr><th scope="row">${data[key].email}</th><td>${data[key].name}</td><td>${data[key].estado}</td><td>${data[key].rol}</td></tr>`);
     }
 });
 
 // Search function!
-document.getElementById('searchForm').addEventListener('submit', searchProduct);
+document.getElementById('searchForm').addEventListener('submit', searchUser);
 let searchTable = document.getElementById('searchByResult');
 
-function searchProduct(e) {
+function searchUser(e) {
     e.preventDefault();
 
     // Get search bar values
     let searchValue = getInputValues('searchValue');
-    let searchOption = getInputValues('searchOption');
-    let searchQuery = query(ventRef, orderByChild(searchOption), equalTo(searchValue));
+    //let searchOption = getInputValues('searchOption');
+    let searchQuery = query(userRef, orderByChild('email'), equalTo(searchValue));
 
     return onValue(searchQuery, (snapshot) => {
         const data = snapshot.val();
@@ -117,22 +79,7 @@ function searchProduct(e) {
             deleteChildren(searchTable);
             for (let key in data) {
                 // the key value is on a invisible div!!!
-                searchTable.insertAdjacentHTML('beforeend', `<div class="d-none">${key}</div>
-                <tr><th scope="row">${data[key].id}</th>
-                <td>${data[key].vendedor}</td>
-                <td>${data[key].valorTotal}</td>
-                <td>${data[key].fecha}</td>
-                <td>${data[key].idProd}</td>
-                <td>${data[key].cantidad}</td>
-                <td>${data[key].valorUnitario}</td>
-                <td>${data[key].idCliente}</td>
-                <td>${data[key].cliente}</td>
-                <td>${data[key].estado}</td>
-                <td>
-                <p><a href="#"><i class="bi bi-pencil"></i>Modificar</a></p>
-                <p><a href="#"><i class="bi bi-x-circle"></i>Eliminar</a></p>
-                </td>
-                </tr>`);
+                searchTable.insertAdjacentHTML('beforeend', `<tr><th scope="row">${data[key].email}</th><td>${data[key].name}</td><td>${data[key].estado}</td><td>${data[key].rol}</td><td><p><a href="#"><i class="bi bi-pencil"></i>Modificar</a></p><p><a href="#"><i class="bi bi-x-circle"></i>Eliminar</a></p></td></tr>`);
             }
         }
         else {
@@ -153,3 +100,4 @@ function deleteChildren(ele) {
     // Just in case
     ele.innerHTML = '';
 }
+

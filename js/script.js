@@ -68,7 +68,7 @@ document.getElementById('mainLogin').addEventListener('submit', submitForm);
 
 // Database reference stuff
 const database = getDatabase(app);
-const userRef = ref(database, 'usuarios-pendientes');
+const userRef = ref(database, 'usuarios');
 
 function submitForm(e) {
     e.preventDefault();
@@ -83,7 +83,8 @@ function submitForm(e) {
     set(newUserRef, {
         name: name,
         email: email,
-        estado: 'pendiente'
+        estado: 'pendiente',
+        rol: 'no asignado'
     });
 
     //Alert Message
