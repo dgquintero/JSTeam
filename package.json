@@ -1,0 +1,29 @@
+{
+  "name": "jsteam",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">   <img width=\"250px\" src=\"logo.jpeg\"> </p>",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dgquintero/JSTeam.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dgquintero/JSTeam/issues"
+  },
+  "homepage": "https://github.com/dgquintero/JSTeam#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^6.0.8",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  }
+}
