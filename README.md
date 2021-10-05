@@ -5,7 +5,10 @@
 </p>
 
 Aplicando el aprendizaje basado en proyectos y bajo la modalidad virtual hemos formado este equipo de trabajo para el desarrollo de las actividades del ciclo 3 del programa Mision TIC 2022 de la Universidad de Antioquia.
+<<<<<<< HEAD
+=======
 
+>>>>>>> 5c3301cd2565910ad7d6f6c8e106848b16279e77
 ## Integrantes:
 - Diego Alejandro Gantiva Santamaría.
 - Martha Liliana Domínguez González.
