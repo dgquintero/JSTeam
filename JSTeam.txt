@@ -31,5 +31,4 @@ me llama la atencion la tecnologia, la innovacion y el trabajo en casa, por ello
 
 - Mi nombre es Deimer Castillo, vivo en Bucaramanga y soy estudiante de Ingenieria de Sistemas.
 
-- Mi nombre es Diego Alejandro Gantiva, soy licenciado en electrónica y profesor de tecnología, vivo en bogota, 
-  soy apasionado en el mi área y me gusta mantenerme al día en todo lo relacionado con la tecnología. 
+- Mi nombre es Diego Alejandro Gantiva, soy licenciado en electrónica y profesor de tecnología, vivo en bogota, soy apasionado en el mi área y me gusta mantenerme al día en todo lo relacionado con la tecnología. 
