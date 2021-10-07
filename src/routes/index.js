@@ -5,9 +5,18 @@ const router = express.Router();
 // importamos los controladores
 const productosController = require('../controllers/productosController');
 
+
+
+
+
+
+
 module.exports = function(){
   //tuta para el home
-  router.get('/productos', productosController.productos)
+  router.get('/productos', productosController.productos);
+  router.post('/new-product', productosController.newProduct);
+
+
 
   return router;
 }
