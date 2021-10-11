@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { collection, getDocs } from "firebase/firestore";
 import './App.css';
 import db from './firebase/firebaseConfig'
-import { Login } from './components/Login';
+import { ModuloProductos } from './components/ModuloProductos';
+// import { Login } from './components/Login';
 
 
 
@@ -23,8 +24,10 @@ function App() {
 
 
   return (
-      <div classNAme = "App container mt-5">        
-        <Login/>
+      <div className = "App container mt-5">        
+        
+      <ModuloProductos/>
+
       </div>
   );
 }
