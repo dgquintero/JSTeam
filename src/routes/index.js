@@ -15,6 +15,7 @@ module.exports = function(){
   //tuta para el home
   router.get('/productos', productosController.productos);
   router.post('/new-product', productosController.newProduct);
+  router.post('/new-empleado', productosController.newEmpleado);
 
 
 

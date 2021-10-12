@@ -18,5 +18,17 @@ exports.newProduct = (req, res) => {
   res.json({
     status: newProduct.name
   })
+}
+
+exports.newEmpleado = (req, res) => {
+  console.log(req.body);
+  const newEmpleado = {
+    name: req.body.name,
+    apellido: req.body.apellido
+  }
+  db.ref('empleado').push(newEmpleado)
+  res.json({
+    status: newEmpleado.name
+  })
   
 }
