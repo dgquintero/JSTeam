@@ -1,5 +1,5 @@
-import Logo from '../logo.svg'
-import '../signin.css'
+import Logo from 'media/logo.svg'
+import 'styles/signin.css'
 
 const LoginForm = () => {
     return (
@@ -7,7 +7,7 @@ const LoginForm = () => {
             <main className="form-signin">
                 <form id="mainLogin">
                     <img className="mb-4" src={Logo} alt="" width="72" height="57" />
-                    <h1 className="h3 mb-3 fw-normal">Ingreso al Sistema de Informacion</h1>
+                    <h1 className="h3 mb-3 fw-normal">Ingreso al Sistema de Información</h1>
                     <div className="form-floating">
                         <input type="text" className="form-control" id="name" placeholder="" required />
                         <label htmlFor="name">Nombre</label>

@@ -1,11 +1,11 @@
-import Tab from "./Tab"
+// import Tab from "./Tab"
 
-const Tabs = () => {
-    return (
-        <div>
+// const Tabs = () => {
+//     return (
+//         <div>
             
-        </div>
-    )
-}
+//         </div>
+//     )
+// }
 
-export default Tabs
+// export default Tabs

@@ -1,12 +1,12 @@
-import Tabs from "./Tabs"
-import NavTabs from './NavTabs';
+// import Tabs from "./Tabs"
+// import NavTabs from './NavTabs';
 
-const ContentContainer = () => {
-    return (
-        <div className="m-4 overflow-auto">
+// const ContentContainer = () => {
+//     return (
+//         <div className="m-4 overflow-auto">
             
-        </div>
-    )
-}
+//         </div>
+//     )
+// }
 
-export default ContentContainer
+// export default ContentContainer
