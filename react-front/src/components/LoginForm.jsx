@@ -25,30 +25,31 @@ const LoginForm = () => {
             userExists = true
         })
 
-        if ( !userExists ) {
-            console.log(userExists);                        
+        if (!userExists) {
+            console.log(userExists);
             // New user ref
             const newUserRef = doc(userRef);
             // Adding new user
             setDoc(newUserRef, {
-                name: nameRef.current.value,
+                nombre: nameRef.current.value,
                 email: emailRef.current.value,
                 estado: 'Pendiente',
                 rol: 'No Asignado'
             });
             // Show notification on success -TO DO
             alert('It works')
-        
+
         } else {
             console.log(userExists);
             // Show notification on failure - TO DO
             alert('It doesnt')
         }
-      
+
         //Reset fields
         e.target.reset()
     }
 
+    // TO DO
     const handleGoogleSignIn = (params) => {
         signInWithRedirect(auth, provider)
             .then((result) => {
@@ -71,7 +72,6 @@ const LoginForm = () => {
             });
     }
 
-
     return (
         <div className='text-center'>
             <main className="form-signin">
@@ -80,12 +80,12 @@ const LoginForm = () => {
                     <h1 className="h3 mb-3 fw-normal">Ingreso al Sistema de Información</h1>
 
                     <div className="form-floating">
-                        <input type="text" className="form-control" ref={nameRef} id="name" placeholder="" required/>
+                        <input type="text" className="form-control" ref={nameRef} id="name" placeholder="" required />
                         <label htmlFor="name">Nombre</label>
                     </div>
 
                     <div className="form-floating mb-4">
-                        <input type="text" className="form-control" ref={emailRef} id="email" placeholder="" required/>
+                        <input type="text" className="form-control" ref={emailRef} id="email" placeholder="" required />
                         <label htmlFor="name">Email</label>
                     </div>
 
