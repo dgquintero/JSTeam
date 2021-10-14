@@ -1,14 +1,74 @@
 import { useRef, useState } from "react"
-import { userRef } from './../../components/FirebaseInfo';
+import { userRef, db } from './../../components/FirebaseInfo';
 import { BsPencil, BsXCircle } from "react-icons/bs";
 
 // Firebase Imports
-import { query, where, setDoc, getDocs, doc } from "firebase/firestore";
+import { query, where, setDoc, getDocs, doc, updateDoc } from "firebase/firestore";
 
 
 const Usuarios = () => {
 
     const searchRef = useRef()
+    let a = ''
+    let b = ''
+
+    const clearForm = () => {
+        setModifyForm();
+        setTabTitle();
+        // I'm assuming the the other states are clear
+    }
+
+    const modifyUser = (id) => {
+        // const updateRef = doc(db, 'usuarios', id)
+        // await updateDoc(updateRef, {
+        //     estado: estadoRef,
+        //     rol: rolRef
+        // })
+        console.log(id);
+        console.log(estadoRef);
+        console.log(rolRef);
+
+    }
+
+    const modifyUserForm = (userId, userData) => {
+
+        setTabTitle("Modificar Usuario");
+        setSearchResult();
+        setHeaderRow();
+
+        setModifyForm(
+            <form>
+                <div className='form-group'>
+                    <label className="col-form-label mt-4">Email</label>
+                    <input type="text" className="form-control" placeholder={userData.email} readOnly />
+                </div>
+                <div className='form-group'>
+                    <label className="col-form-label mt-4">Nombre</label>
+                    <input type="text" className="form-control" placeholder={userData.nombre} readOnly />
+                </div>
+                <div className='form-group'>
+                    <label className="col-form-label mt-4">Estado</label>
+                    <select className="form-select" onChange={(e) => setEstadoRef.bind(e.target.value)} required>
+                        <option value=''></option>
+                        <option value='Pendiente'>Pendiente</option>
+                        <option value="No Autorizado">No Autorizado</option>
+                        <option value="Autorizado">Autorizado</option>
+                    </select>
+                </div>
+                <div className='form-group'>
+                    <label className="col-form-label mt-4" >Rol</label>
+                    <select className="form-select" onChange={(e) => setRolRef.bind(e.target.value)} required>
+                        <option value=''></option>
+                        <option value='Administrador'>Administrador</option>
+                        <option value="Vendedor">Vendedor</option>
+                        <option value="No Asignado">No Asignado</option>
+                    </select>
+                </div>
+                <button type="button" className="btn btn-sm btn-success" onClick={() => { modifyUser(userId) }}>Modificar</button>
+                <button type="button" className="btn btn-sm btn-warning" onClick={() => { clearForm() }}>Cancelar</button>
+            </form>
+        )
+    }
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -16,27 +76,38 @@ const Usuarios = () => {
         // TO DO Show a notification when there are no results from a query
         const q = query(userRef, where("email", "==", searchRef.current.value));
         const qData = await getDocs(q);
+        setTabTitle('Resultado de la busqueda');
         setSearchResult();
+        setHeaderRow(<tr>
+            <th scope="col">Email</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Rol</th>
+            <th scope="col">Action</th>
+        </tr>)
 
         qData.forEach((doc) => {
-            if (doc.id) {
-                setSearchResult(<>
+            setSearchResult((searchResult) => (
+                // I dont know why it works but it works
+                <>
                     {searchResult}
                     <tr>
+                        <td className='d-none'>{doc.id}</td>
                         <td>{doc.data().email}</td>
                         <td>{doc.data().nombre}</td>
                         <td>{doc.data().estado}</td>
                         <td>{doc.data().rol}</td>
                         <td>
                             {/* TO DO make pretty buttons*/}
-                            <button className='btn btn-info btn-sm m-1'><BsPencil />Modificar</button>
+                            <button className='btn btn-info btn-sm m-1' onClick={() => modifyUserForm(doc.id, doc.data())}><BsPencil />Modificar</button>
                             <button className='btn btn-warning btn-sm m-1'><BsXCircle />Eliminar</button>
                         </td>
                     </tr>
-                </>);
+                </>
 
-                console.log(doc.data());
-            }
+            )
+
+            );
         })
 
         // Clear search bar
@@ -48,6 +119,12 @@ const Usuarios = () => {
 
     // Using component state because I cant figure out some other way to do it
     const [searchResult, setSearchResult] = useState()
+    const [modifyForm, setModifyForm] = useState()
+    const [tabTitle, setTabTitle] = useState()
+    const [headerRow, setHeaderRow] = useState()
+    // I hate this
+    const [estadoRef, setEstadoRef] = useState()
+    const [rolRef, setRolRef] = useState()
 
 
     return (
@@ -72,23 +149,19 @@ const Usuarios = () => {
                             <button className="btn btn-success my-2 my-sm-0" type="submit">Search</button>
                         </form>
                         <hr />
-                        <div div className="mt-5 h4" >Search Result</div><hr />
-
+                        <div div className="mt-5 h4" >{tabTitle}</div>
+                        <hr />
                         <table className="table table-hover">
                             <thead>
-                                <tr>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Estado</th>
-                                    <th scope="col">Rol</th>
-                                    <th scope="col">Action</th>
-                                </tr>
+                                {headerRow}
                             </thead>
                             <tbody id="resultRef">
                                 {searchResult}
                                 {/* result goes here i think */}
                             </tbody>
                         </table>
+                        {modifyForm}
+                        {/* test */}
                     </div>
                     <div className="tab-pane fade" id="tab2">
                         <table className="table table-hover">
