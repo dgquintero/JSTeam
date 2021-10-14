@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
 import { userRef, db } from './../../components/FirebaseInfo';
-import { BsPencil, BsXCircle } from "react-icons/bs";
+import { BsCalendarRangeFill, BsPencil, BsXCircle } from "react-icons/bs";
 
 // Firebase Imports
 import { query, where, setDoc, getDocs, doc, updateDoc } from "firebase/firestore";
@@ -9,33 +9,29 @@ import { query, where, setDoc, getDocs, doc, updateDoc } from "firebase/firestor
 const Usuarios = () => {
 
     const searchRef = useRef()
-    let a = ''
-    let b = ''
+    let estado = '';
+    let rol = '';
 
     const clearForm = () => {
-        setModifyForm();
         setTabTitle();
-        // I'm assuming the the other states are clear
+        setModifyForm();
     }
 
-    const modifyUser = (id) => {
-        // const updateRef = doc(db, 'usuarios', id)
-        // await updateDoc(updateRef, {
-        //     estado: estadoRef,
-        //     rol: rolRef
-        // })
-        console.log(id);
-        console.log(estadoRef);
-        console.log(rolRef);
-
+    const modifyUser = async (id) => {
+        const updateRef = doc(db, 'usuarios', id)
+        await updateDoc(updateRef, {
+            estado: estado,
+            rol: rol
+        })
+        // TO DO better notification
+        alert("It works")
     }
 
     const modifyUserForm = (userId, userData) => {
 
         setTabTitle("Modificar Usuario");
-        setSearchResult();
         setHeaderRow();
-
+        setSearchResult();
         setModifyForm(
             <form>
                 <div className='form-group'>
@@ -48,7 +44,7 @@ const Usuarios = () => {
                 </div>
                 <div className='form-group'>
                     <label className="col-form-label mt-4">Estado</label>
-                    <select className="form-select" onChange={(e) => setEstadoRef.bind(e.target.value)} required>
+                    <select className="form-select" onChange={(e) => setEstado(e.target.value)} required>
                         <option value=''></option>
                         <option value='Pendiente'>Pendiente</option>
                         <option value="No Autorizado">No Autorizado</option>
@@ -57,7 +53,7 @@ const Usuarios = () => {
                 </div>
                 <div className='form-group'>
                     <label className="col-form-label mt-4" >Rol</label>
-                    <select className="form-select" onChange={(e) => setRolRef.bind(e.target.value)} required>
+                    <select className="form-select" onChange={(e) => setRol(e.target.value)} required>
                         <option value=''></option>
                         <option value='Administrador'>Administrador</option>
                         <option value="Vendedor">Vendedor</option>
@@ -70,14 +66,19 @@ const Usuarios = () => {
         )
     }
 
+    const setEstado = (value) => {
+        estado = value;        
+    }
+
+    const setRol = (value) => {
+        rol = value;
+    }
+
     const handleSearch = async (e) => {
         e.preventDefault();
-
-        // TO DO Show a notification when there are no results from a query
-        const q = query(userRef, where("email", "==", searchRef.current.value));
-        const qData = await getDocs(q);
-        setTabTitle('Resultado de la busqueda');
         setSearchResult();
+        setModifyForm();    
+        setTabTitle('Resultado de la busqueda');
         setHeaderRow(<tr>
             <th scope="col">Email</th>
             <th scope="col">Nombre</th>
@@ -86,6 +87,13 @@ const Usuarios = () => {
             <th scope="col">Action</th>
         </tr>)
 
+
+
+        // TO DO Show a notification when there are no results from a query
+        const q = query(userRef, where("email", "==", searchRef.current.value));
+        const qData = await getDocs(q);
+        
+        
         qData.forEach((doc) => {
             setSearchResult((searchResult) => (
                 // I dont know why it works but it works
@@ -122,10 +130,6 @@ const Usuarios = () => {
     const [modifyForm, setModifyForm] = useState()
     const [tabTitle, setTabTitle] = useState()
     const [headerRow, setHeaderRow] = useState()
-    // I hate this
-    const [estadoRef, setEstadoRef] = useState()
-    const [rolRef, setRolRef] = useState()
-
 
     return (
         <>
