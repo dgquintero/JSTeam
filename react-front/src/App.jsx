@@ -17,41 +17,45 @@ import "styles/styles.css"
 function App() {
   return (
     <>
+    
       <Router>
         <Switch>
+
           <Route exact path='/'>
             <Login />
           </Route>
-          <Route path={['/admin', '/admin/productos' , '/admin/ventas',  '/admin/usuarios']}>
-              <PrivateLayout>
-                <Switch>
-                  <Route path='/admin/productos'>
-                    <Productos />
-                  </Route>
-                  <Route path='/admin/ventas'>
-                    <Ventas />
-                  </Route>
-                  <Route path='/admin/usuarios'>
-                    <Usuarios />
-                  </Route>
-                  <Route path='/admin'>
-                    <Home />
-                  </Route>
-                </Switch>
-              </PrivateLayout>
-            </Route>
-            <Route path={['/vendedor', '/vendedor/ventas']}>
-              <PublicLayout>
-                <Switch>
-                  <Route path='/vendedor/ventas'>
-                    <VentasVendedor />
-                  </Route>
-                  <Route path='/vendedor'>
-                    <HomeVendedor />
-                  </Route>
-                </Switch>
-              </PublicLayout>
-            </Route>
+
+          <Route path={['/admin', '/admin/productos', '/admin/ventas', '/admin/usuarios']}>
+            <PrivateLayout>
+              <Switch>
+                <Route path='/admin/productos'>
+                  <Productos />
+                </Route>
+                <Route path='/admin/ventas'>
+                  <Ventas />
+                </Route>
+                <Route path='/admin/usuarios'>
+                  <Usuarios />
+                </Route>
+                <Route path='/admin'>
+                  <Home />
+                </Route>
+              </Switch>
+            </PrivateLayout>
+          </Route>
+
+          <Route path={['/vendedor', '/vendedor/ventas']}>
+            <PublicLayout>
+              <Switch>
+                <Route path='/vendedor/ventas'>
+                  <VentasVendedor />
+                </Route>
+                <Route path='/vendedor'>
+                  <HomeVendedor />
+                </Route>
+              </Switch>
+            </PublicLayout>
+          </Route>
 
         </Switch>
       </Router>

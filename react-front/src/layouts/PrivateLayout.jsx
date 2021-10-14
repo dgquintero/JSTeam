@@ -1,10 +1,10 @@
 import Sidebar from 'components/Sidebar'
 
-const PrivateLayout = ({children}) => {
+const PrivateLayout = ({ children }) => {
   return (
     <>
       <main>
-        <Sidebar/>
+        <Sidebar />
         <div className="b-example-divider"></div>
         <>{children}</>
       </main>
