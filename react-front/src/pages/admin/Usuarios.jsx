@@ -1,5 +1,6 @@
 import { useRef, useState } from "react"
 import { userRef } from './../../components/FirebaseInfo';
+import { BsPencil, BsXCircle } from "react-icons/bs";
 
 // Firebase Imports
 import { query, where, setDoc, getDocs, doc } from "firebase/firestore";
@@ -12,9 +13,10 @@ const Usuarios = () => {
     const handleSearch = async (e) => {
         e.preventDefault();
 
+        // TO DO Show a notification when there are no results from a query
         const q = query(userRef, where("email", "==", searchRef.current.value));
         const qData = await getDocs(q);
-        setSearchResult(<tr><tr><td> No results!</td> </tr></tr>);
+        setSearchResult();
 
         qData.forEach((doc) => {
             if (doc.id) {
@@ -26,8 +28,9 @@ const Usuarios = () => {
                         <td>{doc.data().estado}</td>
                         <td>{doc.data().rol}</td>
                         <td>
-                            <p><a href="#"><i className="bi bi-pencil"></i>Modificar</a></p>
-                            <p><a href="#"><i className="bi bi-x-circle"></i>Eliminar</a></p>
+                            {/* TO DO make pretty buttons*/}
+                            <button className='btn btn-info btn-sm m-1'><BsPencil />Modificar</button>
+                            <button className='btn btn-warning btn-sm m-1'><BsXCircle />Eliminar</button>
                         </td>
                     </tr>
                 </>);
@@ -36,24 +39,14 @@ const Usuarios = () => {
             }
         })
 
-
+        // Clear search bar
+        e.target.reset();
 
     }
-
-    // <tr>
-    //     <th scope="row">${data[key].email}</th>
-    //     <td>${data[key].name}</td>
-    //     <td>${data[key].estado}</td>
-    //     <td>${data[key].rol}</td>
-    //     <td>
-
-    //     </td>
-    // </tr>
-
     // Search Header - TO DO
     // const searchHeader = <></>
 
-    // Using component state because I cant figure out some other way
+    // Using component state because I cant figure out some other way to do it
     const [searchResult, setSearchResult] = useState()
 
 

@@ -46,7 +46,7 @@ const LoginForm = () => {
         }
 
         //Reset fields
-        e.target.reset()
+        e.target.reset();
     }
 
     // TO DO
