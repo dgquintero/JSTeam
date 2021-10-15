@@ -45,6 +45,7 @@ const Productos = () => {
     }
 
     const listAllProducts = async () => {
+        
         setListResults();
         const q = query(prodRef);
         const qData = await getDocs(q);
@@ -102,7 +103,7 @@ const Productos = () => {
 
                                 <div className="form-group">
                                     <label className="col-form-label mt-4" htmlFor="inputId">ID</label>
-                                    <input type="text" className="form-control" placeholder="" ref={idRef} required />
+                                    <input type="text" className="form-control" placeholder="" ref={idRef} required onKeyPress={(e) => {!/[0-9]/.test(e.key) && e.preventDefault() }}/>
                                 </div>
 
                                 <div className="form-group">
@@ -117,8 +118,7 @@ const Productos = () => {
 
                                 <div className="form-group">
                                     <label className="col-form-label mt-4" for="valorUnitario">Valor Unitario</label>
-                                    <input inputmode="numeric" pattern="[0-9]*" className="form-control"
-                                        placeholder="Valor unitario" ref={vuRef} />
+                                    <input className="form-control" placeholder="Valor unitario" ref={vuRef} required onKeyPress={(e) => {!/[0-9]/.test(e.key) && e.preventDefault() }}/>
                                 </div>
 
                                 <div className="form-group mb-5">
