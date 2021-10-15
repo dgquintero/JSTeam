@@ -1,9 +1,9 @@
 import { useRef, useState } from "react"
 import { userRef, db } from './../../components/FirebaseInfo';
-import { BsCalendarRangeFill, BsPencil, BsXCircle } from "react-icons/bs";
+import { BsPencil, BsXCircle } from "react-icons/bs";
 
 // Firebase Imports
-import { query, where, setDoc, getDocs, doc, updateDoc } from "firebase/firestore";
+import { query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 
 
 const Usuarios = () => {
@@ -67,7 +67,7 @@ const Usuarios = () => {
     }
 
     const setEstado = (value) => {
-        estado = value;        
+        estado = value;
     }
 
     const setRol = (value) => {
@@ -77,7 +77,7 @@ const Usuarios = () => {
     const handleSearch = async (e) => {
         e.preventDefault();
         setSearchResult();
-        setModifyForm();    
+        setModifyForm();
         setTabTitle('Resultado de la busqueda');
         setHeaderRow(<tr>
             <th scope="col">Email</th>
@@ -92,14 +92,15 @@ const Usuarios = () => {
         // TO DO Show a notification when there are no results from a query
         const q = query(userRef, where("email", "==", searchRef.current.value));
         const qData = await getDocs(q);
-        
-        
+
+
         qData.forEach((doc) => {
             setSearchResult((searchResult) => (
                 // I dont know why it works but it works
                 <>
                     {searchResult}
                     <tr>
+                        {/* this id might not be necessary anymore */}
                         <td className='d-none'>{doc.id}</td>
                         <td>{doc.data().email}</td>
                         <td>{doc.data().nombre}</td>
@@ -122,14 +123,35 @@ const Usuarios = () => {
         e.target.reset();
 
     }
-    // Search Header - TO DO
-    // const searchHeader = <></>
+
+    const listAllUsers = async () => {
+
+        setListResults();
+        const q = query(userRef);
+        const qData = await getDocs(q);
+
+        qData.forEach((doc) => {
+            setListResults((listResults) => (
+                <>
+                    {listResults}
+                    <tr>
+                        <td>{doc.data().email}</td>
+                        <td>{doc.data().nombre}</td>
+                        <td>{doc.data().estado}</td>
+                        <td>{doc.data().rol}</td>
+                    </tr>
+                </>
+            )
+            )
+        })
+    }
 
     // Using component state because I cant figure out some other way to do it
     const [searchResult, setSearchResult] = useState()
     const [modifyForm, setModifyForm] = useState()
     const [tabTitle, setTabTitle] = useState()
     const [headerRow, setHeaderRow] = useState()
+    const [listResults, setListResults] = useState()
 
     return (
         <>
@@ -143,7 +165,7 @@ const Usuarios = () => {
                         <a className="nav-link active" data-bs-toggle="tab" href="#tab1">Buscar/Modificar Usuarios</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" data-bs-toggle="tab" href="#tab2">Mostrar Usuarios Registrados</a>
+                        <a className="nav-link" data-bs-toggle="tab" href="#tab2" onClick={() => { listAllUsers() }}>Mostrar Usuarios Registrados</a>
                     </li>
                 </ul>
                 <div id="myTabContent" className="tab-content">
@@ -178,6 +200,7 @@ const Usuarios = () => {
                                 </tr>
                             </thead>
                             <tbody id="searchResult">
+                                {listResults}
                             </tbody>
                         </table>
                     </div>
