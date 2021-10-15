@@ -3,7 +3,7 @@ import { userRef, db } from './../../components/FirebaseInfo';
 import { BsPencil, BsXCircle } from "react-icons/bs";
 
 // Firebase Imports
-import { query, where, getDocs, doc, updateDoc } from "firebase/firestore";
+import { query, where, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 
 
 const Usuarios = () => {
@@ -109,7 +109,7 @@ const Usuarios = () => {
                         <td>
                             {/* TO DO make pretty buttons*/}
                             <button className='btn btn-info btn-sm m-1' onClick={() => modifyUserForm(doc.id, doc.data())}><BsPencil />Modificar</button>
-                            <button className='btn btn-warning btn-sm m-1'><BsXCircle />Eliminar</button>
+                            <button className='btn btn-warning btn-sm m-1' onClick={() => deleteUsr(doc.id)}><BsXCircle />Eliminar</button>
                         </td>
                     </tr>
                 </>
@@ -122,6 +122,13 @@ const Usuarios = () => {
         // Clear search bar
         e.target.reset();
 
+    }
+
+    const deleteUsr = async (id) => {
+        const deleteRef = doc(db, 'usuarios', id)
+        await deleteDoc(deleteRef);
+        // Reset results
+        setSearchResult();        
     }
 
     const listAllUsers = async () => {
