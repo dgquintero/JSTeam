@@ -7,7 +7,7 @@ import { getDocs, query, where, setDoc, doc } from "firebase/firestore";
 
 const Productos = () => {
 
-    // const [state, setstate] = useState()
+    const [listResults, setListResults] = useState()
 
     const idRef = useRef();
     const nameRef = useRef();
@@ -32,17 +32,41 @@ const Productos = () => {
             setDoc(newProdRef, {
                 id: idRef.current.value,
                 name: nameRef.current.value,
-                descripcion: desRef.current.value,
-                valorUnitario: vuRef.current.value,
+                desc: desRef.current.value,
+                valUni: vuRef.current.value,
                 estado: estadoRef.current.value
             });
             // TO DO - show notification on sucess
             alert('works')
-        } else{
+        } else {
             // TO DO - show notification on failure
             alert('nope')
         }
     }
+
+    const listAllProducts = async () => {
+        setListResults();
+        const q = query(prodRef);
+        const qData = await getDocs(q);
+
+        qData.forEach((doc) => {
+            setListResults((listResults) => (
+                <>
+                    {listResults}
+                    <tr>
+                        <th>{doc.data().id}</th>
+                        <td>{doc.data().name}</td>
+                        <td>{doc.data().desc}</td>
+                        <td>{doc.data().valUni}</td>
+                        <td>{doc.data().estado}</td>
+                    </tr>
+                </>
+            )
+            )
+        })
+    }
+
+
 
 
     return (
@@ -62,7 +86,7 @@ const Productos = () => {
                         <a className="nav-link" data-bs-toggle="tab" href="#tab2">Buscar/Modificar Productos</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" data-bs-toggle="tab" href="#tab3">Mostrar Productos Registrados</a>
+                        <a className="nav-link" data-bs-toggle="tab" href="#tab3" onClick={() => { listAllProducts() }}>Mostrar Productos Registrados</a>
                     </li>
                 </ul>
 
@@ -163,14 +187,7 @@ const Productos = () => {
                                 </tr>
                             </thead>
                             <tbody id='searchResult'>
-
-                                <tr>
-                                    <th scope="row">Default</th>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                </tr>
+                                {listResults}
                             </tbody>
                         </table>
                     </div>
