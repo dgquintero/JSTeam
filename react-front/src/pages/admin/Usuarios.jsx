@@ -87,12 +87,9 @@ const Usuarios = () => {
             <th scope="col">Action</th>
         </tr>)
 
-
-
         // TO DO Show a notification when there are no results from a query
         const q = query(userRef, where("email", "==", searchRef.current.value));
         const qData = await getDocs(q);
-
 
         qData.forEach((doc) => {
             setSearchResult((searchResult) => (
