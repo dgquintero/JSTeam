@@ -8,12 +8,15 @@ import { getDocs, query, where, setDoc, doc } from "firebase/firestore";
 const Productos = () => {
 
     const [listResults, setListResults] = useState()
+    const [tabTitle, setTabTitle] = useState()
 
     const idRef = useRef();
     const nameRef = useRef();
     const desRef = useRef();
     const vuRef = useRef();
     const estadoRef = useRef();
+    const searchRef = useRef();
+    const searchOptionRef = useRef();
 
     const addProduct = async (e) => {
         e.preventDefault()
@@ -139,21 +142,20 @@ const Productos = () => {
                     </div>
 
                     <div className="tab-pane fade" id="tab2">
-                        <form className="d-flex mt-2" id="searchForm">
-                            <input className="form-control me-sm-2" type="text" placeholder="Search" id="searchValue" />
+
+                        <form className="d-flex mt-2">
+                            <input className="form-control me-sm-2" placeholder="Id o descripcion del producto" ref={searchRef} />
                             <div className="form-group">
-                                <select className="form-select" id="searchOption">
+                                <select className="form-select" ref={searchOptionRef}>
                                     <option value='id'>ID Producto</option>
                                     <option value='descripcion'>Descripcion Producto</option>
                                 </select>
                             </div>
-                            <button className="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+                            <button className="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
                         </form>
 
                         <hr />
-                        <div className="mt-5 h4">
-                            Search Result
-                        </div>
+                        <div className="mt-5 h4">{tabTitle}</div>
                         <hr />
 
                         <table className="table table-hover">
