@@ -2,11 +2,38 @@ import Logo from 'media/logo.svg'
 import FotoPerfil from 'media/pp2.jpg'
 import { Link } from 'react-router-dom';
 import SidebarLink from "components/SidebarLink";
+import { consultarDocumentoDatabase } from 'config/firebase';
+import { usuario } from 'config/firebase';
+import { useState, useEffect } from 'react';
+import { logOutUsuario } from 'config/firebase';
+
 
 
 const Sidebar = () => {
+
+    const [usuarioActivoRol, setUsuarioActivoRol] = useState("")
+    const [usuarioActivoName, setUsuarioActivoName] = useState("")    
+    
+    const consultarUsuario = async (idUsuario) =>{
+        const regUserAct = await consultarDocumentoDatabase('listaUsuarios',idUsuario)
+        console.log(regUserAct);
+        setUsuarioActivoRol(regUserAct.rol)
+        setUsuarioActivoName(regUserAct.name)
+    }
+
+    useEffect(() => {
+
+      consultarUsuario(usuario.uid)
+    
+      }, [])
+
+    
+    const handleClick = () => {        
+        logOutUsuario() 
+    }
+
     return (
-        <>
+        <>        
             <div className="sidebar_container d-flex flex-column flex-shrink-0 p-3 bg-light" style={{ width: 250 + 'px' }}>
                 <Link to="#" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                     <img src={Logo} className="bi me-2" width="40" height="32" alt=""/>
@@ -15,9 +42,14 @@ const Sidebar = () => {
                 <hr/>
                 <ul className="nav nav-pills flex-column mb-auto">
                     <SidebarLink nombre='Home' enlace='/admin/home'></SidebarLink>
-                    <SidebarLink nombre='Productos' enlace='/admin/productos'></SidebarLink>
+                    {
+                        usuarioActivoRol === 1 ? <SidebarLink nombre='Productos' enlace='/admin/productos'></SidebarLink> : ''                    
+                    }                    
                     <SidebarLink nombre='Ventas' enlace='/admin/ventas'></SidebarLink>
-                    <SidebarLink nombre='Usuarios' enlace='/admin/usuarios'></SidebarLink>
+                    {
+                         usuarioActivoRol === 1 ? <SidebarLink nombre='Usuarios' enlace='/admin/usuarios'></SidebarLink> : ''
+                    }
+                    
                 </ul>
                 <hr/>
                 {/* Sidebar User */}
@@ -25,20 +57,15 @@ const Sidebar = () => {
                     <Link to="#" className="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
                         id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src={FotoPerfil} alt="" width="32" height="32" className="rounded-circle me-2" />
-                        <strong>Usuario</strong>
-                        <span className="fst-italic">(Rol)</span>
+                        <strong>{usuarioActivoName}</strong>
+                        <span className="fst-italic">({usuarioActivoRol})</span>
                     </Link>
                     <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                        <li><Link className="dropdown-item" to="#">Perfil</Link></li>
-                        <li><Link className="dropdown-item" to="#">Configuración</Link></li>
-                        <li>
-                            <hr className="dropdown-divider" />
-                        </li>
-                        <li><Link className="dropdown-item" to="/">Salir</Link></li>
+                        <li><button className="dropdown-item" onClick = {handleClick} >Salir</button></li>
                     </ul>
                 </div>
             </div>
-            <div className="b-example-divider"></div>
+            
         </>
     )
 }

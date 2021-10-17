@@ -6,13 +6,14 @@ import "styles/bootstrap.min.css"
 import "styles/styles.css"
 // import Sidebar from 'components/Sidebar';
 import Login from 'pages/Login';
-import { Home } from 'pages/Home';
+
 // import Productos from 'pages/admin/Productos';
 import { useState } from 'react';
 
 import { getAuth,
   onAuthStateChanged,      
 } from 'firebase/auth'
+import Home from 'pages/admin/Home';
 
 
 

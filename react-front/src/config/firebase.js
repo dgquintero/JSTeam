@@ -1,15 +1,27 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth, 
-        createUserWithEmailAndPassword, 
-        signInWithEmailAndPassword, 
-        signOut,
-        onAuthStateChanged,
-        GoogleAuthProvider,
-        signInWithPopup         
-      } from 'firebase/auth'
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup
+} from 'firebase/auth'
 // Metodos de interaccion con la base de datos
-import { addDoc, collection, getDocs, query, getDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore'
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  getDoc,
+  doc,
+  updateDoc,
+  deleteDoc,
+  setDoc,
+  where
+} from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkem1rUc3X3u8xqRW5UvN-0hT2GFHF0UE",
@@ -24,14 +36,29 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const database = getFirestore();
 const auth = getAuth();
-const provider = new GoogleAuthProvider(); 
+const provider = new GoogleAuthProvider();
 export let usuario;
+let isReg = false;
 
 
 // Guardar
 export const guardarDatabase = async (nombreDatabase, data) => {
   try {
+
     const response = await addDoc(collection(database, nombreDatabase), data);
+    console.log(response);
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+
+
+// Guardar con id
+export const guardarDatabaseWithId = async (nombreDatabase, id, data) => {
+  try {
+    const response = await setDoc(doc(database, nombreDatabase, id), data);
     console.log(response);
     return response;
   } catch (error) {
@@ -65,6 +92,7 @@ export const consultarDocumentoDatabase = async (nombreDatabase, id) => {
       id: response.id,
       ...response.data(),
     };
+    console.log(document);
     return document;
   } catch (error) {
     throw new Error(error.message);
@@ -110,23 +138,51 @@ export const crearUsuario = async (email, password) => {
 }
 
 //google
+const recuperarDoc = async(q) =>{
+try{
+  const querySnapshot = await getDocs(q);
+  console.log(querySnapshot);
+  querySnapshot.forEach((doc) => {
+    if(doc.id){
+      isReg = true;
+    }else{
+      isReg = false;
+    }
+  });  
+
+  console.log(isReg);
+
+  if (isReg === false){
+    const user = {
+    id: usuario.uid,
+    email: usuario.email, 
+    name: usuario.displayName,
+    rol: 3
+  }
+  guardarDatabaseWithId('listaUsuarios', usuario.uid, user)        
+}
+ 
+
+}catch(e){
+  throw new Error(e)
+}
+}
 
 export const signGoogle = async (result) => {
-  
-  signInWithPopup(auth, provider)
-  .then((result) => {
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    // const credential = GoogleAuthProvider.credentialFromResult(result);
-    // const token = credential.accessToken;
-    // The signed-in user info.
-    const user = result.user;
-    
-    console.log(user);
 
-  }).catch((error) => {
-    
-  });
-  
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      // const credential = GoogleAuthProvider.credentialFromResult(result);
+      // const token = credential.accessToken;      
+
+      const userRef = collection(database, "listaUsuarios");
+      const q = query(userRef, where("id", "==", result.user.uid))     
+      recuperarDoc(q)         
+
+    }).catch((error) => {
+      throw new Error(error)
+    });
+
 }
 
 

@@ -13,10 +13,9 @@ const LoginForm = () => {
     // let history = useHistory();
 
     const handleClick = async(e) => {
-        e.preventDefault()
-        
+        e.preventDefault()        
         signGoogle()    
-        // logOutUsuario()
+        
         // history.push('/pageAd')      
 
 
