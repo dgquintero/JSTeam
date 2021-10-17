@@ -92,7 +92,7 @@ export const consultarDocumentoDatabase = async (nombreDatabase, id) => {
       id: response.id,
       ...response.data(),
     };
-    console.log(document);
+    // console.log(document);
     return document;
   } catch (error) {
     throw new Error(error.message);

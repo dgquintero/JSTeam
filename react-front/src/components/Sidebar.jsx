@@ -1,5 +1,4 @@
 import Logo from 'media/logo.svg'
-import FotoPerfil from 'media/pp2.jpg'
 import { Link } from 'react-router-dom';
 import SidebarLink from "components/SidebarLink";
 import { consultarDocumentoDatabase } from 'config/firebase';
@@ -12,13 +11,16 @@ import { logOutUsuario } from 'config/firebase';
 const Sidebar = () => {
 
     const [usuarioActivoRol, setUsuarioActivoRol] = useState("")
-    const [usuarioActivoName, setUsuarioActivoName] = useState("")    
+    const [usuarioActivoName, setUsuarioActivoName] = useState("")
+    const [usuarioActivoPic, setUsuarioActivoPic] = useState("")
+            
     
     const consultarUsuario = async (idUsuario) =>{
         const regUserAct = await consultarDocumentoDatabase('listaUsuarios',idUsuario)
-        console.log(regUserAct);
+        
         setUsuarioActivoRol(regUserAct.rol)
-        setUsuarioActivoName(regUserAct.name)
+        setUsuarioActivoName(regUserAct.name)        
+        setUsuarioActivoPic(usuario.photoURL)
     }
 
     useEffect(() => {
@@ -44,8 +46,12 @@ const Sidebar = () => {
                     <SidebarLink nombre='Home' enlace='/admin/home'></SidebarLink>
                     {
                         usuarioActivoRol === 1 ? <SidebarLink nombre='Productos' enlace='/admin/productos'></SidebarLink> : ''                    
+                    }
+
+                    {
+                        usuarioActivoRol !== 3 ? <SidebarLink nombre='Ventas' enlace='/admin/ventas'></SidebarLink> : '' 
                     }                    
-                    <SidebarLink nombre='Ventas' enlace='/admin/ventas'></SidebarLink>
+                    
                     {
                          usuarioActivoRol === 1 ? <SidebarLink nombre='Usuarios' enlace='/admin/usuarios'></SidebarLink> : ''
                     }
@@ -56,7 +62,7 @@ const Sidebar = () => {
                 <div className="dropdown">
                     <Link to="#" className="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
                         id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src={FotoPerfil} alt="" width="32" height="32" className="rounded-circle me-2" />
+                        <img src={usuarioActivoPic} alt="" width="32" height="32" className="rounded-circle me-2" />
                         <strong>{usuarioActivoName}</strong>
                         <span className="fst-italic">({usuarioActivoRol})</span>
                     </Link>
