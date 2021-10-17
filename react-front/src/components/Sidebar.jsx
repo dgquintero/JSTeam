@@ -38,6 +38,7 @@ const Sidebar = () => {
                     </ul>
                 </div>
             </div>
+            <div className="b-example-divider"></div>
         </>
     )
 }
