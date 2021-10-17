@@ -15,6 +15,8 @@ const Ventas = () => {
     const clientIdRef = useRef();
     const clientNameRef = useRef();
     const saleDateRef = useRef();
+    const searchField = useRef();
+    const searchValue = useRef();
 
     const [saleProductsTable, setSaleProductsTable] = useState();
     const [prodName, setProdName] = useState();
@@ -240,8 +242,8 @@ const Ventas = () => {
                         <td>${doc.data().total}</td>
                         <td>
                             {/* TO DO make pretty buttons*/}
-                            <button className='btn btn-info btn-sm m-1' ><BsPencil />Modificar</button>
-                            <button className='btn btn-warning btn-sm m-1' ><BsXCircle />Eliminar</button>
+                            <button className='btn btn-info btn-sm m-1' onClick={() => modifySaleForm(doc.id, doc.data())}><BsPencil />Modificar</button>
+                            <button className='btn btn-warning btn-sm m-1' onClick={() => deleteSale(doc.id)}><BsXCircle />Eliminar</button>
                         </td>
                     </tr>
                 </>
@@ -251,9 +253,114 @@ const Ventas = () => {
 
     }
 
-const searchField = useRef()
-const searchCriteria = useRef()
-const searchValue = useRef()
+    const modifySaleForm = (params) => {
+
+    }
+
+    const deleteSale = async (id) => {
+        const deleteRef = doc(db, 'ventas', id)
+        await deleteDoc(deleteRef);
+        //TO DO make notifiaction
+        setSearchResult();
+    }
+
+    const modifySaleForm = (saleId, saleData) => {
+        setTabTitle('Modificar Venta');
+        setHeaderRow();
+        setSearchResult();
+        setModifyForm(
+            <form>
+                <div className='d-flex justify-content-between'>
+
+                    <div className="form-group">
+                        <label className="col-form-label">ID Venta</label>
+                        <input placeholder={saleData.id} readOnly type="text" className="form-control" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                    </div>
+
+                    <div className="form-group mt-3">
+                        <label className="form-label">Encargado</label>
+                        <select className="form-select" required ref={sellerRef}>
+                            <option value="">Seleccione el encargado de la venta</option>
+                            {sellerList}
+                        </select>
+                    </div>
+
+                </div>
+
+                <div className="d-flex justify-content-around">
+                    <div className="form-group">
+                        <label className="col-form-label mt-4">ID Cliente</label>
+                        <input ref={clientIdRef} required type="text" className="form-control" placeholder="" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                    </div>
+                    <div className="form-group">
+                        <label className="col-form-label mt-4">Nombre del Cliente</label>
+                        <input ref={clientNameRef} required type="text" className="form-control" placeholder="" onKeyPress={(e) => { !/^[a-zA-Z ]+$/.test(e.key) && e.preventDefault() }} />
+                    </div>
+                    <div className="form-group">
+                        <label className="col-form-label mt-4">Fecha</label>
+                        <input ref={saleDateRef} required type="date" className="form-control" />
+                    </div>
+                </div>
+
+                <label className="col-form-label mt-4">ID Producto</label>
+                <div className="d-flex">
+                    <div className="form-group flex-grow-1">
+                        <input type="text" className="form-control" placeholder="ID Producto" ref={prodSearchId} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                    </div>
+                    <button type="button" className="btn btn-success my-2 my-sm-0" onClick={() => { findProduct(prodSearchId) }}>Buscar</button>
+                </div>
+
+                <div className='container d-flex justify-content-between'>
+
+                    <div className="form-group">
+                        <label className="col-form-label mt-4">Nombre Producto</label>
+                        <input type="text" className="form-control" placeholder={prodName} disabled />
+                    </div>
+
+                    <div className="form-group">
+                        <label className="col-form-label mt-4">Valor Unitario</label>
+                        <input className="form-control" placeholder={prodUnitPrice} disabled />
+                    </div>
+
+                    <div className="form-group">
+                        <label className="col-form-label mt-4">Cantidad</label>
+                        <input ref={quantRef} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} className="form-control" placeholder="Cantidad" id="cantidad" />
+                    </div>
+                    <button type="button" className="btn btn-info align-self-end" onClick={() => { addProdSale() }}>Agregar Producto</button>
+
+                </div>
+
+                <div className="d-flex">
+                    <table className="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Valor Unitario</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {saleProductsTable}
+                            <tr>
+                                <td colSpan="4"></td>
+                                <td className="table-active">$ {total}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="d-flex justify-content-center">
+                    <button type="submit" className="btn btn-primary">Registrar Venta</button>
+                    <button type="reset" className="btn btn-warning" onClick={() => { resetStates() }}>Reset</button>
+                    <button className="btn btn-info" type="button" onClick={() => { console.log(saleProds); console.log(prodName); }}>TEST!!!</button>
+                </div>
+
+            </form >
+        )
+        
+    }
 
 useEffect(() => {
     (async () => {
@@ -358,7 +465,6 @@ return (
                                     <label className="col-form-label mt-4">Cantidad</label>
                                     <input ref={quantRef} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} className="form-control" placeholder="Cantidad" id="cantidad" />
                                 </div>
-
                                 <button type="button" className="btn btn-info align-self-end" onClick={() => { addProdSale() }}>Agregar Producto</button>
 
                             </div>
