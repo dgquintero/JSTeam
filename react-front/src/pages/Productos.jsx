@@ -1,11 +1,16 @@
 import { consultarDatabase } from 'config/firebase'
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-// import { nanoid } from 'nanoid'
+import { nanoid } from 'nanoid'
+import { guardarDatabaseWithId } from 'config/firebase'
 
 const Productos = () => {
 
     const [listaProductos, setListaProductos] = useState([])
+    const [idProv, setIdProv] = useState(nanoid())
+    const [descripcion, setDescripcion] = useState('')
+    const [estado, setEstado] = useState(1)
+    const [valorUnitario, setValorUnitario] = useState('')  
 
     const cargarProductos = async () => {
    
@@ -16,10 +21,28 @@ const Productos = () => {
       }
       // cargarProductos()
     
+
+      const generarId = () =>{
+            setIdProv(nanoid())
+    }
+
       useEffect(() => {
         cargarProductos()
       }, [])
     
+      const handleAgregarProducto = async (e)=>{
+          e.preventDefault()
+
+           const producto = {
+            id: idProv,
+            descripcion,
+            estado,
+            valorUnitario
+        }
+      
+          await guardarDatabaseWithId('lista-productos',idProv, producto)
+          
+      }
 
     return (
         <>
@@ -33,10 +56,10 @@ const Productos = () => {
                         <a className="nav-link active" data-bs-toggle="tab" href="#tab1">Agregar Productos</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" data-bs-toggle="tab" href="#tab2">Buscar/Modificar Productos</a>
+                        <a className="nav-link" data-bs-toggle="tab" href="#tab2" onClick={cargarProductos}>Buscar/Modificar Productos</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" data-bs-toggle="tab" href="#tab3">Mostrar Productos Registrados</a>
+                        <a className="nav-link" data-bs-toggle="tab" href="#tab3" onClick={cargarProductos}>Mostrar Productos Registrados</a>
                     </li>
                 </ul>
                 <div id="myTabContent" className="tab-content">
@@ -47,30 +70,51 @@ const Productos = () => {
 
                                 <div className="form-group">
                                     <label className="col-form-label mt-4" htmlFor="inputID">ID</label>
-                                    <input type="text" className="form-control" placeholder="" id="inputId" readOnly="readOnly" />
+                                    <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    placeholder="" id="inputId" 
+                                    readOnly="readOnly" 
+                                    defaultValue = {idProv}
+                                    />
                                 </div>                               
 
                                 <div className="form-group">
                                     <label htmlFor="descripcion" className="form-label mt-4">Descripcion</label>
-                                    <textarea className="form-control" id="descripcion" rows="3"></textarea>
+                                    <textarea 
+                                    className="form-control" 
+                                    id="descripcion" 
+                                    rows="3"
+                                    onChange = {(event) => setDescripcion(event.target.value)}
+                                    ></textarea>
                                 </div>
 
                                 <div className="form-group">
                                     <label className="col-form-label mt-4" htmlFor="valorUnitario">Valor Unitario</label>
-                                    <input inputMode="numeric" pattern="[0-9]*" className="form-control"
-                                        placeholder="Valor unitario" id="valorUnitario" />
+                                    <input 
+                                    inputMode="numeric" 
+                                    pattern="[0-9]*" 
+                                    className="form-control"
+                                    placeholder="Valor unitario" 
+                                    id="valorUnitario" 
+                                    onChange = {(event) => setValorUnitario(event.target.value)}
+                                    />
                                 </div>
 
                                 <div className="form-group mb-5">
                                     <label htmlFor="estado" className="form-label mt-4">Estado del Producto</label>
-                                    <select className="form-select" id="estado">
+                                    <select 
+                                    className="form-select" 
+                                    id="estado"
+                                    onChange = {(event) => setEstado(event.target.value)}
+                                    >
                                         <option value="1">Disponible</option>
                                         <option value="0">No Disponible</option>
                                     </select>
                                 </div>
                                 <div className="container-flex">
-                                    <button type="submit" className="btn btn-primary">Agregar</button>
-                                    <button type="reset" className="btn btn-warning">Reset</button>
+                                    <button type="submit" className="btn btn-primary" onClick={handleAgregarProducto}>Agregar</button>
+                                    <button type="reset" className="btn btn-warning" onClick={generarId}>Reset</button>
 
                                     {/* <!--TODO ADD NOTIFICATION --> */}
 
@@ -117,7 +161,7 @@ const Productos = () => {
                                           <th scope="row">{index + 1}</th>
                                           <td>{producto.descripcion}</td>
                                           <td>{producto.valorUnitario}</td>
-                                          <td>{producto.estado? "disponible" : "no disponible"}</td>
+                                          <td>{producto.estado === "1"? "disponible" : "no disponible"}</td>
                                           <td>
                                             <Link className="btn btn-outline-primary btn-sm"
                                               to={`/add-delete-productos/${producto.id}`}>
