@@ -4,9 +4,9 @@ import { getAuth,
         createUserWithEmailAndPassword, 
         signInWithEmailAndPassword, 
         signOut,
-        onAuthStateChanged, 
+        onAuthStateChanged,
         GoogleAuthProvider,
-        signInWithPopup
+        signInWithPopup         
       } from 'firebase/auth'
 // Metodos de interaccion con la base de datos
 import { addDoc, collection, getDocs, query, getDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore'
@@ -24,7 +24,9 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const database = getFirestore();
 const auth = getAuth();
+const provider = new GoogleAuthProvider(); 
 export let usuario;
+
 
 // Guardar
 export const guardarDatabase = async (nombreDatabase, data) => {
@@ -107,6 +109,25 @@ export const crearUsuario = async (email, password) => {
   }
 }
 
+//google
+
+export const signGoogle = async (result) => {
+  
+  signInWithPopup(auth, provider)
+  .then((result) => {
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    // const credential = GoogleAuthProvider.credentialFromResult(result);
+    // const token = credential.accessToken;
+    // The signed-in user info.
+    const user = result.user;
+    
+    console.log(user);
+
+  }).catch((error) => {
+    
+  });
+  
+}
 
 
 // Login Usuarios
@@ -134,7 +155,7 @@ export const logOutUsuario = async () => {
   try {
     const respuesta = await signOut(auth)
     console.log(respuesta);
-    console.log('Me sali...!');
+    // console.log('Me sali...!');
   } catch (e) {
     throw new Error(e)
   }
@@ -160,19 +181,13 @@ export const datosUsuario = async () => {
 }
 
 
-
-
-
-
 // el.addEventListener('click', function)
 // Usuario Activo
 onAuthStateChanged(auth, (user) => {
 
   if (user) {
     usuario = user
-    console.log('El usuario logueado');
   } else {
-    console.log('El usuario ya no esta logueado');
     usuario = undefined
   }
 
