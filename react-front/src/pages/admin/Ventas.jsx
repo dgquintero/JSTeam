@@ -1,9 +1,9 @@
 import { useRef, useState, useEffect } from "react";
-import { prodRef, userRef, saleRef } from "components/FirebaseInfo";
+import { prodRef, userRef, saleRef, db } from "components/FirebaseInfo";
 import { BsPencil, BsXCircle } from "react-icons/bs";
 
 // Firebase Imports
-import { getDocs, query, where, setDoc, doc } from "firebase/firestore";
+import { getDocs, query, where, setDoc, doc, deleteDoc, updateDoc } from "firebase/firestore";
 
 
 const Ventas = () => {
@@ -31,6 +31,12 @@ const Ventas = () => {
     const [searchResult, setSearchResult] = useState()
     const [modifyForm, setModifyForm] = useState()
     const [headerRow, setHeaderRow] = useState();
+
+    // TO DO Fix this maybe
+    let estado = '';
+    const setEstado = (value) => {
+        estado = value;
+    }
 
     const findProduct = async (id) => {
         if (id.current.value) {
@@ -253,10 +259,6 @@ const Ventas = () => {
 
     }
 
-    const modifySaleForm = (params) => {
-
-    }
-
     const deleteSale = async (id) => {
         const deleteRef = doc(db, 'ventas', id)
         await deleteDoc(deleteRef);
@@ -274,60 +276,39 @@ const Ventas = () => {
 
                     <div className="form-group">
                         <label className="col-form-label">ID Venta</label>
-                        <input placeholder={saleData.id} readOnly type="text" className="form-control" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                        <input placeholder={saleData.id} disabled type="text" className="form-control" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
                     </div>
 
                     <div className="form-group mt-3">
                         <label className="form-label">Encargado</label>
-                        <select className="form-select" required ref={sellerRef}>
-                            <option value="">Seleccione el encargado de la venta</option>
-                            {sellerList}
+                        <select className="form-select" disabled>
+                            <option>{saleData.vendedor}</option>
                         </select>
                     </div>
 
+                    <div className="form-group mt-3">
+                        <label className="form-label">Estado de la Venta</label>
+                        <select className="form-select" onChange={(e) => setEstado(e.target.value)}>
+                            <option value="En Proceso">En Proceso</option>
+                            <option value="Cancelada">Cancelada</option>
+                            <option value="Entregada">Entregada</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div className="d-flex justify-content-around">
                     <div className="form-group">
                         <label className="col-form-label mt-4">ID Cliente</label>
-                        <input ref={clientIdRef} required type="text" className="form-control" placeholder="" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                        <input disabled type="text" className="form-control" placeholder={saleData.idCliente} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
                     </div>
                     <div className="form-group">
                         <label className="col-form-label mt-4">Nombre del Cliente</label>
-                        <input ref={clientNameRef} required type="text" className="form-control" placeholder="" onKeyPress={(e) => { !/^[a-zA-Z ]+$/.test(e.key) && e.preventDefault() }} />
+                        <input disabled type="text" className="form-control" placeholder={saleData.nombreCliente} onKeyPress={(e) => { !/^[a-zA-Z ]+$/.test(e.key) && e.preventDefault() }} />
                     </div>
                     <div className="form-group">
                         <label className="col-form-label mt-4">Fecha</label>
-                        <input ref={saleDateRef} required type="date" className="form-control" />
+                        <input disabled type="text" className="form-control" placeholder={saleData.fechaVenta} />
                     </div>
-                </div>
-
-                <label className="col-form-label mt-4">ID Producto</label>
-                <div className="d-flex">
-                    <div className="form-group flex-grow-1">
-                        <input type="text" className="form-control" placeholder="ID Producto" ref={prodSearchId} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
-                    </div>
-                    <button type="button" className="btn btn-success my-2 my-sm-0" onClick={() => { findProduct(prodSearchId) }}>Buscar</button>
-                </div>
-
-                <div className='container d-flex justify-content-between'>
-
-                    <div className="form-group">
-                        <label className="col-form-label mt-4">Nombre Producto</label>
-                        <input type="text" className="form-control" placeholder={prodName} disabled />
-                    </div>
-
-                    <div className="form-group">
-                        <label className="col-form-label mt-4">Valor Unitario</label>
-                        <input className="form-control" placeholder={prodUnitPrice} disabled />
-                    </div>
-
-                    <div className="form-group">
-                        <label className="col-form-label mt-4">Cantidad</label>
-                        <input ref={quantRef} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} className="form-control" placeholder="Cantidad" id="cantidad" />
-                    </div>
-                    <button type="button" className="btn btn-info align-self-end" onClick={() => { addProdSale() }}>Agregar Producto</button>
-
                 </div>
 
                 <div className="d-flex">
@@ -342,218 +323,239 @@ const Ventas = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {saleProductsTable}
+                            {saleData.prodVenta.map((p) => (
+                                <tr>
+                                    <th scope="row">{p.id}</th>
+                                    <td>{p.prod}</td>
+                                    <td>${p.valUni}</td>
+                                    <td>{p.cant}</td>
+                                    <td>${p.total}</td>
+                                </tr>
+                            ))
+                            }
                             <tr>
                                 <td colSpan="4"></td>
-                                <td className="table-active">$ {total}</td>
+                                <td className="table-active">$ {saleData.total}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <div className="d-flex justify-content-center">
-                    <button type="submit" className="btn btn-primary">Registrar Venta</button>
-                    <button type="reset" className="btn btn-warning" onClick={() => { resetStates() }}>Reset</button>
-                    <button className="btn btn-info" type="button" onClick={() => { console.log(saleProds); console.log(prodName); }}>TEST!!!</button>
+                    <button type="button" className="btn btn-sm btn-success" onClick={() => { modifySale(saleId) }}>Modificar</button>
+                    <button type="button" className="btn btn-sm btn-warning" onClick={() => { clearForm() }}>Cancelar</button>
                 </div>
 
             </form >
         )
-        
+
     }
 
-useEffect(() => {
-    (async () => {
-        setSellerList();
-        const q = query(userRef, where("rol", "==", "Vendedor"), where("estado", "==", "Autorizado"));
-        const qData = await getDocs(q);
-        qData.forEach((doc) => {
-            setSellerList((sellerList) => (
-                <>
-                    {sellerList}
-                    <option value={doc.data().nombre}>{doc.data().nombre}</option>
-                </>
-            )
-            )
+    const modifySale = async (id) => {
+        const updateRef = doc(db, 'ventas', id)
+        await updateDoc(updateRef,{
+            estado: estado
         })
-    })()
-}, [])
+        alert("It Works")
+    }
 
-return (
-    <>
-        <div className="m-4 overflow-auto">
-            <h1 className="mb-5">Administrar Ventas</h1>
+    const clearForm = () => {
+        setTabTitle();
+        setModifyForm();        
+    }
 
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam molestias odio sapiente incidunt
-                repudiandae non est omnis reiciendis tenetur nemo deleniti consectetur architecto, officia perferendis
-                maiores!</p>
+    useEffect(() => {
+        (async () => {
+            setSellerList();
+            const q = query(userRef, where("rol", "==", "Vendedor"), where("estado", "==", "Autorizado"));
+            const qData = await getDocs(q);
+            qData.forEach((doc) => {
+                setSellerList((sellerList) => (
+                    <>
+                        {sellerList}
+                        <option value={doc.data().nombre}>{doc.data().nombre}</option>
+                    </>
+                )
+                )
+            })
+        })()
+    }, [])
 
-            <ul className="nav nav-tabs">
-                <li className="nav-item">
-                    <a className="nav-link active" data-bs-toggle="tab" href="#tab1">Registrar Ventas</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" data-bs-toggle="tab" href="#tab2">Buscar/Modificar Ventas</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" data-bs-toggle="tab" href="#tab3" onClick={() => { listAllSales() }}>Mostrar Ventas Registrados</a>
-                </li>
-            </ul>
+    return (
+        <>
+            <div className="m-4 overflow-auto">
+                <h1 className="mb-5">Administrar Ventas</h1>
 
-            <div className="tab-content">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam molestias odio sapiente incidunt
+                    repudiandae non est omnis reiciendis tenetur nemo deleniti consectetur architecto, officia perferendis
+                    maiores!</p>
 
-                <div className="tab-pane fade active show" id="tab1">
-                    <form className="p-3" onSubmit={addSale}>
-                        <fieldset>
-                            <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores iure ab dignissimos,
-                                nisi fugiat ad est recusandae ducimus optio. Vel facere labore sunt voluptatem beatae
-                                suscipit esse minus nisi quisquam?</div>
+                <ul className="nav nav-tabs">
+                    <li className="nav-item">
+                        <a className="nav-link active" data-bs-toggle="tab" href="#tab1">Registrar Ventas</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" data-bs-toggle="tab" href="#tab2">Buscar/Modificar Ventas</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" data-bs-toggle="tab" href="#tab3" onClick={() => { listAllSales() }}>Mostrar Ventas Registrados</a>
+                    </li>
+                </ul>
 
-                            <div className='d-flex justify-content-between'>
+                <div className="tab-content">
 
-                                <div className="form-group">
-                                    <label className="col-form-label">ID Venta</label>
-                                    <input ref={saleIdRef} required type="text" className="form-control" placeholder="ID Venta" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                    <div className="tab-pane fade active show" id="tab1">
+                        <form className="p-3" onSubmit={addSale}>
+                            <fieldset>
+                                <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores iure ab dignissimos,
+                                    nisi fugiat ad est recusandae ducimus optio. Vel facere labore sunt voluptatem beatae
+                                    suscipit esse minus nisi quisquam?</div>
+
+                                <div className='d-flex justify-content-between'>
+
+                                    <div className="form-group">
+                                        <label className="col-form-label">ID Venta</label>
+                                        <input ref={saleIdRef} required type="text" className="form-control" placeholder="ID Venta" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                                    </div>
+
+                                    <div className="form-group mt-3">
+                                        <label className="form-label">Encargado</label>
+                                        <select className="form-select" required ref={sellerRef}>
+                                            <option value="">Seleccione el encargado de la venta</option>
+                                            {sellerList}
+                                        </select>
+                                    </div>
+
                                 </div>
 
-                                <div className="form-group mt-3">
-                                    <label className="form-label">Encargado</label>
-                                    <select className="form-select" required ref={sellerRef}>
-                                        <option value="">Seleccione el encargado de la venta</option>
-                                        {sellerList}
-                                    </select>
+                                <div className="d-flex justify-content-around">
+                                    <div className="form-group">
+                                        <label className="col-form-label mt-4">ID Cliente</label>
+                                        <input ref={clientIdRef} required type="text" className="form-control" placeholder="" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="col-form-label mt-4">Nombre del Cliente</label>
+                                        <input ref={clientNameRef} required type="text" className="form-control" placeholder="" onKeyPress={(e) => { !/^[a-zA-Z ]+$/.test(e.key) && e.preventDefault() }} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="col-form-label mt-4">Fecha</label>
+                                        <input ref={saleDateRef} required type="date" className="form-control" />
+                                    </div>
                                 </div>
 
+                                <label className="col-form-label mt-4">ID Producto</label>
+                                <div className="d-flex">
+                                    <div className="form-group flex-grow-1">
+                                        <input type="text" className="form-control" placeholder="ID Producto" ref={prodSearchId} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                                    </div>
+                                    <button type="button" className="btn btn-success my-2 my-sm-0" onClick={() => { findProduct(prodSearchId) }}>Buscar</button>
+                                </div>
+
+                                <div className='container d-flex justify-content-between'>
+
+                                    <div className="form-group">
+                                        <label className="col-form-label mt-4">Nombre Producto</label>
+                                        <input type="text" className="form-control" placeholder={prodName} disabled />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label className="col-form-label mt-4">Valor Unitario</label>
+                                        <input className="form-control" placeholder={prodUnitPrice} disabled />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label className="col-form-label mt-4">Cantidad</label>
+                                        <input ref={quantRef} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} className="form-control" placeholder="Cantidad" id="cantidad" />
+                                    </div>
+                                    <button type="button" className="btn btn-info align-self-end" onClick={() => { addProdSale() }}>Agregar Producto</button>
+
+                                </div>
+
+                                <div className="d-flex">
+                                    <table className="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Producto</th>
+                                                <th scope="col">Valor Unitario</th>
+                                                <th scope="col">Cantidad</th>
+                                                <th scope="col">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {saleProductsTable}
+                                            <tr>
+                                                <td colSpan="4"></td>
+                                                <td className="table-active">$ {total}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div className="d-flex justify-content-center">
+                                    <button type="submit" className="btn btn-primary">Registrar Venta</button>
+                                    <button type="reset" className="btn btn-warning" onClick={() => { resetStates() }}>Reset</button>
+                                    <button className="btn btn-info" type="button" onClick={() => { console.log(saleProds); console.log(prodName); }}>TEST!!!</button>
+                                </div>
+
+                            </fieldset>
+                        </form>
+
+                    </div>
+
+                    <div className="tab-pane fade" id="tab2">
+                        <form className="d-flex mt-2" onSubmit={handleSearch}>
+                            <input ref={searchValue} className="form-control me-sm-2" type="text" placeholder="Search" />
+                            <div className="form-group">
+                                <select className="form-select" ref={searchField}>
+                                    <option value="id">ID Venta</option>
+                                    <option value="idCliente">ID Cliente</option>
+                                    <option value="nombreCliente">Nombre Cliente</option>
+                                </select>
                             </div>
+                            <button className="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
+                        </form>
 
-                            <div className="d-flex justify-content-around">
-                                <div className="form-group">
-                                    <label className="col-form-label mt-4">ID Cliente</label>
-                                    <input ref={clientIdRef} required type="text" className="form-control" placeholder="" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
-                                </div>
-                                <div className="form-group">
-                                    <label className="col-form-label mt-4">Nombre del Cliente</label>
-                                    <input ref={clientNameRef} required type="text" className="form-control" placeholder="" onKeyPress={(e) => { !/^[a-zA-Z ]+$/.test(e.key) && e.preventDefault() }} />
-                                </div>
-                                <div className="form-group">
-                                    <label className="col-form-label mt-4">Fecha</label>
-                                    <input ref={saleDateRef} required type="date" className="form-control" />
-                                </div>
-                            </div>
+                        <hr />
+                        <div className="mt-5 h4">{tabTitle}</div>
+                        <hr />
 
-                            <label className="col-form-label mt-4">ID Producto</label>
-                            <div className="d-flex">
-                                <div className="form-group flex-grow-1">
-                                    <input type="text" className="form-control" placeholder="ID Producto" ref={prodSearchId} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
-                                </div>
-                                <button type="button" className="btn btn-success my-2 my-sm-0" onClick={() => { findProduct(prodSearchId) }}>Buscar</button>
-                            </div>
+                        <table className="table table-hover">
+                            <thead>
+                                {headerRow}
+                            </thead>
+                            <tbody id="searchByResult">
+                                {searchResult}
+                                {/* results */}
+                            </tbody>
+                        </table>
+                        {modifyForm}
+                        {/* modify form */}
+                    </div>
 
-                            <div className='container d-flex justify-content-between'>
-
-                                <div className="form-group">
-                                    <label className="col-form-label mt-4">Nombre Producto</label>
-                                    <input type="text" className="form-control" placeholder={prodName} disabled />
-                                </div>
-
-                                <div className="form-group">
-                                    <label className="col-form-label mt-4">Valor Unitario</label>
-                                    <input className="form-control" placeholder={prodUnitPrice} disabled />
-                                </div>
-
-                                <div className="form-group">
-                                    <label className="col-form-label mt-4">Cantidad</label>
-                                    <input ref={quantRef} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} className="form-control" placeholder="Cantidad" id="cantidad" />
-                                </div>
-                                <button type="button" className="btn btn-info align-self-end" onClick={() => { addProdSale() }}>Agregar Producto</button>
-
-                            </div>
-
-                            <div className="d-flex">
-                                <table className="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">ID</th>
-                                            <th scope="col">Producto</th>
-                                            <th scope="col">Valor Unitario</th>
-                                            <th scope="col">Cantidad</th>
-                                            <th scope="col">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {saleProductsTable}
-                                        <tr>
-                                            <td colSpan="4"></td>
-                                            <td className="table-active">$ {total}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div className="d-flex justify-content-center">
-                                <button type="submit" className="btn btn-primary">Registrar Venta</button>
-                                <button type="reset" className="btn btn-warning" onClick={() => { resetStates() }}>Reset</button>
-                                <button className="btn btn-info" type="button" onClick={() => { console.log(saleProds); console.log(prodName); }}>TEST!!!</button>
-                            </div>
-
-                        </fieldset>
-                    </form>
-
-                </div>
-
-                <div className="tab-pane fade" id="tab2">
-                    <form className="d-flex mt-2" onSubmit={handleSearch}>
-                        <input ref={searchValue} className="form-control me-sm-2" type="text" placeholder="Search" />
-                        <div className="form-group">
-                            <select className="form-select" ref={searchField}>
-                                <option value="id">ID Venta</option>
-                                <option value="idCliente">ID Cliente</option>
-                                <option value="nombreCliente">Nombre Cliente</option>
-                            </select>
-                        </div>
-                        <button className="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
-                    </form>
-
-                    <hr />
-                    <div className="mt-5 h4">{tabTitle}</div>
-                    <hr />
-
-                    <table className="table table-hover">
-                        <thead>
-                            {headerRow}
-                        </thead>
-                        <tbody id="searchByResult">
-                            {searchResult}
-                            {/* results */}
-                        </tbody>
-                    </table>
-                    {modifyForm}
-                    {/* modify form */}
-                </div>
-
-                <div className="tab-pane fade" id="tab3">
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">ID Venta</th>
-                                <th scope="col">Encargado</th>
-                                <th scope="col">Id Cliente</th>
-                                <th scope="col">Nombre Cliente</th>
-                                <th scope="col">Productos</th>
-                                <th scope="col">Fecha</th>
-                                <th scope="col">Estado</th>
-                                <th scope="col">Valor Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="searchResult">
-                            {listSales}
-                        </tbody>
-                    </table>
+                    <div className="tab-pane fade" id="tab3">
+                        <table className="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID Venta</th>
+                                    <th scope="col">Encargado</th>
+                                    <th scope="col">Id Cliente</th>
+                                    <th scope="col">Nombre Cliente</th>
+                                    <th scope="col">Productos</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">Valor Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="searchResult">
+                                {listSales}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-    </>
-)
+        </>
+    )
 }
 
 export default Ventas
