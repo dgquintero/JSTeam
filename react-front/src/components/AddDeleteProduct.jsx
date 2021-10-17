@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { actualizarDocumentoDatabase, consultarDocumentoDatabase, eliminarDocumentoDatabase} from '../config/firebase';
-
+import Swal from 'sweetalert2'
 
 export const AddDeleteProduct = () => {
 
@@ -10,7 +10,7 @@ export const AddDeleteProduct = () => {
     
 
     const [descripcion, setDescripcion] = useState('')
-    const [estado, setEstado] = useState(false)
+    const [estado, setEstado] = useState('1')
     const [valorUnitario, setValorUnitario] = useState('')    
     const history = useHistory()
 
@@ -47,6 +47,15 @@ export const AddDeleteProduct = () => {
         // console.log(producto);
 
         await actualizarDocumentoDatabase('lista-productos', id, producto)
+
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'El producto se modificó con éxito',
+            showConfirmButton: false,
+            timer: 1500
+          })
+
         history.push('/productos')
 
 
@@ -56,8 +65,30 @@ export const AddDeleteProduct = () => {
     const handleEliminarProducto = async(e) =>{
         e.preventDefault()
 
-        eliminarDocumentoDatabase('lista-productos', id)
-        history.push('/productos')
+       
+
+        Swal.fire({
+            title: 'Esta usted seguro?',
+            text: "No podrá revertir los cambios!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!',
+            cancelButtonText: 'cancelar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                eliminarDocumentoDatabase('lista-productos', id)
+                history.push('/productos')
+              Swal.fire(
+                'Eliminado!',
+                'El producto ha sido eliminado con exito',
+                'success'
+              )
+            }
+          })
+
+        
     }
 
     return (

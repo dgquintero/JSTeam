@@ -3,13 +3,14 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { nanoid } from 'nanoid'
 import { guardarDatabaseWithId } from 'config/firebase'
+import Swal from 'sweetalert2'
 
 const Productos = () => {
 
     const [listaProductos, setListaProductos] = useState([])
     const [idProv, setIdProv] = useState(nanoid())
     const [descripcion, setDescripcion] = useState('')
-    const [estado, setEstado] = useState(1)
+    const [estado, setEstado] = useState('1')
     const [valorUnitario, setValorUnitario] = useState('')  
 
     const cargarProductos = async () => {
@@ -41,6 +42,21 @@ const Productos = () => {
         }
       
           await guardarDatabaseWithId('lista-productos',idProv, producto)
+
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'El producto se agregó con éxito',
+            showConfirmButton: false,
+            timer: 1500
+          })
+
+
+          setDescripcion('')
+          setEstado('1')
+          setValorUnitario('')
+          generarId()
+
           
       }
 
@@ -85,6 +101,7 @@ const Productos = () => {
                                     className="form-control" 
                                     id="descripcion" 
                                     rows="3"
+                                    value = {descripcion}
                                     onChange = {(event) => setDescripcion(event.target.value)}
                                     ></textarea>
                                 </div>
@@ -96,7 +113,8 @@ const Productos = () => {
                                     pattern="[0-9]*" 
                                     className="form-control"
                                     placeholder="Valor unitario" 
-                                    id="valorUnitario" 
+                                    id="valorUnitario"
+                                    value = {valorUnitario} 
                                     onChange = {(event) => setValorUnitario(event.target.value)}
                                     />
                                 </div>
@@ -106,6 +124,7 @@ const Productos = () => {
                                     <select 
                                     className="form-select" 
                                     id="estado"
+                                    value = {estado}
                                     onChange = {(event) => setEstado(event.target.value)}
                                     >
                                         <option value="1">Disponible</option>
@@ -181,8 +200,8 @@ const Productos = () => {
                         <table className="table table-hover">
                             <thead>
                                 <tr>
+                                    <th scope="col">#</th>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Nombre</th>
                                     <th scope="col">Descripcion</th>
                                     <th scope="col">Valor Unitario</th>
                                     <th scope="col">Estado</th>
@@ -190,13 +209,19 @@ const Productos = () => {
                             </thead>
                             <tbody id = 'searchResult'>
 
-                                <tr>
-                                    <th scope="row">Default</th>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                </tr>
+                            {
+                                    listaProductos.map((producto, index) => (
+                                        <tr key={producto.id}>
+
+                                          <th scope="row">{index + 1}</th>
+                                          <td>{producto.id}</td>
+                                          <td>{producto.descripcion}</td>
+                                          <td>{producto.valorUnitario}</td>
+                                          <td>{producto.estado === "1"? "disponible" : "no disponible"}</td>
+                                
+                                        </tr>
+                                        ))
+                                }
                             </tbody>
                         </table>
                     </div>
