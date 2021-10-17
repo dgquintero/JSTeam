@@ -77,7 +77,7 @@ export const consultarDatabase = async (nombreDatabase) => {
       };
       return document;
     });
-    console.log(elementos);
+    // console.log(elementos);
     return elementos;
   } catch (error) {
     throw new Error(error.message);

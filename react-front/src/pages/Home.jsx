@@ -11,6 +11,7 @@ import { Principal } from "./Principal"
 import Productos from "./Productos"
 import Ventas from "./Ventas"
 import Usuarios from "./Usuarios"
+import { AddDeleteProduct } from "components/AddDeleteProduct"
 
 
 const Home = () => {
@@ -20,6 +21,7 @@ const Home = () => {
         <Router>
         <PrivateLayout>
             <Switch>
+                <Route exact path="/add-delete-productos/:id" component={AddDeleteProduct} />
                 <Route  path="/productos" component={Productos}/>
                 <Route  path="/ventas" component={Ventas}/>
                 <Route  path="/usuarios" component={Usuarios}/>

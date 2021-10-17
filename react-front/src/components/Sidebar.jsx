@@ -6,6 +6,7 @@ import { usuario } from 'config/firebase';
 import { useState, useEffect } from 'react';
 import { logOutUsuario } from 'config/firebase';
 import { Loading } from './Loading';
+import { useHistory } from 'react-router-dom'
 
 
 
@@ -15,7 +16,7 @@ const Sidebar = () => {
     const [usuarioActivoName, setUsuarioActivoName] = useState("")
     const [usuarioActivoPic, setUsuarioActivoPic] = useState("")
     const [loading, setLoading] = useState(false)
-
+    const history = useHistory()
 
     const consultarUsuario = async (idUsuario) => {
         setLoading(true)
@@ -35,6 +36,7 @@ const Sidebar = () => {
 
     const handleClick = () => {
         logOutUsuario()
+        history.push('/')
     }
 
     return (
@@ -62,7 +64,7 @@ const Sidebar = () => {
                     }
 
                     {
-                        usuarioActivoRol === 1 ? <SidebarLink nombre='Usuarios' enlace='/usuarios'></SidebarLink> : ''
+                        usuarioActivoRol === 1 ? <SidebarLink nombre='Usuarios' enlace='/usuarios' ></SidebarLink> : ''
                     }
 
                 </ul>

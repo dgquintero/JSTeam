@@ -1,6 +1,24 @@
+import { consultarDatabase } from 'config/firebase'
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+// import { nanoid } from 'nanoid'
 
 const Productos = () => {
 
+    const [listaProductos, setListaProductos] = useState([])
+
+    const cargarProductos = async () => {
+   
+        const listaTemporal = await consultarDatabase('lista-productos')
+        // console.log(listaTemporal);
+        setListaProductos(listaTemporal)
+      
+      }
+      // cargarProductos()
+    
+      useEffect(() => {
+        cargarProductos()
+      }, [])
     
 
     return (
@@ -25,33 +43,26 @@ const Productos = () => {
                     <div className="tab-pane fade active show" id="tab1">
                         <form className="p-3" id="agregarProducto">
                             <fieldset>
-                                <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores iure ab dignissimos,
-                                    nisi fugiat ad est recusandae ducimus optio. Vel facere labore sunt voluptatem beatae
-                                    suscipit esse minus nisi quisquam?</div>
+                                <div>Espacio para administración y modificación de los productos</div>
 
                                 <div className="form-group">
-                                    <label className="col-form-label mt-4" for="inputID">ID</label>
-                                    <input type="text" className="form-control" placeholder="" id="inputId" />
-                                </div>
+                                    <label className="col-form-label mt-4" htmlFor="inputID">ID</label>
+                                    <input type="text" className="form-control" placeholder="" id="inputId" readOnly="readOnly" />
+                                </div>                               
 
                                 <div className="form-group">
-                                    <label className="col-form-label mt-4" for="inputName">Nombre Producto</label>
-                                    <input type="text" className="form-control" placeholder="" id="inputName" />
-                                </div>
-
-                                <div className="form-group">
-                                    <label for="descripcion" className="form-label mt-4">Descripcion</label>
+                                    <label htmlFor="descripcion" className="form-label mt-4">Descripcion</label>
                                     <textarea className="form-control" id="descripcion" rows="3"></textarea>
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="col-form-label mt-4" for="valorUnitario">Valor Unitario</label>
-                                    <input inputmode="numeric" pattern="[0-9]*" className="form-control"
+                                    <label className="col-form-label mt-4" htmlFor="valorUnitario">Valor Unitario</label>
+                                    <input inputMode="numeric" pattern="[0-9]*" className="form-control"
                                         placeholder="Valor unitario" id="valorUnitario" />
                                 </div>
 
                                 <div className="form-group mb-5">
-                                    <label for="estado" className="form-label mt-4">Estado del Producto</label>
+                                    <label htmlFor="estado" className="form-label mt-4">Estado del Producto</label>
                                     <select className="form-select" id="estado">
                                         <option value="1">Disponible</option>
                                         <option value="0">No Disponible</option>
@@ -92,7 +103,6 @@ const Productos = () => {
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Nombre</th>
                                     <th scope="col">Descripcion</th>
                                     <th scope="col">Valor Unitario</th>
                                     <th scope="col">Estado</th>
@@ -101,7 +111,23 @@ const Productos = () => {
                             </thead>
                             <tbody id="searchByResult">
 
-                                
+                                {
+                                    listaProductos.map((producto, index) => (
+                                        <tr key={producto.id}>
+                                          <th scope="row">{index + 1}</th>
+                                          <td>{producto.descripcion}</td>
+                                          <td>{producto.valorUnitario}</td>
+                                          <td>{producto.estado? "disponible" : "no disponible"}</td>
+                                          <td>
+                                            <Link className="btn btn-outline-primary btn-sm"
+                                              to={`/add-delete-productos/${producto.id}`}>
+                                              Editar
+                                            </Link>
+                    
+                                          </td>
+                                        </tr>
+                                        ))
+                                }
 
                             </tbody>
                         </table>
