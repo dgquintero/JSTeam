@@ -5,6 +5,7 @@ import { consultarDocumentoDatabase } from 'config/firebase';
 import { usuario } from 'config/firebase';
 import { useState, useEffect } from 'react';
 import { logOutUsuario } from 'config/firebase';
+import { Loading } from './Loading';
 
 
 
@@ -13,51 +14,59 @@ const Sidebar = () => {
     const [usuarioActivoRol, setUsuarioActivoRol] = useState("")
     const [usuarioActivoName, setUsuarioActivoName] = useState("")
     const [usuarioActivoPic, setUsuarioActivoPic] = useState("")
-            
-    
-    const consultarUsuario = async (idUsuario) =>{
-        const regUserAct = await consultarDocumentoDatabase('listaUsuarios',idUsuario)
-        
+    const [loading, setLoading] = useState(false)
+
+
+    const consultarUsuario = async (idUsuario) => {
+        setLoading(true)
+        setUsuarioActivoPic(usuario.photoURL)
+        const regUserAct = await consultarDocumentoDatabase('listaUsuarios', idUsuario)
         setUsuarioActivoRol(regUserAct.rol)
         setUsuarioActivoName(regUserAct.name)        
-        setUsuarioActivoPic(usuario.photoURL)
+        setLoading(false)
     }
 
     useEffect(() => {
 
-      consultarUsuario(usuario.uid)
-    
-      }, [])
+        consultarUsuario(usuario.uid)
 
-    
-    const handleClick = () => {        
-        logOutUsuario() 
+    }, [])
+
+
+    const handleClick = () => {
+        logOutUsuario()
     }
 
     return (
-        <>        
+        <>  {
+            loading
+            ?
+            <div className="sidebar_container d-flex flex-column flex-shrink-0 p-3 bg-light" style={{ width: 250 + 'px' }}>
+                <Loading />
+            </div>                       
+            :
             <div className="sidebar_container d-flex flex-column flex-shrink-0 p-3 bg-light" style={{ width: 250 + 'px' }}>
                 <Link to="#" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-                    <img src={Logo} className="bi me-2" width="40" height="32" alt=""/>
+                    <img src={Logo} className="bi me-2" width="40" height="32" alt="" />
                     <span className="fs-4">Company</span>
                 </Link>
-                <hr/>
+                <hr />
                 <ul className="nav nav-pills flex-column mb-auto">
-                    <SidebarLink nombre='Home' enlace='/admin/home'></SidebarLink>
+                    <SidebarLink nombre='Home' enlace='/'></SidebarLink>
                     {
-                        usuarioActivoRol === 1 ? <SidebarLink nombre='Productos' enlace='/admin/productos'></SidebarLink> : ''                    
+                        usuarioActivoRol === 1 ? <SidebarLink nombre='Productos' enlace='/productos'></SidebarLink> : ''
                     }
 
                     {
-                        usuarioActivoRol !== 3 ? <SidebarLink nombre='Ventas' enlace='/admin/ventas'></SidebarLink> : '' 
-                    }                    
-                    
-                    {
-                         usuarioActivoRol === 1 ? <SidebarLink nombre='Usuarios' enlace='/admin/usuarios'></SidebarLink> : ''
+                        usuarioActivoRol !== 3 ? <SidebarLink nombre='Ventas' enlace='/ventas'></SidebarLink> : ''
                     }
-                    
+
+                    {
+                        usuarioActivoRol === 1 ? <SidebarLink nombre='Usuarios' enlace='/usuarios'></SidebarLink> : ''
+                    }
+
                 </ul>
-                <hr/>
+                <hr />
                 {/* Sidebar User */}
                 <div className="dropdown">
                     <Link to="#" className="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
@@ -67,11 +76,11 @@ const Sidebar = () => {
                         <span className="fst-italic">({usuarioActivoRol})</span>
                     </Link>
                     <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                        <li><button className="dropdown-item" onClick = {handleClick} >Salir</button></li>
+                        <li><button className="dropdown-item" onClick={handleClick} >Salir</button></li>
                     </ul>
                 </div>
             </div>
-            
+            }
         </>
     )
 }

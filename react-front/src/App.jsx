@@ -13,7 +13,8 @@ import { useState } from 'react';
 import { getAuth,
   onAuthStateChanged,      
 } from 'firebase/auth'
-import Home from 'pages/admin/Home';
+import Home from 'pages/Home';
+
 
 
 
