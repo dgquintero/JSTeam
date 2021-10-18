@@ -1,5 +1,23 @@
+import { consultarDatabase } from 'config/firebase'
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 const Usuarios = () => {
+
+     const [listaUsuarios, setListaUsuarios] = useState([])
+
+    const cargarUsuarios = async () => {      
+        const listaTemporal = await consultarDatabase('listaUsuarios')
+        // console.log(listaTemporal);
+        setListaUsuarios(listaTemporal)
+    }
+
+    useEffect(() => {
+        cargarUsuarios()
+    }, [])
+
+    
+
     return (
         <>
             <div className="m-4 overflow-auto">
@@ -9,10 +27,10 @@ const Usuarios = () => {
                     maiores!</p>
                 <ul className="nav nav-tabs">
                     <li className="nav-item">
-                        <a className="nav-link active" data-bs-toggle="tab" href="#tab1">Buscar/Modificar Usuarios</a>
+                        <a className="nav-link active" data-bs-toggle="tab" href="#tab1" onClick={cargarUsuarios}>Buscar/Modificar Usuarios</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" data-bs-toggle="tab" href="#tab2">Mostrar Usuarios Registrados</a>
+                        <a className="nav-link" data-bs-toggle="tab" href="#tab2" onClick={cargarUsuarios}>Mostrar Usuarios Registrados</a>
                     </li>
                 </ul>
                 <div id="myTabContent" className="tab-content">
@@ -36,7 +54,28 @@ const Usuarios = () => {
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="searchByResult">                     
+                            <tbody id="searchByResult">    
+
+                            {
+                                    listaUsuarios.map((usuario, index) => (
+                                        <tr key={usuario.id}>                                           
+                                            <td>{usuario.email}</td>
+                                            <td>{usuario.name}</td>
+                                            <td>{""}</td>
+                                            <td>{parseInt(usuario.rol) === 1 ? "Admin" : 
+                                                 parseInt(usuario.rol) === 2 ? "Vendedor" :
+                                                 "Usuario"}</td>
+                                            <td>
+                                                <Link className="btn btn-outline-primary btn-sm"
+                                                    to={`/add-delete-usuarios/${usuario.id}`}>
+                                                    Editar
+                                                </Link>
+
+                                            </td>
+                                        </tr>
+                                    ))
+                                }  
+
                             </tbody>
                         </table>
                     </div>
@@ -50,7 +89,21 @@ const Usuarios = () => {
                                     <th scope="col">Rol</th>
                                 </tr>
                             </thead>
-                            <tbody id="searchResult">                            
+                            <tbody id="searchResult"> 
+
+                            {
+                                    listaUsuarios.map((usuario, index) => (
+                                        <tr key={usuario.id}>                                           
+                                            <td>{usuario.email}</td>
+                                            <td>{usuario.name}</td>
+                                            <td>{""}</td>
+                                            <td>{parseInt(usuario.rol) === 1 ? "Admin" : 
+                                                 parseInt(usuario.rol) === 2 ? "Vendedor" :
+                                                 "Usuario"}</td>
+                                       
+                                        </tr>
+                                    ))
+                                }                            
                             </tbody>
                         </table>
                     </div>

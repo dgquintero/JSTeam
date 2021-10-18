@@ -29,7 +29,7 @@ const Ventas = () => {
 
         const listaProductosTemporal = await consultarDatabase('lista-productos')
         const listaVentasTemporal = await consultarDatabase('lista-ventas')
-        const listaTemporalEncargados = await busquedaDatabase('listaUsuarios', 'rol', 2)
+        const listaTemporalEncargados = await busquedaDatabase('listaUsuarios', 'rol', "2")
 
         setListEncargado(listaTemporalEncargados)
         setListaVentas(listaVentasTemporal)
@@ -101,6 +101,10 @@ const Ventas = () => {
         <>
             <div className="m-4 overflow-auto">
                 <h1 className="mb-5">Administrar Ventas</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam molestias odio sapiente incidunt
+                    repudiandae non est omnis reiciendis tenetur nemo deleniti consectetur architecto, officia perferendis
+                    maiores!</p>
+
 
                 <ul className="nav nav-tabs">
                     <li className="nav-item">

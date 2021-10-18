@@ -13,6 +13,7 @@ import Ventas from "./Ventas"
 import Usuarios from "./Usuarios"
 import { AddDeleteProduct } from "components/AddDeleteProduct"
 import { AddDeleteVentas } from "components/AddDeleteVentas"
+import { AddDeleteUser } from "components/AddDeleteUser"
 
 
 const Home = () => {
@@ -22,6 +23,7 @@ const Home = () => {
         <Router>
         <PrivateLayout>
             <Switch>
+                <Route exact path="/add-delete-usuarios/:id" component={AddDeleteUser} />
                 <Route exact path="/add-delete-ventas/:id" component={AddDeleteVentas} />
                 <Route exact path="/add-delete-productos/:id" component={AddDeleteProduct} />
                 <Route  path="/productos" component={Productos}/>

@@ -98,7 +98,9 @@ export const AddDeleteProduct = () => {
 
             <div className="m-4 overflow-auto">
                 <h1 className="mb-5">Modificar producto</h1>
-
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam molestias odio sapiente incidunt
+                    repudiandae non est omnis reiciendis tenetur nemo deleniti consectetur architecto, officia perferendis
+                    maiores!</p>
              
                 <div className="tab-pane fade active show" id="tab1">
                 <form className="p-3" id="agregarProducto">
