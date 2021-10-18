@@ -20,6 +20,7 @@ const Ventas = () => {
 
 
     const [listaProductos, setListaProductos] = useState([])
+    const [producto, setProducto] = useState('')
     const [idProv, setIdProv] = useState('')
     // const [estado, setEstado] = useState('1')
     const [valorUnitario, setValorUnitario] = useState(0)
@@ -46,7 +47,7 @@ const Ventas = () => {
 
     const seleccionProducto = (e) => {
         const valoresProductoActual = e.target.value.split(",")
-        console.log(valoresProductoActual);
+        setProducto(e.target.value)
         setIdProv(valoresProductoActual[0])
         setValorUnitario(parseInt(valoresProductoActual[1]))
         // setEstado(valoresProductoActual[2])             
@@ -94,6 +95,7 @@ const Ventas = () => {
         setEncargado('')
         setIdProv('')
         setValorUnitario(0)
+        setProducto('')
 
     }
 
@@ -144,6 +146,7 @@ const Ventas = () => {
                                     <select
                                         className="form-select"
                                         id="producto"
+                                        value={producto}
                                         onChange={seleccionProducto}
                                     >
                                         <option value="">Seleccione</option>
