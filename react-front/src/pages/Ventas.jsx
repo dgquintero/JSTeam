@@ -115,6 +115,7 @@ const Ventas = () => {
                 </ul>
 
                 <div id="myTabContent" className="tab-content">
+
                     <div className="tab-pane fade active show" id="tab1">
                         <form className="p-3" id="agregarVenta">
                             <fieldset>
@@ -278,7 +279,6 @@ const Ventas = () => {
 
                             </fieldset>
                         </form>
-
                     </div>
 
                     <div className="tab-pane fade" id="tab2">
@@ -361,6 +361,22 @@ const Ventas = () => {
                                 </tr>
                             </thead>
                             <tbody id="searchResult">
+                            {
+                                    listaVentas.map((venta, index) => (
+                                        <tr key={venta.id}>
+                                            <th scope="row">venta.id</th>
+                                            <td>{venta.encargado}</td>
+                                            <td>{venta.valorTotal}</td>
+                                            <td>{venta.fecha}</td>
+                                            <td>{venta.idProduct}</td>
+                                            <td>{venta.cantidad}</td>  
+                                            <td>{venta.valorUnitario}</td>                                          
+                                            <td>{venta.idCliente}</td>
+                                            <td>{venta.clienteName}</td>
+                                            <td>{venta.estado}</td>                                                                         
+                                        </tr>
+                                    ))
+                                }
                             </tbody>
                         </table>
                     </div>
