@@ -8,6 +8,9 @@ import Ventas from 'pages/admin/Ventas'
 import Usuarios from 'pages/admin/Usuarios';
 import VentasVendedor from 'pages/user/VentasVendedor';
 import HomeVendedor from 'pages/user/HomeVendedor';
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 
 import "styles/sidebars.css"
 import "styles/bootstrap.min.css"
@@ -58,6 +61,7 @@ function App() {
           </Route>
 
         </Switch>
+        <ToastContainer autoClose={5000}  />
       </Router>
     </>
   );

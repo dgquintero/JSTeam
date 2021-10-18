@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { prodRef, userRef, saleRef, db } from "components/FirebaseInfo";
 import { BsPencil, BsXCircle } from "react-icons/bs";
+import { toast } from "react-toastify";
 
 // Firebase Imports
 import { getDocs, query, where, setDoc, doc, deleteDoc, updateDoc } from "firebase/firestore";
@@ -53,20 +54,19 @@ const Ventas = () => {
                 setProdId();
                 setProdName();
                 setProdUnitPrice();
-                alert('invalid id')
+                toast.error('No hay productos vinculados a ese ID',{position: "bottom-center"})
             }
         } else {
-            alert('no search id')
+            toast.warning('Ingrese un ID antes de realizar una busqueda',{position: "bottom-center"})
         }
 
     }
 
     const addProdSale = () => {
         if (!quantRef.current.value || !prodName || !prodUnitPrice || !prodId) { // Checking if components states are valid
-            // TO DO Add a real notifiacion
-            alert('nope')
+            toast.error('Realice una nueva busqueda o ingrese una cantidad',{position: "bottom-center"})
         } else {
-            alert("pog")
+            toast.success("Producto agregado a la venta", {position: "bottom-center"})
             setSaleProductsTable((saleProductsTable) => (
                 <>
                     {saleProductsTable}
@@ -129,13 +129,11 @@ const Ventas = () => {
                 estado: 'En Proceso'
             })
             // TO DO Add real notification
-            alert("YUP")
+            toast.success("Venta Registrada", {position: "bottom-center"})
             resetStates();
             e.target.reset();
         } else {
-            console.log(saleExists);
-            // TO DO Real notification
-            alert("NOPE")
+            toast.error("Ya existe una venta registrada con ese ID", {position: "bottom-center"})
         }
     }
 
@@ -262,7 +260,7 @@ const Ventas = () => {
     const deleteSale = async (id) => {
         const deleteRef = doc(db, 'ventas', id)
         await deleteDoc(deleteRef);
-        //TO DO make notifiaction
+        toast.info("Se elimino la venta", {position: "bottom-center"})
         setSearchResult();
     }
 
@@ -356,7 +354,7 @@ const Ventas = () => {
         await updateDoc(updateRef,{
             estado: estado
         })
-        alert("It Works")
+        toast.success("Se actualizo el estado de la venta", {position: "bottom-center"})
     }
 
     const clearForm = () => {

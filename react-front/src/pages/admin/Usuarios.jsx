@@ -1,6 +1,7 @@
 import { useRef, useState } from "react"
 import { userRef, db } from './../../components/FirebaseInfo';
 import { BsPencil, BsXCircle } from "react-icons/bs";
+import { toast } from "react-toastify";
 
 // Firebase Imports
 import { query, where, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
@@ -90,7 +91,7 @@ const Usuarios = () => {
         // TO DO Show a notification when there are no results from a query
         const q = query(userRef, where("email", "==", searchRef.current.value));
         const qData = await getDocs(q);
-
+        
         qData.forEach((doc) => {
             setSearchResult((searchResult) => (
                 // I dont know why it works but it works
