@@ -371,7 +371,7 @@ const Ventas = () => {
                             {
                                     listaVentas.map((venta, index) => (
                                         <tr key={venta.id}>
-                                            <th scope="row">venta.id</th>
+                                            <th scope="row">{venta.id}</th>
                                             <td>{venta.encargado}</td>
                                             <td>{venta.valorTotal}</td>
                                             <td>{venta.fecha}</td>
