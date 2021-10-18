@@ -99,8 +99,8 @@ export const AddDeleteProduct = () => {
             <div className="m-4 overflow-auto">
                 <h1 className="mb-5">Modificar producto</h1>
 
-
-
+             
+                <div className="tab-pane fade active show" id="tab1">
                 <form className="p-3" id="agregarProducto">
                     <fieldset>
                         <div>Espacio modificación de los productos</div>
@@ -164,7 +164,7 @@ export const AddDeleteProduct = () => {
                     </fieldset>
                 </form>
 
-
+                </div>
             </div>
 
         </>

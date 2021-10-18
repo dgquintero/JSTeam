@@ -138,35 +138,37 @@ export const crearUsuario = async (email, password) => {
 }
 
 //google
-const recuperarDoc = async(q) =>{
-try{
-  const querySnapshot = await getDocs(q);
-  console.log(querySnapshot);
-  querySnapshot.forEach((doc) => {
-    if(doc.id){
-      isReg = true;
-    }else{
-      isReg = false;
+const recuperarDoc = async (q) => {
+  try {
+    const querySnapshot = await getDocs(q);
+    console.log(querySnapshot);
+    querySnapshot.forEach((doc) => {
+      if (doc.id) {
+        isReg = true;
+      } else {
+        isReg = false;
+      }
+    });
+
+    console.log(isReg);
+
+    if (isReg === false) {
+      const user = {
+        id: usuario.uid,
+        email: usuario.email,
+        name: usuario.displayName,
+        rol: 3
+      }
+      guardarDatabaseWithId('listaUsuarios', usuario.uid, user)
     }
-  });  
 
-  console.log(isReg);
 
-  if (isReg === false){
-    const user = {
-    id: usuario.uid,
-    email: usuario.email, 
-    name: usuario.displayName,
-    rol: 3
+  } catch (e) {
+    throw new Error(e)
   }
-  guardarDatabaseWithId('listaUsuarios', usuario.uid, user)        
 }
- 
 
-}catch(e){
-  throw new Error(e)
-}
-}
+
 
 export const signGoogle = async (result) => {
 
@@ -176,12 +178,32 @@ export const signGoogle = async (result) => {
       // const token = credential.accessToken;      
 
       const userRef = collection(database, "listaUsuarios");
-      const q = query(userRef, where("id", "==", result.user.uid))     
-      recuperarDoc(q)         
+      const q = query(userRef, where("id", "==", result.user.uid))
+      recuperarDoc(q)
 
     }).catch((error) => {
       throw new Error(error)
     });
+
+}
+
+//Realizar busquedas
+
+export const busquedaDatabase = async (NombreColeccion, nombreCampo, comparador2) => {
+  try {
+    const q = query(collection(database,NombreColeccion), where(nombreCampo, "==", comparador2))
+    const querySnapshot = await getDocs(q);
+    let arregloTemporal = []
+
+    querySnapshot.forEach((doc) => {
+      arregloTemporal.push(doc.data())      
+    })
+
+    return arregloTemporal
+  }
+  catch (e) {
+    throw new Error(e)
+  }
 
 }
 

@@ -11,54 +11,54 @@ const Productos = () => {
     const [idProv, setIdProv] = useState(nanoid())
     const [descripcion, setDescripcion] = useState('')
     const [estado, setEstado] = useState('1')
-    const [valorUnitario, setValorUnitario] = useState('')  
+    const [valorUnitario, setValorUnitario] = useState('')
 
     const cargarProductos = async () => {
-   
+
         const listaTemporal = await consultarDatabase('lista-productos')
         // console.log(listaTemporal);
         setListaProductos(listaTemporal)
-      
-      }
-      // cargarProductos()
-    
 
-      const generarId = () =>{
-            setIdProv(nanoid())
+    }
+    // cargarProductos()
+
+
+    const generarId = () => {
+        setIdProv(nanoid())
     }
 
-      useEffect(() => {
+    useEffect(() => {
         cargarProductos()
-      }, [])
-    
-      const handleAgregarProducto = async (e)=>{
-          e.preventDefault()
+    }, [])
 
-           const producto = {
+    const handleAgregarProducto = async (e) => {
+        e.preventDefault()
+
+        const producto = {
             id: idProv,
             descripcion,
             estado,
             valorUnitario
         }
-      
-          await guardarDatabaseWithId('lista-productos',idProv, producto)
 
-          Swal.fire({
+        await guardarDatabaseWithId('lista-productos', idProv, producto)
+
+        Swal.fire({
             position: 'top-end',
             icon: 'success',
             title: 'El producto se agregó con éxito',
             showConfirmButton: false,
             timer: 1500
-          })
+        })
 
 
-          setDescripcion('')
-          setEstado('1')
-          setValorUnitario('')
-          generarId()
+        setDescripcion('')
+        setEstado('1')
+        setValorUnitario('')
+        generarId()
 
-          
-      }
+
+    }
 
     return (
         <>
@@ -86,46 +86,47 @@ const Productos = () => {
 
                                 <div className="form-group">
                                     <label className="col-form-label mt-4" htmlFor="inputID">ID</label>
-                                    <input 
-                                    type="text" 
-                                    className="form-control" 
-                                    placeholder="" id="inputId" 
-                                    readOnly="readOnly" 
-                                    defaultValue = {idProv}
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder=""
+                                        id="inputId"
+                                        readOnly="readOnly"
+                                        defaultValue={idProv}
                                     />
-                                </div>                               
+                                </div>
 
                                 <div className="form-group">
                                     <label htmlFor="descripcion" className="form-label mt-4">Descripcion</label>
-                                    <textarea 
-                                    className="form-control" 
-                                    id="descripcion" 
-                                    rows="3"
-                                    value = {descripcion}
-                                    onChange = {(event) => setDescripcion(event.target.value)}
+                                    <textarea
+                                        className="form-control"
+                                        id="descripcion"
+                                        rows="3"
+                                        value={descripcion}
+                                        onChange={(event) => setDescripcion(event.target.value)}
                                     ></textarea>
                                 </div>
 
                                 <div className="form-group">
                                     <label className="col-form-label mt-4" htmlFor="valorUnitario">Valor Unitario</label>
-                                    <input 
-                                    inputMode="numeric" 
-                                    pattern="[0-9]*" 
-                                    className="form-control"
-                                    placeholder="Valor unitario" 
-                                    id="valorUnitario"
-                                    value = {valorUnitario} 
-                                    onChange = {(event) => setValorUnitario(event.target.value)}
+                                    <input
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
+                                        className="form-control"
+                                        placeholder="Valor unitario"
+                                        id="valorUnitario"
+                                        value={valorUnitario}
+                                        onChange={(event) => setValorUnitario(event.target.value)}
                                     />
                                 </div>
 
                                 <div className="form-group mb-5">
                                     <label htmlFor="estado" className="form-label mt-4">Estado del Producto</label>
-                                    <select 
-                                    className="form-select" 
-                                    id="estado"
-                                    value = {estado}
-                                    onChange = {(event) => setEstado(event.target.value)}
+                                    <select
+                                        className="form-select"
+                                        id="estado"
+                                        value={estado}
+                                        onChange={(event) => setEstado(event.target.value)}
                                     >
                                         <option value="1">Disponible</option>
                                         <option value="0">No Disponible</option>
@@ -156,11 +157,11 @@ const Productos = () => {
                             <button className="btn btn-success my-2 my-sm-0" type="submit">Search</button>
                         </form>
 
-                        <hr/>
+                        <hr />
                         <div className="mt-5 h4">
                             Search Result
                         </div>
-                        <hr/>
+                        <hr />
 
                         <table className="table table-hover">
                             <thead>
@@ -177,19 +178,19 @@ const Productos = () => {
                                 {
                                     listaProductos.map((producto, index) => (
                                         <tr key={producto.id}>
-                                          <th scope="row">{index + 1}</th>
-                                          <td>{producto.descripcion}</td>
-                                          <td>{producto.valorUnitario}</td>
-                                          <td>{producto.estado === "1"? "disponible" : "no disponible"}</td>
-                                          <td>
-                                            <Link className="btn btn-outline-primary btn-sm"
-                                              to={`/add-delete-productos/${producto.id}`}>
-                                              Editar
-                                            </Link>
-                    
-                                          </td>
+                                            <th scope="row">{index + 1}</th>
+                                            <td>{producto.descripcion}</td>
+                                            <td>{producto.valorUnitario}</td>
+                                            <td>{producto.estado === "1" ? "disponible" : "no disponible"}</td>
+                                            <td>
+                                                <Link className="btn btn-outline-primary btn-sm"
+                                                    to={`/add-delete-productos/${producto.id}`}>
+                                                    Editar
+                                                </Link>
+
+                                            </td>
                                         </tr>
-                                        ))
+                                    ))
                                 }
 
                             </tbody>
@@ -207,26 +208,26 @@ const Productos = () => {
                                     <th scope="col">Estado</th>
                                 </tr>
                             </thead>
-                            <tbody id = 'searchResult'>
+                            <tbody id='searchResult'>
 
-                            {
+                                {
                                     listaProductos.map((producto, index) => (
                                         <tr key={producto.id}>
 
-                                          <th scope="row">{index + 1}</th>
-                                          <td>{producto.id}</td>
-                                          <td>{producto.descripcion}</td>
-                                          <td>{producto.valorUnitario}</td>
-                                          <td>{producto.estado === "1"? "disponible" : "no disponible"}</td>
-                                
+                                            <th scope="row">{index + 1}</th>
+                                            <td>{producto.id}</td>
+                                            <td>{producto.descripcion}</td>
+                                            <td>{producto.valorUnitario}</td>
+                                            <td>{producto.estado === "1" ? "disponible" : "no disponible"}</td>
+
                                         </tr>
-                                        ))
+                                    ))
                                 }
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>                     
+            </div>
         </>
     )
 }
