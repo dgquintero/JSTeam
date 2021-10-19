@@ -272,47 +272,48 @@ const Ventas = () => {
         setSearchResult();
         setModifyForm(
             <form>
-                <div className='d-flex justify-content-between'>
+                <div className="w-75">
+                    <div className='d-flex justify-content-between'>
+                        <div className="form-group">
+                            <label className="col-form-label">ID Venta</label>
+                            <input placeholder={saleData.id} disabled type="text" className="form-control input-venta" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                        </div>
 
-                    <div className="form-group">
-                        <label className="col-form-label">ID Venta</label>
-                        <input placeholder={saleData.id} disabled type="text" className="form-control" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                        <div className="form-group mt-3">
+                            <label className="form-label">Encargado</label>
+                            <select className="form-select select-venta" disabled>
+                                <option>{saleData.vendedor}</option>
+                            </select>
+                        </div>
+
+                        <div className="form-group mt-3">
+                            <label className="form-label">Estado de la Venta</label>
+                            <select className="form-select select-venta" onChange={(e) => setEstado(e.target.value)}>
+                                <option value="En Proceso">En Proceso</option>
+                                <option value="Cancelada">Cancelada</option>
+                                <option value="Entregada">Entregada</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div className="form-group mt-3">
-                        <label className="form-label">Encargado</label>
-                        <select className="form-select" disabled>
-                            <option>{saleData.vendedor}</option>
-                        </select>
-                    </div>
-
-                    <div className="form-group mt-3">
-                        <label className="form-label">Estado de la Venta</label>
-                        <select className="form-select" onChange={(e) => setEstado(e.target.value)}>
-                            <option value="En Proceso">En Proceso</option>
-                            <option value="Cancelada">Cancelada</option>
-                            <option value="Entregada">Entregada</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div className="d-flex justify-content-around">
-                    <div className="form-group">
-                        <label className="col-form-label mt-4">ID Cliente</label>
-                        <input disabled type="text" className="form-control" placeholder={saleData.idCliente} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
-                    </div>
-                    <div className="form-group">
-                        <label className="col-form-label mt-4">Nombre del Cliente</label>
-                        <input disabled type="text" className="form-control" placeholder={saleData.nombreCliente} onKeyPress={(e) => { !/^[a-zA-Z ]+$/.test(e.key) && e.preventDefault() }} />
-                    </div>
-                    <div className="form-group">
-                        <label className="col-form-label mt-4">Fecha</label>
-                        <input disabled type="text" className="form-control" placeholder={saleData.fechaVenta} />
+                    <div className="d-flex justify-content-between">
+                        <div className="form-group">
+                            <label className="col-form-label mt-4">ID Cliente</label>
+                            <input disabled type="text" className="form-control input-venta" placeholder={saleData.idCliente} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                        </div>
+                        <div className="form-group">
+                            <label className="col-form-label mt-4">Nombre del Cliente</label>
+                            <input disabled type="text" className="form-control input-venta" placeholder={saleData.nombreCliente} onKeyPress={(e) => { !/^[a-zA-Z ]+$/.test(e.key) && e.preventDefault() }} />
+                        </div>
+                        <div className="form-group">
+                            <label className="col-form-label mt-4">Fecha</label>
+                            <input disabled type="text" className="form-control input-venta" placeholder={saleData.fechaVenta} />
+                        </div>
                     </div>
                 </div>
 
                 <div className="d-flex">
-                    <table className="table table-hover">
+                    <table className="table table-hover mt-3">
                         <thead>
                             <tr>
                                 <th scope="col">ID</th>
@@ -353,7 +354,7 @@ const Ventas = () => {
 
     const modifySale = async (id) => {
         const updateRef = doc(db, 'ventas', id)
-        await updateDoc(updateRef,{
+        await updateDoc(updateRef, {
             estado: estado
         })
         alert("It Works")
@@ -361,7 +362,7 @@ const Ventas = () => {
 
     const clearForm = () => {
         setTabTitle();
-        setModifyForm();        
+        setModifyForm();
     }
 
     useEffect(() => {
@@ -407,39 +408,41 @@ const Ventas = () => {
                     <div className="tab-pane fade active show" id="tab1">
                         <form className="p-3" onSubmit={addSale}>
                             <fieldset>
-                                <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores iure ab dignissimos,
-                                    nisi fugiat ad est recusandae ducimus optio. Vel facere labore sunt voluptatem beatae
-                                    suscipit esse minus nisi quisquam?</div>
+                                <div className="w-75">
+                                    <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores iure ab dignissimos,
+                                        nisi fugiat ad est recusandae ducimus optio. Vel facere labore sunt voluptatem beatae
+                                        suscipit esse minus nisi quisquam?</div>
 
-                                <div className='d-flex justify-content-between'>
+                                    <div className='d-flex justify-content-between'>
 
-                                    <div className="form-group">
-                                        <label className="col-form-label">ID Venta</label>
-                                        <input ref={saleIdRef} required type="text" className="form-control" placeholder="ID Venta" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                                        <div className="form-group">
+                                            <label className="col-form-label mt-4">ID Venta</label>
+                                            <input ref={saleIdRef} required type="text" className="form-control input-venta" placeholder="ID Venta" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label className="col-form-label mt-4">Encargado</label>
+                                            <select className="form-select select-venta" required ref={sellerRef}>
+                                                <option value="">Seleccione el encargado de la venta</option>
+                                                {sellerList}
+                                            </select>
+                                        </div>
+
                                     </div>
 
-                                    <div className="form-group mt-3">
-                                        <label className="form-label">Encargado</label>
-                                        <select className="form-select" required ref={sellerRef}>
-                                            <option value="">Seleccione el encargado de la venta</option>
-                                            {sellerList}
-                                        </select>
-                                    </div>
-
-                                </div>
-
-                                <div className="d-flex justify-content-around">
-                                    <div className="form-group">
-                                        <label className="col-form-label mt-4">ID Cliente</label>
-                                        <input ref={clientIdRef} required type="text" className="form-control" placeholder="" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-form-label mt-4">Nombre del Cliente</label>
-                                        <input ref={clientNameRef} required type="text" className="form-control" placeholder="" onKeyPress={(e) => { !/^[a-zA-Z ]+$/.test(e.key) && e.preventDefault() }} />
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-form-label mt-4">Fecha</label>
-                                        <input ref={saleDateRef} required type="date" className="form-control" />
+                                    <div className="d-flex justify-content-between">
+                                        <div className="form-group">
+                                            <label className="col-form-label mt-4">ID Cliente</label>
+                                            <input ref={clientIdRef} required type="text" className="form-control input-venta" placeholder="" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="col-form-label mt-4">Nombre del Cliente</label>
+                                            <input ref={clientNameRef} required type="text" className="form-control input-venta" placeholder="" onKeyPress={(e) => { !/^[a-zA-Z ]+$/.test(e.key) && e.preventDefault() }} />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="col-form-label mt-4">Fecha</label>
+                                            <input ref={saleDateRef} required type="date" className="form-control input-venta" />
+                                        </div>
                                     </div>
                                 </div>
 
@@ -554,7 +557,7 @@ const Ventas = () => {
                     </div>
                 </div>
             </div>
-           
+
         </>
     )
 }
