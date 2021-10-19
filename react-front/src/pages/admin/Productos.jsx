@@ -1,6 +1,8 @@
-import { useState, useRef, useEffect } from "react"
-import { prodRef, userRef, saleRef, db } from "components/FirebaseInfo";
+import { useState, useRef } from "react"
+import { prodRef, db } from "components/FirebaseInfo";
 import { BsPencil, BsXCircle } from "react-icons/bs";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Firebae Imports
 import { getDocs, query, where, setDoc, doc, deleteDoc, updateDoc } from "firebase/firestore";
@@ -24,8 +26,6 @@ const Productos = () => {
     const [modifyForm, setModifyForm] = useState()
     const [headerRow, setHeaderRow] = useState();
 
-    // TO DO Fix this maybe
-
     const addProduct = async (e) => {
         e.preventDefault()
         // query ref
@@ -48,10 +48,10 @@ const Productos = () => {
                 estado: estadoRef.current.value
             });
             // TO DO - show notification on sucess
-            alert('works')
+            toast.success("¡Producto agregado con éxito!");
         } else {
             // TO DO - show notification on failure
-            alert('nope')
+            toast.error("No se pudo crear el producto");
         }
     }
 
@@ -78,7 +78,7 @@ const Productos = () => {
         })
     }
 
-    // Martha
+    //
     const handleSearch = async (e) => {
         e.preventDefault();
         setSearchResult();
@@ -125,6 +125,7 @@ const Productos = () => {
         const deleteRef = doc(db, 'productos', id)
         await deleteDoc(deleteRef);
         //TO DO make notifiaction
+        toast.warning("Producto eliminado");
         setSearchResult();
     }
 
@@ -147,7 +148,7 @@ const Productos = () => {
         }
 
         let valUni = prodData.valUni;
-        const setValorUni = (value) => {
+        const setValUni = (value) => {
             valUni = value;
         }
 
@@ -160,7 +161,7 @@ const Productos = () => {
                 desc: desc,
                 valUni: valUni,
             })
-            alert("It Works")
+            toast.success("Producto modificado con éxito");
         }
 
         setTabTitle('Modificar Producto');
@@ -187,7 +188,7 @@ const Productos = () => {
 
                     <div className="form-group mt-3">
                         <label className="form-label">Valor Unitario</label>
-                        <input placeholder={prodData.valUni} defaultValue={prodData.valUni} type="text" className="form-control" onChange={(e) => setValorUni(e.target.value)} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                        <input placeholder={prodData.valUni} defaultValue={prodData.valUni} type="text" className="form-control" onChange={(e) => setValUni(e.target.value)} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
                     </div>
 
                     <div className="form-group mt-3">
@@ -199,7 +200,7 @@ const Productos = () => {
                     </div>
                 </div>
 
-                <div className="d-flex justify-content-center">
+                <div className="d-flex justify-content-center mt-3">
                     <button type="button" className="btn btn-sm btn-success" onClick={() => { modifyProd(prodId) }}>Modificar</button>
                     <button type="button" className="btn btn-sm btn-warning" onClick={() => { clearForm() }}>Cancelar</button>
                 </div>
@@ -257,13 +258,13 @@ const Productos = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label htmlFor="descripcion" className="form-label mt-4">Descripcion</label>
+                                    <label htmlFor="descripcion" className="form-label mt-4">Descripción</label>
                                     <textarea className="form-control" ref={desRef} rows="3" required></textarea>
                                 </div>
 
                                 <div className="form-group">
                                     <label className="col-form-label mt-4" for="valorUnitario">Valor Unitario</label>
-                                    <input className="form-control"  ref={vuRef} required onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                                    <input className="form-control" ref={vuRef} required onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
                                 </div>
 
                                 <div className="form-group mb-5">
@@ -306,7 +307,7 @@ const Productos = () => {
                             </thead>
                             <tbody id="searchByResult">
                                 {searchResult}
-                                {/* results */}
+
                             </tbody>
                         </table>
                         {modifyForm}
@@ -331,6 +332,7 @@ const Productos = () => {
                 </div>
 
             </div>
+            <ToastContainer position="bottom-center" autoClose={2000} />
         </>
     )
 }
