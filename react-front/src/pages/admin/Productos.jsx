@@ -1,9 +1,9 @@
 import { useState, useRef } from "react"
-import { prodRef } from "components/FirebaseInfo";
+import { prodRef, db } from "components/FirebaseInfo";
 import { BsPencil, BsXCircle } from "react-icons/bs";
 
 // Firebae Imports
-import { getDocs, query, where, setDoc, doc } from "firebase/firestore";
+import { updateDoc, deleteDoc, getDocs, query, where, setDoc, doc, startAt, endAt, orderBy } from "firebase/firestore";
 import { toast } from "react-toastify";
 
 
@@ -90,33 +90,135 @@ const Productos = () => {
                 <th scope="col">Action</th>
             </tr>)
 
-        const q = query(prodRef, where(searchOptionRef.current.value, "==", searchRef.current.value))
+        let q;
+
+        if (searchOptionRef.current.value === "id") {
+            q = query(prodRef, where(searchOptionRef.current.value, "==", searchRef.current.value))
+        }
+        if (searchOptionRef.current.value === "desc") {
+            q = query(prodRef, orderBy(searchOptionRef.current.value), startAt(searchRef.current.value), endAt(searchRef.current.value + "\uf8ff"))
+        }
+
         const qData = await getDocs(q);
 
         qData.forEach((doc) => {
             setSearchResult((searchResult) => (
                 <>
                     {searchResult}
-                    <td>{doc.data().id}</td>
-                    <td>{doc.data().name}</td>
-                    <td>{doc.data().desc}</td>
-                    <td>{doc.data().estado}</td>
-                    <td>{doc.data().valUni}</td>
-                    <td>{doc.data().estado}</td>
-                    <td>
-                        {/* TO DO make pretty buttons*/}
-                        <button className='btn btn-info btn-sm m-1' onClick={() => modifyProdForm(doc.id, doc.data())}><BsPencil />Modificar</button>
-                        <button className='btn btn-warning btn-sm m-1' onClick={() => deleteProd(doc.id)}><BsXCircle />Eliminar</button>
-                    </td>
-
+                    <tr>
+                        <td>{doc.data().id}</td>
+                        <td>{doc.data().name}</td>
+                        <td>{doc.data().desc}</td>
+                        <td>{doc.data().valUni}</td>
+                        <td>{doc.data().estado}</td>
+                        <td>
+                            {/* TO DO make pretty buttons*/}
+                            <button className='btn btn-info btn-sm m-1' onClick={() => modifyProdForm(doc.id, doc.data())}><BsPencil />Modificar</button>
+                            <button className='btn btn-warning btn-sm m-1' onClick={() => deleteProd(doc.id)}><BsXCircle />Eliminar</button>
+                        </td>
+                    </tr>
                 </>
             ))
         }
         )
     }
 
+    const deleteProd = async (id) => {
+        const deleteRef = doc(db, 'productos', id)
+        await deleteDoc(deleteRef);
+        //TO DO make notifiaction
+        toast.warning("Producto eliminado");
+        setTabTitle();
+        setModifyForm();
+    }
+
+    const modifyProdForm = (prodId, prodData) => {
+
+        let estado = prodData.estado;
+        const setEstado = (value) => {
+            estado = value;
+        }
+
+        let name = prodData.name;
+        const setName = (value) => {
+            name = value;
+        }
+
+        let desc = prodData.desc;
+        const setDesc = (value) => {
+            desc = value;
+        }
+
+        let valUni = prodData.valUni;
+        const setValUni = (value) => {
+            valUni = value;
+        }
+
+        const modifyProd = async (id) => {
+
+            const updateRef = doc(db, 'productos', id)
+            await updateDoc(updateRef, {
+                estado: estado,
+                name: name,
+                desc: desc,
+                valUni: valUni,
+            })
+            toast.success("Producto modificado con éxito");
+            setTabTitle();
+            setModifyForm();
+        }
+
+        setTabTitle('Modificar Producto');
+        setHeaderRow();
+        setSearchResult();
+        setModifyForm(
+            <form className="px-3">
+                <div className='d-flex flex-column'>
+
+                    <div className="form-group">
+                        <label className="col-form-label">ID Producto</label>
+                        <input placeholder={prodData.id} disabled type="text" className="form-control" onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                    </div>
+
+                    <div className="form-group mt-3">
+                        <label className="form-label">Nombre</label>
+                        <input placeholder={prodData.name} defaultValue={prodData.name} type="text" className="form-control" onChange={(e) => setName(e.target.value)} onKeyPress={(e) => { !/^[a-zA-Z ]+$/.test(e.key) && e.preventDefault() }} />
+                    </div>
+
+                    <div className="form-group mt-3">
+                        <label className="form-label">Descripción</label>
+                        <input placeholder={prodData.desc} defaultValue={prodData.desc} type="text" className="form-control" onChange={(e) => setDesc(e.target.value)} />
+                    </div>
+
+                    <div className="form-group mt-3">
+                        <label className="form-label">Valor Unitario</label>
+                        <input placeholder={prodData.valUni} defaultValue={prodData.valUni} type="text" className="form-control" onChange={(e) => setValUni(e.target.value)} onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                    </div>
+
+                    <div className="form-group mt-3">
+                        <label className="form-label">Estado</label>
+                        <select className="form-select" onChange={(e) => setEstado(e.target.value)} defaultValue={prodData.estado}>
+                            <option value="Disponible">Disponible</option>
+                            <option value="No disponible">No disponible</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div className="d-flex justify-content-center mt-3">
+                    <button type="button" className="btn btn-sm btn-success" onClick={() => { modifyProd(prodId) }}>Modificar</button>
+                    <button type="button" className="btn btn-sm btn-warning" onClick={() => { clearForm() }}>Cancelar</button>
+                </div>
+
+            </form >
+        )
+
+    }
 
 
+    const clearForm = () => {
+        setTabTitle();
+        setModifyForm();
+    }
 
 
 
@@ -190,7 +292,7 @@ const Productos = () => {
 
                     <div className="tab-pane fade" id="tab2">
 
-                        <form className="d-flex mt-2" onClick={handleSearch}>
+                        <form className="d-flex mt-2" onSubmit={handleSearch}>
                             <input className="form-control me-sm-2" placeholder="Id o descripcion del producto" ref={searchRef} />
                             <div className="form-group">
                                 <select className="form-select" ref={searchOptionRef}>

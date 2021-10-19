@@ -25,7 +25,7 @@ const Usuarios = () => {
             rol: rol
         })
         // TO DO better notification
-        alert("It works")
+        toast("It works")
     }
 
     const modifyUserForm = (userId, userData) => {
