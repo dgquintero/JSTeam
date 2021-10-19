@@ -1,7 +1,6 @@
 import Logo from 'media/logo.svg'
 import { useRef } from 'react'
 import { auth, provider, userRef } from './FirebaseInfo'
-import ToastNotification from './ToastNotification';
 
 // Firebase imports
 import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';

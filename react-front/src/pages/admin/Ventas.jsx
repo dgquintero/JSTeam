@@ -202,7 +202,7 @@ const Ventas = () => {
                 <th scope="col">Fecha</th>
                 <th scope="col">Estado</th>
                 <th scope="col">Valor Total</th>
-                <th scope="col">Action</th>
+                <th scope="col">Acción</th>
             </tr>
         )
 

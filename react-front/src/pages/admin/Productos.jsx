@@ -7,8 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 // Firebae Imports
 import { getDocs, query, where, setDoc, doc, deleteDoc, updateDoc } from "firebase/firestore";
 
-
-
 const Productos = () => {
 
     const [listResults, setListResults] = useState()
@@ -22,12 +20,13 @@ const Productos = () => {
     const searchRef = useRef();
     const searchOptionRef = useRef();
 
-    const [searchResult, setSearchResult] = useState()
-    const [modifyForm, setModifyForm] = useState()
+    const [searchResult, setSearchResult] = useState();
+    const [modifyForm, setModifyForm] = useState();
     const [headerRow, setHeaderRow] = useState();
 
     const addProduct = async (e) => {
         e.preventDefault()
+
         // query ref
         const q = query(prodRef, where("id", "==", idRef.current.value))
         const qData = await getDocs(q);
@@ -49,6 +48,7 @@ const Productos = () => {
             });
             // TO DO - show notification on sucess
             toast.success("¡Producto agregado con éxito!");
+            e.target.reset();
         } else {
             // TO DO - show notification on failure
             toast.error("No se pudo crear el producto");
@@ -91,7 +91,7 @@ const Productos = () => {
                 <th scope="col">Descripción</th>
                 <th scope="col">Valor Unitario</th>
                 <th scope="col">Estado</th>
-                <th scope="col">Action</th>
+                <th scope="col">Acción</th>
             </tr>
         )
 
@@ -131,7 +131,6 @@ const Productos = () => {
 
     const modifyProdForm = (prodId, prodData) => {
 
-
         let estado = prodData.estado;
         const setEstado = (value) => {
             estado = value;
@@ -168,7 +167,7 @@ const Productos = () => {
         setHeaderRow();
         setSearchResult();
         setModifyForm(
-            <form>
+            <form className="px-3">
                 <div className='d-flex flex-column'>
 
                     <div className="form-group">
@@ -241,8 +240,8 @@ const Productos = () => {
 
                     <div className="tab-pane fade active show" id="tab1">
 
-                        <form className="p-3" onSubmit={addProduct}>
-                            <fieldset>
+                        <form className="p-3" onSubmit={addProduct} >
+                            <fieldset >
                                 <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores iure ab dignissimos,
                                     nisi fugiat ad est recusandae ducimus optio. Vel facere labore sunt voluptatem beatae
                                     suscipit esse minus nisi quisquam?</div>
@@ -291,7 +290,7 @@ const Productos = () => {
                             <div className="form-group">
                                 <select className="form-select" ref={searchOptionRef}>
                                     <option value='id'>ID Producto</option>
-                                    <option value='descripcion'>Descripcion Producto</option>
+                                    <option value='descripcion'>Descripción Producto</option>
                                 </select>
                             </div>
                             <button className="btn btn-success my-2 my-sm-0" type="submit" >Buscar</button>
@@ -307,7 +306,6 @@ const Productos = () => {
                             </thead>
                             <tbody id="searchByResult">
                                 {searchResult}
-
                             </tbody>
                         </table>
                         {modifyForm}
@@ -319,7 +317,7 @@ const Productos = () => {
                                 <tr>
                                     <th scope="col">ID</th>
                                     <th scope="col">Nombre</th>
-                                    <th scope="col">Descripcion</th>
+                                    <th scope="col">Descripción</th>
                                     <th scope="col">Valor Unitario</th>
                                     <th scope="col">Estado</th>
                                 </tr>
