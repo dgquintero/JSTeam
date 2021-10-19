@@ -1,14 +1,19 @@
 import { useState, useRef } from "react"
 import { prodRef } from "components/FirebaseInfo";
+import { BsPencil, BsXCircle } from "react-icons/bs";
 
 // Firebae Imports
 import { getDocs, query, where, setDoc, doc } from "firebase/firestore";
+import { toast } from "react-toastify";
 
 
 const Productos = () => {
 
     const [listResults, setListResults] = useState()
     const [tabTitle, setTabTitle] = useState()
+    const [headerRow, setHeaderRow] = useState()
+    const [searchResult, setSearchResult] = useState()
+    const [modifyForm, setModifyForm] = useState()
 
     const idRef = useRef();
     const nameRef = useRef();
@@ -40,15 +45,15 @@ const Productos = () => {
                 estado: estadoRef.current.value
             });
             // TO DO - show notification on sucess
-            alert('works')
+            toast.success('Se Registro el Producto')
         } else {
             // TO DO - show notification on failure
-            alert('nope')
+            toast.error('Ya existe un producto relacionado con ese ID')
         }
     }
 
     const listAllProducts = async () => {
-        
+
         setListResults();
         const q = query(prodRef);
         const qData = await getDocs(q);
@@ -69,6 +74,48 @@ const Productos = () => {
             )
         })
     }
+
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        setSearchResult();
+        setModifyForm();
+        setTabTitle('Resultado de la busqueda');
+        setHeaderRow(
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Valor Unitario</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Action</th>
+            </tr>)
+
+        const q = query(prodRef, where(searchOptionRef.current.value, "==", searchRef.current.value))
+        const qData = await getDocs(q);
+
+        qData.forEach((doc) => {
+            setSearchResult((searchResult) => (
+                <>
+                    {searchResult}
+                    <td>{doc.data().id}</td>
+                    <td>{doc.data().name}</td>
+                    <td>{doc.data().desc}</td>
+                    <td>{doc.data().estado}</td>
+                    <td>{doc.data().valUni}</td>
+                    <td>{doc.data().estado}</td>
+                    <td>
+                        {/* TO DO make pretty buttons*/}
+                        <button className='btn btn-info btn-sm m-1' onClick={() => modifyProdForm(doc.id, doc.data())}><BsPencil />Modificar</button>
+                        <button className='btn btn-warning btn-sm m-1' onClick={() => deleteProd(doc.id)}><BsXCircle />Eliminar</button>
+                    </td>
+
+                </>
+            ))
+        }
+        )
+    }
+
+
 
 
 
@@ -106,7 +153,7 @@ const Productos = () => {
 
                                 <div className="form-group">
                                     <label className="col-form-label mt-4" htmlFor="inputId">ID</label>
-                                    <input type="text" className="form-control" placeholder="" ref={idRef} required onKeyPress={(e) => {!/[0-9]/.test(e.key) && e.preventDefault() }}/>
+                                    <input type="text" className="form-control" placeholder="" ref={idRef} required onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
                                 </div>
 
                                 <div className="form-group">
@@ -121,7 +168,7 @@ const Productos = () => {
 
                                 <div className="form-group">
                                     <label className="col-form-label mt-4" for="valorUnitario">Valor Unitario</label>
-                                    <input className="form-control" placeholder="Valor unitario" ref={vuRef} required onKeyPress={(e) => {!/[0-9]/.test(e.key) && e.preventDefault() }}/>
+                                    <input className="form-control" placeholder="Valor unitario" ref={vuRef} required onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
                                 </div>
 
                                 <div className="form-group mb-5">
@@ -143,12 +190,12 @@ const Productos = () => {
 
                     <div className="tab-pane fade" id="tab2">
 
-                        <form className="d-flex mt-2">
+                        <form className="d-flex mt-2" onClick={handleSearch}>
                             <input className="form-control me-sm-2" placeholder="Id o descripcion del producto" ref={searchRef} />
                             <div className="form-group">
                                 <select className="form-select" ref={searchOptionRef}>
                                     <option value='id'>ID Producto</option>
-                                    <option value='descripcion'>Descripcion Producto</option>
+                                    <option value='desc'>Descripcion Producto</option>
                                 </select>
                             </div>
                             <button className="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
@@ -160,21 +207,13 @@ const Productos = () => {
 
                         <table className="table table-hover">
                             <thead>
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Descripcion</th>
-                                    <th scope="col">Valor Unitario</th>
-                                    <th scope="col">Estado</th>
-                                    <th scope="col">Action</th>
-                                </tr>
+                                {headerRow}
                             </thead>
                             <tbody id="searchByResult">
-
-
-
+                                {searchResult}
                             </tbody>
                         </table>
+                        {modifyForm}
                     </div>
 
                     <div className="tab-pane fade" id="tab3">
