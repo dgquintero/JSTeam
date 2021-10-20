@@ -1,16 +1,19 @@
 import { useState, useRef } from "react"
 import { prodRef, db } from "components/FirebaseInfo";
 import { BsPencil, BsXCircle } from "react-icons/bs";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 // Firebae Imports
-import { getDocs, query, where, setDoc, doc, deleteDoc, updateDoc } from "firebase/firestore";
+import { updateDoc, deleteDoc, getDocs, query, where, setDoc, doc, startAt, endAt, orderBy } from "firebase/firestore";
+import { toast } from "react-toastify";
+
 
 const Productos = () => {
 
     const [listResults, setListResults] = useState()
     const [tabTitle, setTabTitle] = useState()
+    const [headerRow, setHeaderRow] = useState()
+    const [searchResult, setSearchResult] = useState()
+    const [modifyForm, setModifyForm] = useState()
 
     const idRef = useRef();
     const nameRef = useRef();
@@ -19,10 +22,6 @@ const Productos = () => {
     const estadoRef = useRef();
     const searchRef = useRef();
     const searchOptionRef = useRef();
-
-    const [searchResult, setSearchResult] = useState();
-    const [modifyForm, setModifyForm] = useState();
-    const [headerRow, setHeaderRow] = useState();
 
     const addProduct = async (e) => {
         e.preventDefault()
@@ -47,11 +46,10 @@ const Productos = () => {
                 estado: estadoRef.current.value
             });
             // TO DO - show notification on sucess
-            toast.success("¡Producto agregado con éxito!");
-            e.target.reset();
+            toast.success('Se registró el Producto')
         } else {
             // TO DO - show notification on failure
-            toast.error("No se pudo crear el producto");
+            toast.error('Ya existe un producto relacionado con ese ID')
         }
     }
 
@@ -78,7 +76,6 @@ const Productos = () => {
         })
     }
 
-    //
     const handleSearch = async (e) => {
         e.preventDefault();
         setSearchResult();
@@ -91,11 +88,18 @@ const Productos = () => {
                 <th scope="col">Descripción</th>
                 <th scope="col">Valor Unitario</th>
                 <th scope="col">Estado</th>
-                <th scope="col">Acción</th>
-            </tr>
-        )
+                <th scope="col">Action</th>
+            </tr>)
 
-        const q = query(prodRef, where(searchOptionRef.current.value, "==", searchRef.current.value))
+        let q;
+
+        if (searchOptionRef.current.value === "id") {
+            q = query(prodRef, where(searchOptionRef.current.value, "==", searchRef.current.value))
+        }
+        if (searchOptionRef.current.value === "desc") {
+            q = query(prodRef, orderBy(searchOptionRef.current.value), startAt(searchRef.current.value), endAt(searchRef.current.value + "\uf8ff"))
+        }
+
         const qData = await getDocs(q);
 
         qData.forEach((doc) => {
@@ -116,9 +120,8 @@ const Productos = () => {
                     </tr>
                 </>
             ))
-
-        })
-
+        }
+        )
     }
 
     const deleteProd = async (id) => {
@@ -126,7 +129,8 @@ const Productos = () => {
         await deleteDoc(deleteRef);
         //TO DO make notifiaction
         toast.warning("Producto eliminado");
-        setSearchResult();
+        setTabTitle();
+        setModifyForm();
     }
 
     const modifyProdForm = (prodId, prodData) => {
@@ -161,6 +165,8 @@ const Productos = () => {
                 valUni: valUni,
             })
             toast.success("Producto modificado con éxito");
+            setTabTitle();
+            setModifyForm();
         }
 
         setTabTitle('Modificar Producto');
@@ -209,11 +215,11 @@ const Productos = () => {
 
     }
 
+
     const clearForm = () => {
         setTabTitle();
         setModifyForm();
     }
-    // 
 
     return (
         <>
@@ -263,7 +269,7 @@ const Productos = () => {
 
                                 <div className="form-group">
                                     <label className="col-form-label mt-4" for="valorUnitario">Valor Unitario</label>
-                                    <input className="form-control" ref={vuRef} required onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
+                                    <input className="form-control" placeholder="Valor unitario" ref={vuRef} required onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
                                 </div>
 
                                 <div className="form-group mb-5">
@@ -290,7 +296,7 @@ const Productos = () => {
                             <div className="form-group">
                                 <select className="form-select" ref={searchOptionRef}>
                                     <option value='id'>ID Producto</option>
-                                    <option value='descripcion'>Descripción Producto</option>
+                                    <option value='desc'>Descripcion Producto</option>
                                 </select>
                             </div>
                             <button className="btn btn-success my-2 my-sm-0" type="submit" >Buscar</button>
@@ -330,7 +336,6 @@ const Productos = () => {
                 </div>
 
             </div>
-            <ToastContainer position="bottom-center" autoClose={2000} />
         </>
     )
 }
