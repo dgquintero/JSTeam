@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
 import {
     getFirestore,
     collection,
@@ -8,7 +8,7 @@ import {
     getDocs,
     setDoc,
     doc,
-    getDoc
+    getDoc    
 } from "firebase/firestore"
 
 
@@ -67,12 +67,12 @@ export const guardarDatabaseWithId = async (nombreDatabase, id, data) => {
   };
 
 
-const recuperarDoc = async (q) => {
+const recuperarDoc = async (q,id) => {
     try {
         const querySnapshot = await getDocs(q);
-        console.log(querySnapshot);
-        querySnapshot.forEach((doc) => {
-            if (doc.email) {
+        console.log("query", querySnapshot);
+        querySnapshot.forEach((doc) => {            
+            if (doc.id === id) {
                 isReg = true;
             } else {
                 isReg = false;
@@ -104,8 +104,7 @@ export const signGoogle = async (result) => {
             // const token = credential.accessToken;
 
             const q = query(userRef, where("email", "==", result.user.email))
-            recuperarDoc(q)
-
+            recuperarDoc(q,result.user.uid)
         }).catch((error) => {
             throw new Error(error)
         });
@@ -114,15 +113,18 @@ export const signGoogle = async (result) => {
 
 export const consultarDocumentoDatabase = async (nombreDatabase, id) => {
     try {
-      const response = await getDoc(doc(userRef, id));
-      const document = {
-        id: response.id,
-        ...response.data(),
+        
+            const response = await getDoc(doc(userRef, id));
+        const document = {
+          id: response.id,
+          ...response.data(),
       };
       // console.log(document);
       return document;
+        
+        
     } catch (error) {
-      throw new Error(error.message);
+    //   throw new Error(error.message);
     }
   };
 
@@ -131,7 +133,18 @@ onAuthStateChanged(auth, (user) => {
     if (user) {
       usuario = user
     } else {
-      usuario = undefined
+    //   usuario = undefined
     }
   
   })
+
+
+  export const logOutUsuario = async () => {
+    try {
+      const respuesta = await signOut(auth)
+      console.log(respuesta);
+      // console.log('Me sali...!');
+    } catch (e) {
+      throw new Error(e)
+    }
+  }

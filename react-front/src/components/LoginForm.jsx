@@ -1,17 +1,18 @@
 import Logo from 'media/logo.svg'
 import { consultarDocumentoDatabase, signGoogle, usuario } from './FirebaseInfo'
 import { toast } from "react-toastify";
+import { useHistory } from 'react-router';
 
 
 const LoginForm = () => {
 
-    // let history = useHistory();
+    let history = useHistory();
 
 
+   
 
-    const handleClick = async(e) => {
 
-        
+    const handleClick = async(e) => {        
 
         e.preventDefault()        
         signGoogle()     
@@ -20,14 +21,22 @@ const LoginForm = () => {
         console.log(usuario.displayName);
         console.log(usuario.photoURL); */
         
-        const usuarioDatabase = await consultarDocumentoDatabase('usuarios',usuario.uid)
+        if(usuario?.uid){
+            const usuarioDatabase = await consultarDocumentoDatabase('usuarios',usuario.uid)
 
+            if(usuarioDatabase.estado !== "Autorizado") {
+                toast.warning('Al usuario aun no se le ha asignado un rol',{position: "bottom-center"})         
+            }  else{ 
+
+                if(usuarioDatabase.rol === "Administrador")  {history.push('/admin') } 
+                if(usuarioDatabase.rol === "Vendedor")  {history.push('/vendedor') }            
+
+                
+        }
+            
+    }
+    
         
-        if(usuarioDatabase.estado === "Pendiente") {
-            toast.warning('Al usuario aun no se le ha asignado un rol',{position: "bottom-center"})
-        }      
-        
-        // history.push('/pageAd')   
 
     }
     return (
