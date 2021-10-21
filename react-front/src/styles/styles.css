@@ -37,4 +37,11 @@ hr {
     width: 250px;
 }
 
+.input-venta, .select-venta {
+    width: 240px !important;
+}
+
+.container {
+    padding-left: 0;
+}
 

@@ -25,6 +25,7 @@ const Productos = () => {
 
     const addProduct = async (e) => {
         e.preventDefault()
+
         // query ref
         const q = query(prodRef, where("id", "==", idRef.current.value))
         const qData = await getDocs(q);
@@ -45,7 +46,7 @@ const Productos = () => {
                 estado: estadoRef.current.value
             });
             // TO DO - show notification on sucess
-            toast.success('Se Registro el Producto')
+            toast.success('Se registró el Producto')
         } else {
             // TO DO - show notification on failure
             toast.error('Ya existe un producto relacionado con ese ID')
@@ -84,7 +85,7 @@ const Productos = () => {
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Nombre</th>
-                <th scope="col">Descripcion</th>
+                <th scope="col">Descripción</th>
                 <th scope="col">Valor Unitario</th>
                 <th scope="col">Estado</th>
                 <th scope="col">Action</th>
@@ -220,8 +221,6 @@ const Productos = () => {
         setModifyForm();
     }
 
-
-
     return (
         <>
             <div className="m-4 overflow-auto">
@@ -247,8 +246,8 @@ const Productos = () => {
 
                     <div className="tab-pane fade active show" id="tab1">
 
-                        <form className="p-3" onSubmit={addProduct}>
-                            <fieldset>
+                        <form className="p-3" onSubmit={addProduct} >
+                            <fieldset >
                                 <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores iure ab dignissimos,
                                     nisi fugiat ad est recusandae ducimus optio. Vel facere labore sunt voluptatem beatae
                                     suscipit esse minus nisi quisquam?</div>
@@ -264,7 +263,7 @@ const Productos = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label htmlFor="descripcion" className="form-label mt-4">Descripcion</label>
+                                    <label htmlFor="descripcion" className="form-label mt-4">Descripción</label>
                                     <textarea className="form-control" ref={desRef} rows="3" required></textarea>
                                 </div>
 
@@ -293,14 +292,14 @@ const Productos = () => {
                     <div className="tab-pane fade" id="tab2">
 
                         <form className="d-flex mt-2" onSubmit={handleSearch}>
-                            <input className="form-control me-sm-2" placeholder="Id o descripcion del producto" ref={searchRef} />
+                            <input className="form-control me-sm-2" placeholder="Id o descripción del producto" ref={searchRef} />
                             <div className="form-group">
                                 <select className="form-select" ref={searchOptionRef}>
                                     <option value='id'>ID Producto</option>
                                     <option value='desc'>Descripcion Producto</option>
                                 </select>
                             </div>
-                            <button className="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
+                            <button className="btn btn-success my-2 my-sm-0" type="submit" >Buscar</button>
                         </form>
 
                         <hr />
@@ -324,7 +323,7 @@ const Productos = () => {
                                 <tr>
                                     <th scope="col">ID</th>
                                     <th scope="col">Nombre</th>
-                                    <th scope="col">Descripcion</th>
+                                    <th scope="col">Descripción</th>
                                     <th scope="col">Valor Unitario</th>
                                     <th scope="col">Estado</th>
                                 </tr>

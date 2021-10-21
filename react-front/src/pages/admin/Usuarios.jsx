@@ -34,7 +34,7 @@ const Usuarios = () => {
         setHeaderRow();
         setSearchResult();
         setModifyForm(
-            <form>
+            <form className="px-3">
                 <div className='form-group'>
                     <label className="col-form-label mt-4">Email</label>
                     <input type="text" className="form-control" placeholder={userData.email} readOnly />
@@ -61,8 +61,11 @@ const Usuarios = () => {
                         <option value="No Asignado">No Asignado</option>
                     </select>
                 </div>
-                <button type="button" className="btn btn-sm btn-success" onClick={() => { modifyUser(userId) }}>Modificar</button>
-                <button type="button" className="btn btn-sm btn-warning" onClick={() => { clearForm() }}>Cancelar</button>
+                <div className="mt-3">
+                    <button type="button" className="btn btn-sm btn-success" onClick={() => { modifyUser(userId) }}>Modificar</button>
+                    <button type="button" className="btn btn-sm btn-warning" onClick={() => { clearForm() }}>Cancelar</button>
+                </div>
+
             </form>
         )
     }
@@ -126,7 +129,7 @@ const Usuarios = () => {
         const deleteRef = doc(db, 'usuarios', id)
         await deleteDoc(deleteRef);
         // Reset results
-        setSearchResult();        
+        setSearchResult();
     }
 
     const listAllUsers = async () => {

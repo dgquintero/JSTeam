@@ -1,5 +1,11 @@
 import Logo from 'media/logo.svg'
+
+// import { useRef } from 'react'
+// import { auth, provider, userRef } from './FirebaseInfo'
+
+
 import { signGoogle } from './FirebaseInfo'
+
 
 
 
