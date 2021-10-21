@@ -51,9 +51,9 @@ const Sidebar = () => {
                     <Link to="#" className="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
                         id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src={usuarioActivoPic} alt="" width="32" height="32" className="rounded-circle me-2" />
-                        <strong>{usuarioActivoName}</strong>
-                        <span className="fst-italic">({usuarioActivoRol})</span>
+                        <strong>{usuarioActivoName}</strong>                        
                     </Link>
+                    <span className="fst-italic">({usuarioActivoRol})</span>                    
                     <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
                         <li><Link className="dropdown-item" to="/" onClick={handleClick}>Salir</Link></li>
                     </ul>
