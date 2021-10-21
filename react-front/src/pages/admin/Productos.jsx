@@ -268,12 +268,12 @@ const Productos = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="col-form-label mt-4" for="valorUnitario">Valor Unitario</label>
+                                    <label className="col-form-label mt-4" htmlfor="valorUnitario">Valor Unitario</label>
                                     <input className="form-control" placeholder="Valor unitario" ref={vuRef} required onKeyPress={(e) => { !/[0-9]/.test(e.key) && e.preventDefault() }} />
                                 </div>
 
                                 <div className="form-group mb-5">
-                                    <label for="estado" className="form-label mt-4">Estado del Producto</label>
+                                    <label htmlfor="estado" className="form-label mt-4">Estado del Producto</label>
                                     <select className="form-select" ref={estadoRef}>
                                         <option value="Disponible">Disponible</option>
                                         <option value="No Disponible">No Disponible</option>

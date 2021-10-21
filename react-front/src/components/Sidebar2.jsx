@@ -1,10 +1,38 @@
 import Logo from 'media/logo.svg'
-import FotoPerfil from 'media/pp2.jpg'
 import { Link } from 'react-router-dom';
 import SidebarLink from "components/SidebarLink";
-
+import { consultarDocumentoDatabase, logOutUsuario, usuario } from './FirebaseInfo';
+import { useState, useEffect } from 'react';
 
 const Sidebar = () => {
+
+    const [usuarioActivoRol, setUsuarioActivoRol] = useState("")
+    const [usuarioActivoName, setUsuarioActivoName] = useState("")
+    const [usuarioActivoPic, setUsuarioActivoPic] = useState("")
+
+    const consultarUsuario = async (idUsuario) => {
+       
+        setUsuarioActivoPic(usuario.photoURL)
+        const regUserAct = await consultarDocumentoDatabase('listaUsuarios', idUsuario)
+        setUsuarioActivoRol(regUserAct.rol)
+        setUsuarioActivoName(regUserAct.nombre)
+        
+        
+    }
+    
+
+    useEffect(() => {
+        consultarUsuario(usuario.uid)
+    }, [])
+
+   
+
+    const handleClick = () => {
+        logOutUsuario()
+    }
+
+
+
     return (
         <>
             <div className="sidebar_container d-flex flex-column flex-shrink-0 p-3 bg-light" style={{ width: 250 + 'px' }}>
@@ -14,25 +42,20 @@ const Sidebar = () => {
                 </Link>
                 <hr/>
                 <ul className="nav nav-pills flex-column mb-auto">
-                    <SidebarLink nombre='Home' enlace='/vendedor'></SidebarLink>
-                    <SidebarLink nombre='Ventas' enlace='/vendedor/ventas'></SidebarLink>
+                    <SidebarLink nombre='Home' enlace='/'></SidebarLink>
+                    <SidebarLink nombre='Ventas' enlace='/ventas'></SidebarLink>
                 </ul>
                 <hr/>
                 {/* Sidebar User */}
                 <div className="dropdown">
                     <Link to="#" className="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
                         id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src={FotoPerfil} alt="" width="32" height="32" className="rounded-circle me-2" />
-                        <strong>Usuario</strong>
-                        <span className="fst-italic">(Rol)</span>
+                        <img src={usuarioActivoPic} alt="" width="32" height="32" className="rounded-circle me-2" />
+                        <strong>{usuarioActivoName}</strong>                        
                     </Link>
+                    <span className="fst-italic">({usuarioActivoRol})</span>                    
                     <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                        <li><Link className="dropdown-item" to="#">Perfil</Link></li>
-                        <li><Link className="dropdown-item" to="#">Configuración</Link></li>
-                        <li>
-                            <hr className="dropdown-divider" />
-                        </li>
-                        <li><Link className="dropdown-item" to="/">Salir</Link></li>
+                        <li><Link className="dropdown-item" to="/" onClick={handleClick}>Salir</Link></li>
                     </ul>
                 </div>
             </div>
