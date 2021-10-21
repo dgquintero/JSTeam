@@ -67,17 +67,19 @@ export const guardarDatabaseWithId = async (nombreDatabase, id, data) => {
   };
 
 
-const recuperarDoc = async (q,id) => {
+const recuperarDoc = async (q) => {
     try {
         const querySnapshot = await getDocs(q);
         console.log("query", querySnapshot);
         querySnapshot.forEach((doc) => {            
-            if (doc.id === id) {
+            if (doc.id) {
                 isReg = true;
             } else {
                 isReg = false;
             }
-        }); 
+        });    
+        
+        console.log(isReg);
 
         if (isReg === false) {
             const user = {                
@@ -102,9 +104,10 @@ export const signGoogle = async (result) => {
         .then((result) => {
             // const credential = GoogleAuthProvider.credentialFromResult(result);
             // const token = credential.accessToken;
-
+            
             const q = query(userRef, where("email", "==", result.user.email))
-            recuperarDoc(q,result.user.uid)
+            recuperarDoc(q)
+
         }).catch((error) => {
             throw new Error(error)
         });
@@ -133,7 +136,7 @@ onAuthStateChanged(auth, (user) => {
     if (user) {
       usuario = user
     } else {
-    //   usuario = undefined
+      usuario = undefined
     }
   
   })

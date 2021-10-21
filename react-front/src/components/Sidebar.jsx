@@ -43,10 +43,10 @@ const Sidebar = () => {
                 </Link>
                 <hr/>
                 <ul className="nav nav-pills flex-column mb-auto">
-                    <SidebarLink nombre='Home' enlace='/admin/home'></SidebarLink>
-                    <SidebarLink nombre='Productos' enlace='/admin/productos'></SidebarLink>
-                    <SidebarLink nombre='Ventas' enlace='/admin/ventas'></SidebarLink>
-                    <SidebarLink nombre='Usuarios' enlace='/admin/usuarios'></SidebarLink>
+                    <SidebarLink nombre='Home' enlace='/home'></SidebarLink>
+                    <SidebarLink nombre='Productos' enlace='/productos'></SidebarLink>
+                    <SidebarLink nombre='Ventas' enlace='/ventas'></SidebarLink>
+                    <SidebarLink nombre='Usuarios' enlace='/usuarios'></SidebarLink>
                 </ul>
                 <hr/>
                 {/* Sidebar User */}
