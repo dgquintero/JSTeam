@@ -1,5 +1,4 @@
 import Logo from 'media/logo.svg'
-import FotoPerfil from 'media/pp2.jpg'
 import { Link } from 'react-router-dom';
 import SidebarLink from "components/SidebarLink";
 import { consultarDocumentoDatabase, logOutUsuario, usuario } from './FirebaseInfo';

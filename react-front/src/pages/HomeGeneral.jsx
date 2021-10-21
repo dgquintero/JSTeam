@@ -12,76 +12,87 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from 'pages/Login';
 import { consultarDocumentoDatabase } from 'components/FirebaseInfo';
 import { usuario } from 'components/FirebaseInfo';
+import { Mensaje } from './Mensaje';
+
 
 export const HomeGeneral = () => {
 
 
-    const [usuarioRol, SetUsuarioRol] = useState("")
+    const [usuarioRol, setUsuarioRol] = useState("")
+    const [usuarioEstado, setusuarioEstado] = useState("")
 
-    const cargarUsuarios = async () => {      
-        const listaTemporal = await consultarDocumentoDatabase('usuarios',usuario.uid)
-
-        SetUsuarioRol(listaTemporal.rol)
+    const cargarUsuarios = async () => {
+        const listaTemporal = await consultarDocumentoDatabase('usuarios', usuario.uid)
+        setusuarioEstado(listaTemporal.estado)
+        setUsuarioRol(listaTemporal.rol)
     }
 
-    // console.log(usuarioRol);
+     console.log(usuarioRol);
+     console.log(usuarioEstado);
 
     useEffect(() => {
         cargarUsuarios()
-    }, [])  
+    }, [])
 
     return (
         <div>
             <Router>
-          <Switch> 
-               {
-                   
-                 usuarioRol==="Administrador"
-                 ?
-                 <Route path={['/', '/productos', '/ventas', '/usuarios']}>
-                 <PrivateLayout>
-                   <Switch>
-                     <Route path='/productos'>
-                       <Productos />
-                     </Route>
-                     <Route path='/ventas'>
-                       <Ventas />
-                     </Route>
-                     <Route path='/usuarios'>
-                       <Usuarios />
-                     </Route>
-                     <Route path='/'>
-                       <Home />
-                     </Route>
-                   </Switch>
-                 </PrivateLayout>
-               </Route>
-               :
-               usuarioRol ==="Vendedor"
-                ?
-                <Route path={['/', '/ventas']}>
-                <PublicLayout>
-                  <Switch>
-                    <Route path='/ventas'>
-                      <VentasVendedor />
-                    </Route>
-                    <Route path='/'>
-                      <HomeVendedor />
-                    </Route>
-                  </Switch>
-                </PublicLayout>                
-              </Route>
-              :
-              <Router>
-              <Switch>
-                <Route path="/" component={Login} />
-              </Switch>
+                <Switch>
+                    {
+
+                        usuarioRol === "Administrador" && usuarioEstado === "Autorizado"
+                            ?
+                            <Route path={['/', '/productos', '/ventas', '/usuarios']}>
+                                <PrivateLayout>
+                                    <Switch>
+                                        <Route path='/productos'>
+                                            <Productos />
+                                        </Route>
+                                        <Route path='/ventas'>
+                                            <Ventas />
+                                        </Route>
+                                        <Route path='/usuarios'>
+                                            <Usuarios />
+                                        </Route>
+                                        <Route path='/'>
+                                            <Home />
+                                        </Route>
+                                    </Switch>
+                                </PrivateLayout>
+                            </Route>
+                            :
+                            usuarioRol === "Vendedor" && usuarioEstado === "Autorizado"
+                                ?
+                                <Route path={['/', '/ventas']}>
+                                    <PublicLayout>
+                                        <Switch>
+                                            <Route path='/ventas'>
+                                                <VentasVendedor />
+                                            </Route>
+                                            <Route path='/'>
+                                                <HomeVendedor />
+                                            </Route>
+                                        </Switch>
+                                    </PublicLayout>
+                                </Route>
+                                :
+                                usuarioEstado === "Pendiente" || usuarioEstado === "No Autorizado"
+                                    ?
+                                    <Router>
+                                        <Switch>
+                                            <Route path="/" component={Mensaje} />                                            
+                                        </Switch>
+                                    </Router>
+                                    : <Router>
+                                        <Switch>
+                                            <Route path="/" component={Login} />
+                                        </Switch>
+                                    </Router>
+                    }
+                </Switch>
+                <ToastContainer autoClose={5000} />
             </Router>
-               }                   
-          </Switch>
-          <ToastContainer autoClose={5000} />
-        </Router>
-            
+
         </div>
     )
 }
