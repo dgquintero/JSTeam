@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
 import { userRef, db } from './../../components/FirebaseInfo';
-import { BsPencil, BsXCircle } from "react-icons/bs";
+import { BsPencil, BsXCircle, BsPersonLinesFill, BsPeopleFill } from "react-icons/bs";
 import { toast } from "react-toastify";
 
 // Firebase Imports
@@ -25,7 +25,9 @@ const Usuarios = () => {
             rol: rol
         })
         // TO DO better notification
-        toast("It works")
+        toast.success("Se ha modificado la informacion del usuario")
+        setTabTitle()
+        setModifyForm()
     }
 
     const modifyUserForm = (userId, userData) => {
@@ -35,35 +37,40 @@ const Usuarios = () => {
         setSearchResult();
         setModifyForm(
             <form className="px-3">
-                <div className='form-group'>
-                    <label className="col-form-label mt-4">Email</label>
-                    <input type="text" className="form-control" placeholder={userData.email} readOnly />
+                <div className="d-flex flex-row justify-content-around">
+                    <div className='form-group'>
+                        <label className="col-form-label mt-4">Email</label>
+                        <input type="text" className="form-control" placeholder={userData.email} readOnly />
+                    </div>
+
+                    <div className='form-group'>
+                        <label className="col-form-label mt-4">Nombre</label>
+                        <input type="text" className="form-control" placeholder={userData.nombre} readOnly />
+                    </div>
+
+                    <div className='form-group'>
+                        <label className="col-form-label mt-4">Estado</label>
+                        <select className="form-select" onChange={(e) => setEstado(e.target.value)} required>
+                            <option value=''></option>
+                            <option value='Pendiente'>Pendiente</option>
+                            <option value="No Autorizado">No Autorizado</option>
+                            <option value="Autorizado">Autorizado</option>
+                        </select>
+                    </div>
+
+                    <div className='form-group'>
+                        <label className="col-form-label mt-4" >Rol</label>
+                        <select className="form-select" onChange={(e) => setRol(e.target.value)} required>
+                            <option value=''></option>
+                            <option value='Administrador'>Administrador</option>
+                            <option value="Vendedor">Vendedor</option>
+                            <option value="No Asignado">No Asignado</option>
+                        </select>
+                    </div>
                 </div>
-                <div className='form-group'>
-                    <label className="col-form-label mt-4">Nombre</label>
-                    <input type="text" className="form-control" placeholder={userData.nombre} readOnly />
-                </div>
-                <div className='form-group'>
-                    <label className="col-form-label mt-4">Estado</label>
-                    <select className="form-select" onChange={(e) => setEstado(e.target.value)} required>
-                        <option value=''></option>
-                        <option value='Pendiente'>Pendiente</option>
-                        <option value="No Autorizado">No Autorizado</option>
-                        <option value="Autorizado">Autorizado</option>
-                    </select>
-                </div>
-                <div className='form-group'>
-                    <label className="col-form-label mt-4" >Rol</label>
-                    <select className="form-select" onChange={(e) => setRol(e.target.value)} required>
-                        <option value=''></option>
-                        <option value='Administrador'>Administrador</option>
-                        <option value="Vendedor">Vendedor</option>
-                        <option value="No Asignado">No Asignado</option>
-                    </select>
-                </div>
-                <div className="mt-3">
-                    <button type="button" className="btn btn-sm btn-success" onClick={() => { modifyUser(userId) }}>Modificar</button>
-                    <button type="button" className="btn btn-sm btn-warning" onClick={() => { clearForm() }}>Cancelar</button>
+                <div className="d-flex flex-row justify-content-center mt-5">
+                    <button type="button" className="btn btn-success" onClick={() => { modifyUser(userId) }}>Modificar</button>
+                    <button type="button" className="btn btn-warning" onClick={() => { clearForm() }}>Cancelar</button>
                 </div>
 
             </form>
@@ -94,7 +101,7 @@ const Usuarios = () => {
         // TO DO Show a notification when there are no results from a query
         const q = query(userRef, where("email", "==", searchRef.current.value));
         const qData = await getDocs(q);
-        
+
         qData.forEach((doc) => {
             setSearchResult((searchResult) => (
                 // I dont know why it works but it works
@@ -109,8 +116,8 @@ const Usuarios = () => {
                         <td>{doc.data().rol}</td>
                         <td>
                             {/* TO DO make pretty buttons*/}
-                            <button className='btn btn-info btn-sm m-1' onClick={() => modifyUserForm(doc.id, doc.data())}><BsPencil />Modificar</button>
-                            <button className='btn btn-warning btn-sm m-1' onClick={() => deleteUsr(doc.id)}><BsXCircle />Eliminar</button>
+                            <button className='btn btn-info m-1' onClick={() => modifyUserForm(doc.id, doc.data())}><BsPencil />Modificar</button>
+                            <button className='btn btn-warning m-1' onClick={() => deleteUsr(doc.id)}><BsXCircle />Eliminar</button>
                         </td>
                     </tr>
                 </>
@@ -129,6 +136,7 @@ const Usuarios = () => {
         const deleteRef = doc(db, 'usuarios', id)
         await deleteDoc(deleteRef);
         // Reset results
+        toast.success('Se ha eliminado el usuario')
         setSearchResult();
     }
 
@@ -170,10 +178,10 @@ const Usuarios = () => {
                     maiores!</p>
                 <ul className="nav nav-tabs">
                     <li className="nav-item">
-                        <a className="nav-link active" data-bs-toggle="tab" href="#tab1">Buscar/Modificar Usuarios</a>
+                        <a className="nav-link active" data-bs-toggle="tab" href="#tab1"><BsPeopleFill size='1.5em' style={{ verticalAlign: 'top' }} />  Buscar/Modificar Usuarios</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" data-bs-toggle="tab" href="#tab2" onClick={() => { listAllUsers() }}>Mostrar Usuarios Registrados</a>
+                        <a className="nav-link" data-bs-toggle="tab" href="#tab2" onClick={() => { listAllUsers() }}><BsPersonLinesFill size='1.5em' style={{ verticalAlign: 'top' }} />  Mostrar Usuarios Registrados</a>
                     </li>
                 </ul>
                 <div id="myTabContent" className="tab-content">
