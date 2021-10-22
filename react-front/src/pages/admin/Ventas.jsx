@@ -54,19 +54,19 @@ const Ventas = () => {
                 setProdId();
                 setProdName();
                 setProdUnitPrice();
-                toast.error('No hay productos vinculados a ese ID',{position: "bottom-center"})
+                toast.error('No hay productos vinculados a ese ID', { position: "bottom-center" })
             }
         } else {
-            toast.warning('Ingrese un ID antes de realizar una busqueda',{position: "bottom-center"})
+            toast.warning('Ingrese un ID antes de realizar una busqueda', { position: "bottom-center" })
         }
 
     }
 
     const addProdSale = () => {
         if (!quantRef.current.value || !prodName || !prodUnitPrice || !prodId) { // Checking if components states are valid
-            toast.error('Realice una nueva busqueda o ingrese una cantidad',{position: "bottom-center"})
+            toast.error('Realice una nueva busqueda o ingrese una cantidad', { position: "bottom-center" })
         } else {
-            toast.success("Producto agregado a la venta", {position: "bottom-center"})
+            toast.success("Producto agregado a la venta", { position: "bottom-center" })
             setSaleProductsTable((saleProductsTable) => (
                 <>
                     {saleProductsTable}
@@ -129,11 +129,11 @@ const Ventas = () => {
                 estado: 'En Proceso'
             })
             // TO DO Add real notification
-            toast.success("Venta Registrada", {position: "bottom-center"})
+            toast.success("Venta Registrada", { position: "bottom-center" })
             resetStates();
             e.target.reset();
         } else {
-            toast.error("Ya existe una venta registrada con ese ID", {position: "bottom-center"})
+            toast.error("Ya existe una venta registrada con ese ID", { position: "bottom-center" })
         }
     }
 
@@ -260,7 +260,7 @@ const Ventas = () => {
     const deleteSale = async (id) => {
         const deleteRef = doc(db, 'ventas', id)
         await deleteDoc(deleteRef);
-        toast.info("Se elimino la venta", {position: "bottom-center"})
+        toast.info("Se elimino la venta", { position: "bottom-center" })
         setSearchResult();
     }
 
@@ -355,7 +355,7 @@ const Ventas = () => {
         await updateDoc(updateRef, {
             estado: estado
         })
-        toast.success("Se actualizo el estado de la venta", {position: "bottom-center"})
+        toast.success("Se actualizo el estado de la venta", { position: "bottom-center" })
     }
 
     const clearForm = () => {
@@ -506,7 +506,7 @@ const Ventas = () => {
 
                     <div className="tab-pane fade" id="tab2">
                         <form className="d-flex mt-2" onSubmit={handleSearch}>
-                            <input ref={searchValue} className="form-control me-sm-2" type="text" placeholder="Search" />
+                        <input ref={searchValue} className="form-control me-sm-2" type="text" placeholder="Search" />
                             <div className="form-group">
                                 <select className="form-select" ref={searchField}>
                                     <option value="id">ID Venta</option>
