@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { prodRef, userRef, saleRef, db } from "components/FirebaseInfo";
-import { BsPencil, BsXCircle } from "react-icons/bs";
+import { BsPencil, BsXCircle, BsFillCartPlusFill, BsFillCartCheckFill, BsClipboardData } from "react-icons/bs";
 import { toast } from "react-toastify";
 
 // Firebase Imports
@@ -341,8 +341,8 @@ const Ventas = () => {
                 </div>
 
                 <div className="d-flex justify-content-center">
-                    <button type="button" className="btn btn-sm btn-success" onClick={() => { modifySale(saleId) }}>Modificar</button>
-                    <button type="button" className="btn btn-sm btn-warning" onClick={() => { clearForm() }}>Cancelar</button>
+                    <button type="button" className="btn btn-success" onClick={() => { modifySale(saleId) }}>Modificar</button>
+                    <button type="button" className="btn btn-warning" onClick={() => { clearForm() }}>Cancelar</button>
                 </div>
 
             </form >
@@ -391,13 +391,13 @@ const Ventas = () => {
 
                 <ul className="nav nav-tabs">
                     <li className="nav-item">
-                        <a className="nav-link active" data-bs-toggle="tab" href="#tab1">Registrar Ventas</a>
+                        <a className="nav-link active" data-bs-toggle="tab" href="#tab1"><BsFillCartPlusFill size='1.5em' style={{ verticalAlign: 'top' }}/> Registrar Ventas</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" data-bs-toggle="tab" href="#tab2">Buscar/Modificar Ventas</a>
+                        <a className="nav-link" data-bs-toggle="tab" href="#tab2"><BsFillCartCheckFill size='1.5em' style={{ verticalAlign: 'top' }}/>  Buscar/Modificar Ventas</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" data-bs-toggle="tab" href="#tab3" onClick={() => { listAllSales() }}>Mostrar Ventas Registrados</a>
+                        <a className="nav-link" data-bs-toggle="tab" href="#tab3" onClick={() => { listAllSales() }}><BsClipboardData size='1.5em' style={{ verticalAlign: 'top' }}/>  Mostrar Ventas Registrados</a>
                     </li>
                 </ul>
 
@@ -496,7 +496,6 @@ const Ventas = () => {
                                 <div className="d-flex justify-content-center">
                                     <button type="submit" className="btn btn-primary">Registrar Venta</button>
                                     <button type="reset" className="btn btn-warning" onClick={() => { resetStates() }}>Reset</button>
-                                    <button className="btn btn-info" type="button" onClick={() => { console.log(saleProds); console.log(prodName); }}>TEST!!!</button>
                                 </div>
 
                             </fieldset>
