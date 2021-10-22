@@ -67,7 +67,7 @@ export const HomeGeneral = () => {
                                     <PublicLayout>
                                         <Switch>
                                             <Route path='/ventas'>
-                                                <VentasVendedor />
+                                                <Ventas />
                                             </Route>
                                             <Route path='/'>
                                                 <HomeVendedor />
