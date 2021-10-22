@@ -1,6 +1,6 @@
 import { useState, useRef } from "react"
 import { prodRef, db } from "components/FirebaseInfo";
-import { BsPencil, BsXCircle } from "react-icons/bs";
+import { BsPencil, BsXCircle, BsBagPlusFill, BsListCheck, BsPencilSquare } from "react-icons/bs";
 
 // Firebae Imports
 import { updateDoc, deleteDoc, getDocs, query, where, setDoc, doc, startAt, endAt, orderBy } from "firebase/firestore";
@@ -114,8 +114,8 @@ const Productos = () => {
                         <td>{doc.data().estado}</td>
                         <td>
                             {/* TO DO make pretty buttons*/}
-                            <button className='btn btn-info btn-sm m-1' onClick={() => modifyProdForm(doc.id, doc.data())}><BsPencil />Modificar</button>
-                            <button className='btn btn-warning btn-sm m-1' onClick={() => deleteProd(doc.id)}><BsXCircle />Eliminar</button>
+                            <button className='btn btn-info m-1' onClick={() => modifyProdForm(doc.id, doc.data())}><BsPencil />  Modificar</button>
+                            <button className='btn btn-warning m-1' onClick={() => deleteProd(doc.id)}><BsXCircle />  Eliminar</button>
                         </td>
                     </tr>
                 </>
@@ -205,9 +205,9 @@ const Productos = () => {
                     </div>
                 </div>
 
-                <div className="d-flex justify-content-center mt-3">
-                    <button type="button" className="btn btn-sm btn-success" onClick={() => { modifyProd(prodId) }}>Modificar</button>
-                    <button type="button" className="btn btn-sm btn-warning" onClick={() => { clearForm() }}>Cancelar</button>
+                <div className="d-flex justify-content-center mt-5">
+                    <button type="button" className="btn btn-success" onClick={() => { modifyProd(prodId) }}>Modificar</button>
+                    <button type="button" className="btn btn-warning" onClick={() => { clearForm() }}>Cancelar</button>
                 </div>
 
             </form >
@@ -232,13 +232,13 @@ const Productos = () => {
 
                 <ul className="nav nav-tabs">
                     <li className="nav-item">
-                        <a className="nav-link active" data-bs-toggle="tab" href="#tab1">Agregar Productos</a>
+                        <a className="nav-link active" data-bs-toggle="tab" href="#tab1"><BsBagPlusFill size='1.5em' style={{ verticalAlign: 'top' }}/>  Agregar Productos</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" data-bs-toggle="tab" href="#tab2">Buscar/Modificar Productos</a>
+                        <a className="nav-link" data-bs-toggle="tab" href="#tab2"><BsPencilSquare size='1.5em' style={{ verticalAlign: 'top' }}/>  Buscar/Modificar Productos</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" data-bs-toggle="tab" href="#tab3" onClick={() => { listAllProducts() }}>Mostrar Productos Registrados</a>
+                        <a className="nav-link" data-bs-toggle="tab" href="#tab3" onClick={() => { listAllProducts() }}><BsListCheck size='1.5em' style={{ verticalAlign: 'top' }}/>  Mostrar Productos Registrados</a>
                     </li>
                 </ul>
 

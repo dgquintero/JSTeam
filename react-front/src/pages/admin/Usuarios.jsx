@@ -116,8 +116,8 @@ const Usuarios = () => {
                         <td>{doc.data().rol}</td>
                         <td>
                             {/* TO DO make pretty buttons*/}
-                            <button className='btn btn-info m-1' onClick={() => modifyUserForm(doc.id, doc.data())}><BsPencil />Modificar</button>
-                            <button className='btn btn-warning m-1' onClick={() => deleteUsr(doc.id)}><BsXCircle />Eliminar</button>
+                            <button className='btn btn-info m-1' onClick={() => modifyUserForm(doc.id, doc.data())}><BsPencil />  Modificar</button>
+                            <button className='btn btn-warning m-1' onClick={() => deleteUsr(doc.id)}><BsXCircle />  Eliminar</button>
                         </td>
                     </tr>
                 </>
