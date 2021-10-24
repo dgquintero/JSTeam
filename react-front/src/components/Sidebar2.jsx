@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SidebarLink from "components/SidebarLink";
 import { consultarDocumentoDatabase, logOutUsuario, usuario } from './FirebaseInfo';
 import { useState, useEffect } from 'react';
+import { BsBoxArrowInLeft } from "react-icons/bs";
 
 const Sidebar = () => {
 
@@ -55,7 +56,7 @@ const Sidebar = () => {
                     </Link>
                     <span className="fst-italic">({usuarioActivoRol})</span>
                     <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                        <li><Link className="dropdown-item" to="/" onClick={handleClick}>Salir</Link></li>
+                        <li><Link className="dropdown-item" to="/" onClick={handleClick}><BsBoxArrowInLeft style={{ verticalAlign: 'sub' }}/>  Salir</Link></li>
                     </ul>
                 </div>
             </div>

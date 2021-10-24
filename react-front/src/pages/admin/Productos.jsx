@@ -226,9 +226,7 @@ const Productos = () => {
             <div className="m-4 overflow-auto">
 
                 <h1 className="mb-5">Administrar Productos</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam molestias odio sapiente incidunt
-                    repudiandae non est omnis reiciendis tenetur nemo deleniti consectetur architecto, officia perferendis
-                    maiores!</p>
+                <p>Registre nuevos productos al sistema y actualice la informacion de productos existentes.</p>
 
                 <ul className="nav nav-tabs">
                     <li className="nav-item">
@@ -248,9 +246,7 @@ const Productos = () => {
 
                         <form className="p-3" onSubmit={addProduct} >
                             <fieldset >
-                                <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores iure ab dignissimos,
-                                    nisi fugiat ad est recusandae ducimus optio. Vel facere labore sunt voluptatem beatae
-                                    suscipit esse minus nisi quisquam?</div>
+                                <div>Agregue un nuevo producto al sistema. Tenga en cuenta que el ID del producto debe ser unico y no podra ser modificado despues.</div>
 
                                 <div className="form-group">
                                     <label className="col-form-label mt-4" htmlFor="inputId">ID</label>
@@ -280,7 +276,7 @@ const Productos = () => {
                                     </select>
                                 </div>
 
-                                <div className="container-flex">
+                                <div className="d-flex justify-content-center">
                                     <button type="submit" className="btn btn-primary">Agregar</button>
                                     <button type="reset" className="btn btn-warning">Reset</button>
                                 </div>

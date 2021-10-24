@@ -5,7 +5,7 @@ import Home from 'pages/admin/Home';
 import Productos from 'pages/admin/Productos';
 import Ventas from 'pages/admin/Ventas'
 import Usuarios from 'pages/admin/Usuarios';
-import VentasVendedor from 'pages/user/VentasVendedor';
+// import VentasVendedor from 'pages/user/VentasVendedor';
 import HomeVendedor from 'pages/user/HomeVendedor';
 import { ToastContainer } from 'react-toastify'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';

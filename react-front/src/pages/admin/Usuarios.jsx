@@ -173,9 +173,7 @@ const Usuarios = () => {
         <>
             <div className="m-4 overflow-auto">
                 <h1 className="mb-5">Administrar Usuarios</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam molestias odio sapiente incidunt
-                    repudiandae non est omnis reiciendis tenetur nemo deleniti consectetur architecto, officia perferendis
-                    maiores!</p>
+                <p>Revise los usuarios registrador y defina o actualice su rol en la plataforma.</p>
                 <ul className="nav nav-tabs">
                     <li className="nav-item">
                         <a className="nav-link active" data-bs-toggle="tab" href="#tab1"><BsPeopleFill size='1.5em' style={{ verticalAlign: 'top' }} />  Buscar/Modificar Usuarios</a>
@@ -188,7 +186,7 @@ const Usuarios = () => {
                     <div className="tab-pane fade active show" id="tab1">
                         <form className="d-flex mt-2" id="searchForm" onSubmit={handleSearch}>
                             <input className="form-control me-sm-2" type="text" placeholder="Search Email Address" id="searchValue" ref={searchRef} />
-                            <button className="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+                            <button className="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
                         </form>
                         <hr />
                         <div div className="mt-5 h4" >{tabTitle}</div>

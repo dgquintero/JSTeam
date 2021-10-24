@@ -385,9 +385,7 @@ const Ventas = () => {
             <div className="m-4 overflow-auto">
                 <h1 className="mb-5">Administrar Ventas</h1>
 
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam molestias odio sapiente incidunt
-                    repudiandae non est omnis reiciendis tenetur nemo deleniti consectetur architecto, officia perferendis
-                    maiores!</p>
+                <p>Registre nuevas ventas realizadas y actualice el estado de una venta en particular.</p>
 
                 <ul className="nav nav-tabs">
                     <li className="nav-item">
@@ -407,9 +405,7 @@ const Ventas = () => {
                         <form className="p-3" onSubmit={addSale}>
                             <fieldset>
                                 <div className="w-75">
-                                    <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores iure ab dignissimos,
-                                        nisi fugiat ad est recusandae ducimus optio. Vel facere labore sunt voluptatem beatae
-                                        suscipit esse minus nisi quisquam?</div>
+                                    <div>Registre una nueva venta en el sistema. La lista de encargados tiene todos los vendedores autorizados en el momento. Para agregar productos a la venta primero debera buscarlos por su ID e indicar la cantidad comprada en la venta.</div>
 
                                     <div className='d-flex justify-content-between'>
 
